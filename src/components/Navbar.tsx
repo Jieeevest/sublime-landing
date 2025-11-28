@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Button from './ui/Button';
 
 export default function Navbar() {
@@ -19,15 +20,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-              <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#38B2AC" />
-                <path d="M2 17L12 22L22 17" stroke="#38B2AC" strokeWidth="2" />
-                <path d="M2 12L12 17L22 12" stroke="#38B2AC" strokeWidth="2" />
-              </svg>
-            </div>
-            <span className="text-white text-xl font-bold tracking-wide">SUBLIME</span>
+          <div className="flex items-center">
+            <Image 
+              src="/strovia-logo-white.png" 
+              alt="Strovia Logo" 
+              width={141} 
+              height={28}
+              className="object-contain"
+            />
           </div>
 
           {/* Desktop Menu */}
