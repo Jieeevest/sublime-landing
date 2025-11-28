@@ -8,14 +8,24 @@ export default function Hero() {
       {/* Navbar */}
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="max-w-[1440px] mx-auto px-[120px] pt-[108px] pb-[80px]">
+        <div className="grid lg:grid-cols-2 gap-12 items-center justify-between">
           {/* Left Content */}
           <div className="text-white space-y-6 animate-fade-in-up">
-            <h1 className="font-hero text-[64px] font-bold leading-[100%] tracking-[0%]">
+            <h1 
+              className="font-hero text-[64px] font-bold leading-[100%] tracking-[0%] bg-clip-text text-transparent"
+              style={{ 
+                background: 'linear-gradient(94.58deg, #C2F8FF 22.86%, #FFFFFF 62.57%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
               Guided Healing for a Smoother Stroke Recovery Journey
             </h1>
-            <p className="text-lg sm:text-xl text-white/90 leading-relaxed max-w-xl">
+            <p 
+              className="text-[24px] font-normal leading-[32px] tracking-[0%] text-white/90 max-w-xl align-middle"
+              style={{ fontFamily: 'PP Neue Montreal' }}
+            >
               Sublime combines 432 Hz healing tones, gentle affirmations, and personalized AI support to help calm your mind, enhance focus, and guide you through each step of your recovery — one peaceful session at a time.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -34,12 +44,12 @@ export default function Hero() {
           {/* Right Content - Image and Cards */}
           <div className="relative">
             {/* Main Image */}
-            <div className="relative z-10">
+            <div className="relative z-10 ml-12">
               <Image
-                src="/hero-meditation.png"
+                src="/female-headphones.png"
                 alt="Woman with headphones in peaceful meditation"
-                width={600}
-                height={700}
+                width={814}
+                height={814}
                 className="object-contain"
                 priority
               />
@@ -58,7 +68,7 @@ export default function Hero() {
                   <p className="text-white/70 text-xs mb-3">My body restores itself gently. I honor my healing p...</p>
                   <button className="w-8 h-8 bg-white rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors">
                     <svg className="w-4 h-4 text-teal-800" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
                   </button>
                 </div>
