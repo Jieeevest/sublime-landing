@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Button from "./ui/Button";
 
 export default function Navbar() {
@@ -74,9 +75,11 @@ export default function Navbar() {
                 />
               </svg>
             </button>
-            <Button variant="secondary" className="text-sm">
-              Login/Register
-            </Button>
+            <Link href="/login">
+              <Button variant="secondary" className="text-sm">
+                Login/Register
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -124,9 +127,11 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="border-t border-white/20 pt-4 mt-2">
-                <Button variant="secondary" className="w-full text-sm">
-                  Login/Register
-                </Button>
+                <Link href="/login">
+                  <Button variant="secondary" className="w-full text-sm">
+                    Login/Register
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
