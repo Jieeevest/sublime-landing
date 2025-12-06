@@ -1,36 +1,45 @@
-import Image from 'next/image';
-import Card from './ui/Card';
+import Image from "next/image";
+import Card from "./ui/Card";
 
 export default function WhatIsSublime() {
   const features = [
     {
       title: "Personalized Sessions",
-      description: "Audio therapy tailored to your specific recovery needs and mental health goals."
+      description:
+        "Audio therapy tailored to your specific recovery needs and mental health goals.",
     },
     {
       title: "Expert Guidance",
-      description: "Created by licensed therapists and wellness professionals with years of experience."
+      description:
+        "Created by licensed therapists and wellness professionals with years of experience.",
     },
     {
       title: "Anytime, Anywhere",
-      description: "Access your healing sessions whenever you need them, from any device."
+      description:
+        "Access your healing sessions whenever you need them, from any device.",
     },
     {
       title: "Progress Tracking",
-      description: "Monitor your journey and celebrate milestones as you move forward."
-    }
+      description:
+        "Monitor your journey and celebrate milestones as you move forward.",
+    },
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-teal-50">
+    <section className="py-20 bg-gradient-to-b from-white to-primary-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+          <h2
+            className="font-hero text-[64px] font-bold leading-[100%] tracking-[0%] text-center mb-4"
+            style={{ color: "#3197A5" }}
+          >
             What is Sublime?
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Sublime is your companion for guided healing through professionally crafted audio therapy sessions 
-            designed to support your mental wellness journey.
+          <p className="font-hero text-[24px] font-normal leading-[32px] tracking-[0%] text-center text-gray-600 max-w-3xl mx-auto">
+            A modern audio-therapy experience designed to support stroke
+            recovery through healing frequencies, gentle subliminal
+            affirmations, and personalized AI guidance — all crafted to help you
+            feel calmer, clearer, and more supported every day.
           </p>
         </div>
 
@@ -42,9 +51,7 @@ export default function WhatIsSublime() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600">
-                  {feature.description}
-                </p>
+                <p className="text-gray-600">{feature.description}</p>
               </Card>
             ))}
           </div>
@@ -68,9 +75,7 @@ export default function WhatIsSublime() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600">
-                  {feature.description}
-                </p>
+                <p className="text-gray-600">{feature.description}</p>
               </Card>
             ))}
           </div>

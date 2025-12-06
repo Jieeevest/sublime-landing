@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import Button from './ui/Button';
+import { useState } from "react";
+import Image from "next/image";
+import Button from "./ui/Button";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
-    { label: 'About us', href: '#about' },
-    { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Benefit', href: '#benefit' },
-    { label: 'Blog', href: '#blog' },
-    { label: 'FAQ', href: '#faq' },
+    { label: "About us", href: "#about" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Benefit", href: "#benefit" },
+    { label: "Blog", href: "#blog" },
+    { label: "FAQ", href: "#faq" },
   ];
 
   return (
@@ -21,10 +21,10 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <Image 
-              src="/strovia-logo-white.png" 
-              alt="Strovia Logo" 
-              width={141} 
+            <Image
+              src="/strovia-logo-white.png"
+              alt="Strovia Logo"
+              width={141}
               height={28}
               className="object-contain"
             />
@@ -46,12 +46,32 @@ export default function Navbar() {
           {/* Right Side - Language & Auth */}
           <div className="hidden lg:flex items-center gap-6">
             <button className="flex items-center gap-2 text-white/90 hover:text-white transition-colors">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+                />
               </svg>
               <span className="text-sm font-medium">EN</span>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </button>
             <Button variant="secondary" className="text-sm">
@@ -64,11 +84,26 @@ export default function Navbar() {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="lg:hidden text-white p-2"
           >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
               {isMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               )}
             </svg>
           </button>
@@ -76,13 +111,13 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden bg-teal-600/95 backdrop-blur-sm rounded-xl p-6 mt-2">
+          <div className="lg:hidden bg-primary/95 backdrop-blur-sm rounded-xl p-6 mt-2">
             <div className="flex flex-col gap-4">
               {menuItems.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
-                  className="text-white hover:text-teal-100 transition-colors text-sm font-medium"
+                  className="text-white hover:text-primary-100 transition-colors text-sm font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.label}
