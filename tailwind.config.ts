@@ -92,10 +92,19 @@ const config: Config = {
             opacity: "1",
           },
         },
+        slideUp: {
+          from: {
+            transform: "translateY(100%)",
+          },
+          to: {
+            transform: "translateY(0)",
+          },
+        },
       },
       animation: {
         "fade-in-up": "fadeInUp 0.6s ease-out forwards",
         "fade-in": "fadeIn 0.8s ease-out forwards",
+        "slide-up": "slideUp 0.3s ease-out forwards",
       },
     },
   },
