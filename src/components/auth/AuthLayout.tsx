@@ -30,43 +30,17 @@ export default function AuthLayout({
           style={{ transform: "scaleX(-1)" }}
         />
 
-        {/* Wave Decoration at Bottom */}
-        <svg
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 opacity-50 z-10"
-          width="2349"
-          height="696"
-          viewBox="0 0 2349 696"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="xMidYMax slice"
-        >
-          <path
-            d="M0 348C261.5 174 522 0 783.5 0C1045 0 1306.5 174 1568 348C1829.5 522 2091 696 2349 696H0V348Z"
-            fill="#000000"
-            opacity="0.1"
-          />
-          <path
-            d="M0,400 Q587,200 1175,300 T2349,400 L2349,696 L0,696 Z"
-            stroke="#07A3B2"
-            strokeWidth="1"
-            fill="none"
-            opacity="0.3"
-          />
-          <path
-            d="M0,380 Q587,220 1175,320 T2349,380 L2349,696 L0,696 Z"
-            stroke="#3197A5"
-            strokeWidth="1"
-            fill="none"
-            opacity="0.4"
-          />
-          <path
-            d="M0,360 Q587,240 1175,340 T2349,360 L2349,696 L0,696 Z"
-            stroke="#5BC0BA"
-            strokeWidth="1"
-            fill="none"
-            opacity="0.5"
-          />
-        </svg>
+        {/* Wave Background Image */}
+        <div
+          className="absolute bottom-0 left-0 right-0 opacity-50 z-10"
+          style={{
+            height: "696px",
+            backgroundImage: "url(/wave.png)",
+            backgroundSize: "cover",
+            backgroundPosition: "bottom center",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
 
         {/* Character Image */}
         <NextImage
