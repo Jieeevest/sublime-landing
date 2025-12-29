@@ -259,14 +259,14 @@ export default function Hero() {
               {/* Overlay */}
               <div
                 className="absolute inset-0"
-                style={{ background: "rgba(0, 0, 0, 0.75)" }}
+                style={{ background: "rgba(0, 0, 0, 0.65)" }}
               />
               <div
                 className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(0, 0, 0, 0) -1.23%, #000000 80%)",
-                }}
+                // style={{
+                //   background:
+                //     "linear-gradient(180deg, rgba(0, 0, 0, 0) -1.23%, #000000 80%)",
+                // }}
               />
 
               {/* Content */}
@@ -289,7 +289,7 @@ export default function Hero() {
                     className="flex flex-row items-center"
                     style={{
                       gap: "8px",
-                      width: "309px",
+                      width: "320px",
                       height: "44px",
                     }}
                   >
@@ -471,7 +471,9 @@ export default function Hero() {
           background: "#3197A5",
           filter: "blur(195px)",
           transform: "rotate(-90deg)",
-          zIndex: 3,
+          zIndex: -1,
+          opacity: 0.2,
+          pointerEvents: "none",
         }}
       />
       <div
@@ -484,7 +486,9 @@ export default function Hero() {
           background: "#3197A5",
           filter: "blur(195px)",
           transform: "rotate(-90deg)",
-          zIndex: 3,
+          zIndex: -1,
+          opacity: 0.2,
+          pointerEvents: "none",
         }}
       />
 
@@ -496,7 +500,7 @@ export default function Hero() {
           height: "814px",
           left: "calc(50% - 814px/2 + 71px)",
           bottom: "-118px",
-          zIndex: 4,
+          zIndex: 0,
         }}
       >
         <NextImage
