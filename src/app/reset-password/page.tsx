@@ -1,38 +1,46 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
+import NextImage from "next/image";
 import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 
 export const metadata: Metadata = {
   title: "Reset Password - Sublime",
-  description: "Create a new password for your Sublime account.",
+  description: "Reset your Sublime account password.",
 };
 
 export default function ResetPasswordPage() {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Logo */}
-      <div className="p-8">
+    <div
+      className="min-h-screen flex flex-row justify-center items-center bg-white relative"
+      style={{
+        padding: "40px",
+        gap: "24px",
+        isolation: "isolate",
+      }}
+    >
+      {/* Logo - Top Left (absolute positioned) */}
+      <div className="absolute top-10 left-10">
         <Link href="/">
-          <Image
-            src="/strovia-logo-white.png"
+          <NextImage
+            src="/strovia-log.png"
             alt="Strovia Logo"
             width={141}
             height={28}
             className="object-contain"
-            style={{
-              filter:
-                "brightness(0) saturate(100%) invert(24%) sepia(28%) saturate(1847%) hue-rotate(163deg) brightness(95%) contrast(97%)",
-            }}
           />
         </Link>
       </div>
 
-      {/* Centered Form */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
-          <ResetPasswordForm />
-        </div>
+      {/* Centered Form Container */}
+      <div
+        className="flex flex-col items-center"
+        style={{
+          width: "352px",
+          gap: "40px",
+          borderRadius: "16px",
+        }}
+      >
+        <ResetPasswordForm />
       </div>
     </div>
   );
