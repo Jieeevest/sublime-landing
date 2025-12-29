@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 export default function RegisterPage() {
   return (
     <AuthLayout
-      title="Begin Your Healing Journey 🌸"
-      subtitle="Start your personalized healing experience with 628 Hz audio and gentle subliminal support."
+      title="Memprogram Ulang Otak Anda Setelah Stroke 💖"
+      subtitle="Pemulihan Neuroplastis dengan Frekuensi 628Hz dan Subliminal untuk Rehabilitasi Stroke"
     >
       <RegisterForm />
     </AuthLayout>
