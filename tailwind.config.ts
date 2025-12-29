@@ -52,21 +52,21 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
-          "PP Neue Montreal",
+          "Neue Montreal",
           "Inter",
           "system-ui",
           "-apple-system",
           "sans-serif",
         ],
         display: [
-          "PP Neue Montreal",
+          "Neue Montreal",
           "Outfit",
           "system-ui",
           "-apple-system",
           "sans-serif",
         ],
         hero: [
-          "PP Neue Montreal",
+          "Neue Montreal",
           "Outfit",
           "system-ui",
           "-apple-system",

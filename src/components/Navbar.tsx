@@ -1,141 +1,282 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import Button from "./ui/Button";
+import NextImage from "next/image";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const menuItems = [
-    { label: "About us", href: "#about" },
-    { label: "How It Works", href: "#how-it-works" },
-    { label: "Benefit", href: "#benefit" },
-    { label: "Blog", href: "#blog" },
-    { label: "FAQ", href: "#faq" },
-  ];
-
   return (
-    <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <div className="flex items-center">
-            <Image
-              src="/strovia-logo-white.png"
-              alt="Strovia Logo"
-              width={141}
-              height={28}
-              className="object-contain"
-            />
-          </div>
+    <nav
+      className="absolute flex flex-row justify-between items-center"
+      style={{
+        padding: "12px 90px",
+        gap: "10px",
+        width: "1440px",
+        height: "68px",
+        left: "0px",
+        top: "0px",
+        backdropFilter: "blur(20px)",
+        borderRadius: "0px",
+        zIndex: 8,
+        maxWidth: "100vw",
+      }}
+    >
+      {/* Logo */}
+      <Link
+        href="/"
+        className="flex flex-row items-center"
+        style={{
+          gap: "8px",
+          width: "141px",
+          height: "28px",
+          margin: "0 auto",
+        }}
+      >
+        <NextImage
+          src="/strovia-logo-white.png"
+          alt="Strovia Logo"
+          width={141}
+          height={28}
+          className="object-contain"
+        />
+      </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-8">
-            {menuItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="text-white/90 hover:text-white transition-colors text-sm font-medium"
-              >
-                {item.label}
-              </a>
-            ))}
-          </div>
-
-          {/* Right Side - Language & Auth */}
-          <div className="hidden lg:flex items-center gap-6">
-            <button className="flex items-center gap-2 text-white/90 hover:text-white transition-colors">
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-                />
-              </svg>
-              <span className="text-sm font-medium">EN</span>
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            <Link href="/login">
-              <Button variant="secondary" className="text-sm">
-                Login/Register
-              </Button>
-            </Link>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden text-white p-2"
+      {/* Center Menu */}
+      <div
+        className="flex flex-row justify-center items-center rounded-[99px]"
+        style={{
+          padding: "0px 24px",
+          gap: "20px",
+          width: "498px",
+          height: "44px",
+          margin: "0 auto",
+          background: "rgba(255, 255, 255, 0.14)",
+          border: "1px solid rgba(255, 255, 255, 0.08)",
+        }}
+      >
+        {/* Menu Items */}
+        <Link
+          href="/tentang-kami"
+          className="flex flex-col justify-center items-center rounded"
+          style={{
+            padding: "8px",
+            width: "108px",
+            height: "44px",
+          }}
+        >
+          <span
+            className="font-normal text-center"
+            style={{
+              width: "92px",
+              height: "24px",
+              fontFamily: "PP Neue Montreal",
+              fontSize: "14px",
+              lineHeight: "24px",
+              color: "rgba(31, 31, 31, 0.7)",
+            }}
           >
+            Tentang Kami
+          </span>
+        </Link>
+
+        <Link
+          href="/cara-kerja"
+          className="flex flex-col justify-center items-center rounded"
+          style={{
+            padding: "8px",
+            width: "87px",
+            height: "44px",
+          }}
+        >
+          <span
+            className="font-normal text-center"
+            style={{
+              width: "71px",
+              height: "24px",
+              fontFamily: "PP Neue Montreal",
+              fontSize: "14px",
+              lineHeight: "24px",
+              color: "rgba(31, 31, 31, 0.7)",
+            }}
+          >
+            Cara Kerja
+          </span>
+        </Link>
+
+        <Link
+          href="/manfaat"
+          className="flex flex-col justify-center items-center rounded"
+          style={{
+            padding: "8px",
+            width: "71px",
+            height: "44px",
+          }}
+        >
+          <span
+            className="font-normal text-center"
+            style={{
+              width: "55px",
+              height: "24px",
+              fontFamily: "PP Neue Montreal",
+              fontSize: "14px",
+              lineHeight: "24px",
+              color: "rgba(31, 31, 31, 0.7)",
+            }}
+          >
+            Manfaat
+          </span>
+        </Link>
+
+        <Link
+          href="/artikel"
+          className="flex flex-col justify-center items-center rounded"
+          style={{
+            padding: "8px",
+            width: "58px",
+            height: "44px",
+          }}
+        >
+          <span
+            className="font-normal text-center"
+            style={{
+              width: "42px",
+              height: "24px",
+              fontFamily: "PP Neue Montreal",
+              fontSize: "14px",
+              lineHeight: "24px",
+              color: "rgba(31, 31, 31, 0.7)",
+            }}
+          >
+            Artikel
+          </span>
+        </Link>
+
+        <Link
+          href="/faq"
+          className="flex flex-col justify-center items-center rounded"
+          style={{
+            padding: "8px",
+            width: "46px",
+            height: "44px",
+          }}
+        >
+          <span
+            className="font-normal text-center"
+            style={{
+              width: "30px",
+              height: "24px",
+              fontFamily: "PP Neue Montreal",
+              fontSize: "14px",
+              lineHeight: "24px",
+              color: "rgba(31, 31, 31, 0.7)",
+            }}
+          >
+            FAQ
+          </span>
+        </Link>
+      </div>
+
+      {/* Right Menu - Language & Login */}
+      <div
+        className="flex flex-row justify-end items-center"
+        style={{
+          gap: "20px",
+          width: "245px",
+          height: "44px",
+          margin: "0 auto",
+        }}
+      >
+        {/* Language Dropdown */}
+        <div
+          className="flex flex-col items-start"
+          style={{
+            gap: "4px",
+            width: "103px",
+            height: "44px",
+          }}
+        >
+          <button
+            className="flex flex-row items-center"
+            style={{
+              padding: "8px 12px",
+              gap: "8px",
+              width: "97px",
+              height: "44px",
+            }}
+          >
+            {/* Globe Icon */}
             <svg
-              className="w-6 h-6"
-              fill="none"
+              width="14"
+              height="14"
               viewBox="0 0 24 24"
-              stroke="currentColor"
+              fill="none"
+              stroke="#1F1F1F"
+              strokeWidth="1.5"
             >
-              {isMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
+              <circle cx="12" cy="12" r="10" />
+              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+            </svg>
+
+            {/* Language Text */}
+            <span
+              className="font-normal flex items-center"
+              style={{
+                width: "15px",
+                fontFamily: "PP Neue Montreal",
+                fontSize: "14px",
+                lineHeight: "24px",
+                color: "#1F1F1F",
+              }}
+            >
+              ID
+            </span>
+
+            {/* Chevron Down Icon */}
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#1F1F1F"
+              strokeWidth="1.5"
+            >
+              <path
+                d="M6 9l6 6 6-6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
         </div>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="lg:hidden bg-primary/95 backdrop-blur-sm rounded-xl p-6 mt-2">
-            <div className="flex flex-col gap-4">
-              {menuItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="text-white hover:text-primary-100 transition-colors text-sm font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.label}
-                </a>
-              ))}
-              <div className="border-t border-white/20 pt-4 mt-2">
-                <Link href="/login">
-                  <Button variant="secondary" className="w-full text-sm">
-                    Login/Register
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Login Button */}
+        <Link
+          href="/login"
+          className="flex flex-col justify-center items-center rounded-[99px]"
+          style={{
+            padding: "8px 12px",
+            width: "122px",
+            minWidth: "120px",
+            height: "44px",
+            background: "#3197A5",
+          }}
+        >
+          <span
+            className="font-normal text-center"
+            style={{
+              width: "98px",
+              height: "24px",
+              fontFamily: "PP Neue Montreal",
+              fontSize: "14px",
+              lineHeight: "24px",
+              color: "#FFFFFF",
+            }}
+          >
+            Masuk / Daftar
+          </span>
+        </Link>
       </div>
     </nav>
   );
