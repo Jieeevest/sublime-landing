@@ -155,20 +155,6 @@ export default function Hero() {
                 borderColor: "#E1E1E1",
               }}
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                stroke="#1F1F1F"
-                strokeWidth="1.5"
-              >
-                <path
-                  d="M10 2v16m0-16L6 6m4-4l4 4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
               <span
                 className="font-normal text-center"
                 style={{
