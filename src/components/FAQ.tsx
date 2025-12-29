@@ -3,38 +3,48 @@
 import { useState } from "react";
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(1); // Default open second item as per screenshot
 
   const faqs = [
     {
-      question: "What is Sublime?",
+      question: "Apa itu Strovia?",
       answer:
-        "Sublime is a guided audio therapy platform designed to support your mental wellness and recovery journey. Our professionally crafted sessions use evidence-based therapeutic techniques to help you manage stress, improve sleep, and build emotional resilience.",
+        "Strovia adalah platform terapi audio digital yang dirancang khusus untuk membantu proses pemulihan pasien stroke melalui stimulasi gelombang otak dan afirmasi positif.",
     },
     {
-      question: "How does audio therapy work?",
+      question: "Untuk siapa Strovia dibuat?",
       answer:
-        "Audio therapy combines guided meditation, therapeutic narration, and carefully designed soundscapes to help calm your mind, reduce anxiety, and promote healing. Our sessions are created by licensed therapists and use proven techniques from cognitive behavioral therapy, mindfulness, and relaxation practices.",
+        "Saat ini, Strovia difokuskan untuk mendukung pemulihan pasien stroke. Ke depannya, Strovia juga akan menghadirkan kategori lain seperti motivasi, kesehatan umum, keseimbangan emosi, dan pemulihan fisik.",
     },
     {
-      question: "Is Sublime suitable for beginners?",
+      question: "Berapa biaya menggunakan Strovia?",
       answer:
-        "Absolutely! Sublime is designed for everyone, whether you're new to meditation and therapy or have years of experience. We offer sessions of varying lengths and difficulty levels, so you can start wherever feels comfortable and progress at your own pace.",
+        "Strovia menawarkan paket berlangganan yang terjangkau. Silakan cek halaman harga atau aplikasi kami untuk informasi terbaru mengenai paket yang tersedia.",
     },
     {
-      question: "Can I use Sublime offline?",
+      question: "Kapan waktu terbaik untuk mendengarkan Strovia?",
       answer:
-        "Yes! Once you download your favorite sessions, you can access them anytime, anywhere, even without an internet connection. This makes it easy to maintain your wellness routine while traveling or in areas with limited connectivity.",
+        "Waktu terbaik adalah saat Anda merasa rileks, seperti di pagi hari setelah bangun tidur atau di malam hari sebelum tidur. Namun, Anda dapat mendengarkannya kapan saja sesuai kenyamanan Anda.",
     },
     {
-      question: "How often should I use Sublime?",
+      question: "Apakah saya bisa mendengarkan lebih dari sekali sehari?",
       answer:
-        "We recommend using Sublime daily for the best results, but you can use it as often as feels right for you. Many users find that a 10-15 minute session each morning or evening helps them stay centered and balanced. Consistency is more important than duration.",
+        "Ya, Anda boleh mendengarkan sesi lebih dari satu kali sehari. Namun, kami sarankan untuk memberi jeda dan tidak memaksakan diri agar otak dapat memproses stimulasi dengan optimal.",
     },
     {
-      question: "Is my data private and secure?",
+      question: "Apakah Strovia bisa membantu semua kondisi stroke?",
       answer:
-        "Your privacy is our top priority. We use industry-standard encryption to protect your data, and we never share your personal information with third parties. You have full control over your account and can delete your data at any time.",
+        "Strovia dirancang sebagai pendamping pemulihan untuk mendukung aspek neurologis dan emosional. Konsultasikan dengan dokter Anda untuk memastikan kesesuaian dengan kondisi medis spesifik Anda.",
+    },
+    {
+      question: "Bagaimana cara kerja terapi subliminal?",
+      answer:
+        "Terapi subliminal bekerja dengan menyampaikan pesan positif di bawah ambang kesadaran, yang dapat diterima langsung oleh alam bawah sadar untuk membantu membentuk pola pikir positif dan mendukung neuroplastisitas.",
+    },
+    {
+      question: "Apakah saya memerlukan alat khusus?",
+      answer:
+        "Tidak, Anda hanya memerlukan smartphone dan earphone atau headphone stereo yang nyaman untuk mendapatkan pengalaman audio binaural yang optimal.",
     },
   ];
 
@@ -43,62 +53,235 @@ export default function FAQ() {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-secondary to-secondary-800 text-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            Your Questions, Explained with Clarity
+    <section
+      className="flex flex-col justify-center items-flex-start relative"
+      style={{
+        padding: "80px 120px",
+        gap: "80px",
+        width: "1440px",
+        maxWidth: "100vw",
+        background: "#023347",
+      }}
+    >
+      {/* Content Container */}
+      <div
+        className="flex flex-col items-center"
+        style={{
+          padding: "0px",
+          gap: "40px",
+          width: "1200px",
+          maxWidth: "100%",
+          zIndex: 1,
+        }}
+      >
+        {/* Title Section */}
+        <div
+          className="flex flex-col items-center"
+          style={{
+            padding: "0px",
+            gap: "16px",
+            width: "1200px",
+            maxWidth: "100%",
+          }}
+        >
+          {/* Badge */}
+          <div
+            className="flex flex-row justify-center items-center rounded-[99px]"
+            style={{
+              padding: "4px 16px",
+              gap: "4px",
+              width: "83px",
+              background: "rgba(255, 255, 255, 0.08)",
+              border: "1px solid rgba(255, 255, 255, 0.07)",
+            }}
+          >
+            {/* Star Icon */}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              style={{
+                transform: "matrix(-1, 0, 0, 1, 0, 0)",
+              }}
+            >
+              <path
+                d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z"
+                fill="#FFFFFF"
+              />
+              <path
+                d="M12 4L12.8 7.2L16 8L12.8 8.8L12 12L11.2 8.8L8 8L11.2 7.2L12 4Z"
+                fill="#FFFFFF"
+                opacity="0.5"
+              />
+            </svg>
+
+            <span
+              className="font-medium"
+              style={{
+                fontFamily: "'PP Neue Montreal', sans-serif",
+                fontSize: "14px",
+                lineHeight: "28px",
+                color: "#FFFFFF",
+              }}
+            >
+              FAQ
+            </span>
+          </div>
+
+          {/* Heading */}
+          <h2
+            className="font-bold text-center"
+            style={{
+              fontFamily: "'PP Neue Montreal', sans-serif",
+              fontSize: "64px",
+              lineHeight: "77px",
+              backgroundImage: "linear-gradient(90deg, #55BDC0, #9BE7E8)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              alignSelf: "stretch",
+            }}
+          >
+            Pertanyaan Umum tentang Strovia
           </h2>
-          <p className="text-xl text-white/80">
-            Find answers to common questions about Sublime and audio therapy.
-          </p>
         </div>
 
-        <div className="space-y-4">
-          {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className="bg-secondary-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-secondary-700 hover:border-primary transition-all duration-300"
-            >
-              <button
-                onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-secondary-700/30 transition-colors duration-200"
-              >
-                <span className="text-lg font-semibold pr-8">
-                  {faq.question}
-                </span>
-                <div className="flex-shrink-0">
-                  <svg
-                    className={`w-6 h-6 transform transition-transform duration-300 ${
-                      openIndex === index ? "rotate-45" : ""
-                    }`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                </div>
-              </button>
-
+        {/* FAQ List */}
+        <div
+          className="flex flex-col items-start"
+          style={{
+            padding: "0px",
+            gap: "24px",
+            width: "1200px",
+            maxWidth: "100%",
+          }}
+        >
+          {faqs.map((faq, index) => {
+            const isOpen = openIndex === index;
+            return (
               <div
-                className={`overflow-hidden transition-all duration-300 ${
-                  openIndex === index
-                    ? "max-h-96 opacity-100"
-                    : "max-h-0 opacity-0"
-                }`}
+                key={index}
+                className="flex flex-col justify-center items-center rounded-lg overflow-hidden transition-all duration-300"
+                style={{
+                  padding: "16px",
+                  gap: "8px",
+                  alignSelf: "stretch",
+                  background: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(255, 255, 255, 0.07)",
+                }}
               >
-                <div className="px-6 pb-5 text-white/80 leading-relaxed">
-                  {faq.answer}
+                {/* Question Header - Clickable */}
+                <button
+                  onClick={() => toggleFAQ(index)}
+                  className="flex flex-row items-center w-full focus:outline-none"
+                  style={{
+                    padding: "0px",
+                    gap: "4px",
+                    background: "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                    textAlign: "left",
+                  }}
+                >
+                  <h3
+                    className="font-medium flex-grow"
+                    style={{
+                      fontFamily: "'PP Neue Montreal', sans-serif",
+                      fontSize: "24px",
+                      lineHeight: "32px",
+                      color: "#FFFFFF",
+                    }}
+                  >
+                    {faq.question}
+                  </h3>
+
+                  {/* Toggle Icon Button */}
+                  <div
+                    className="flex flex-col justify-center items-center rounded-full"
+                    style={{
+                      padding: "12px",
+                      width: "44px",
+                      height: "44px",
+                    }}
+                  >
+                    {isOpen ? (
+                      /* Minus Icon */
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                      >
+                        <path
+                          d="M15.8333 10H4.16666"
+                          stroke="white"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    ) : (
+                      /* Plus Icon */
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                      >
+                        <path
+                          d="M10 4.16666V15.8333"
+                          stroke="white"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M15.8333 10H4.16666"
+                          stroke="white"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                </button>
+
+                {/* Answer Content */}
+                <div
+                  className={`overflow-hidden transition-all duration-300 ease-in-out w-full`}
+                  style={{
+                    maxHeight: isOpen ? "200px" : "0px",
+                    opacity: isOpen ? 1 : 0,
+                  }}
+                >
+                  <div
+                    className="flex flex-col justify-center items-start w-full"
+                    style={{
+                      paddingTop: "8px",
+                      borderTop: isOpen
+                        ? "1px solid rgba(255,255,255,0.07)"
+                        : "none",
+                    }}
+                  >
+                    <p
+                      className="font-normal"
+                      style={{
+                        fontFamily: "'PP Neue Montreal', sans-serif",
+                        fontSize: "16px",
+                        lineHeight: "24px",
+                        color: "#FFFFFF",
+                        paddingTop: "16px",
+                      }}
+                    >
+                      {faq.answer}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
