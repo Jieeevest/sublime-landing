@@ -2,26 +2,64 @@
 
 import { use, ReactNode } from "react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { articles } from "@/data/articles";
+import { articles as dummyArticles } from "@/data/articles";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import {
+  useGetPublicContentBySlugQuery,
+  useGetPublicContentsQuery,
+} from "@/redux/api/sublimeApi";
 
 export default function ArticleDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = use(params);
-  const article = articles.find((a) => a.id === id);
-  const relatedArticles = articles.filter((a) => a.id !== id).slice(0, 3);
+  const { id: slug } = use(params); // The route param is 'id', but we treat it as slug
 
-  if (!article) {
+  // Fetch article detail
+  const {
+    data: articleData,
+    isLoading: isLoadingArticle,
+    error,
+  } = useGetPublicContentBySlugQuery({ slug: slug, increment_view: true });
+  const article = articleData?.data;
+
+  // Fetch related articles (limiting to 3)
+  const { data: relatedData } = useGetPublicContentsQuery({
+    type: "article",
+    limit: 4,
+  });
+  const relatedArticles = (relatedData?.data || [])
+    .filter((a: any) => a.id !== article?.id)
+    .slice(0, 3);
+
+  if (isLoadingArticle) {
     return (
       <DashboardLayout activeItem="Artikel">
-        <div className="p-8 text-center">
-          <h1 className="text-2xl font-bold text-secondary">
-            Article not found
+        <div className="p-20 text-center">
+          <p>Loading article...</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (error || !article) {
+    return (
+      <DashboardLayout activeItem="Artikel">
+        <div className="p-8 text-center bg-gray-50 m-8 rounded-2xl">
+          <h1 className="text-2xl font-bold text-secondary mb-2">
+            Artikel tidak ditemukan
           </h1>
+          <p className="text-gray-500 mb-6">
+            Maaf, artikel yang Anda cari tidak tersedia atau telah dihapus.
+          </p>
+          <Link
+            href="/dashboard/artikel"
+            className="px-5 py-2 bg-primary text-white rounded-full hover:bg-primary-600 transition-colors"
+          >
+            Kembali ke Daftar Artikel
+          </Link>
         </div>
       </DashboardLayout>
     );
@@ -32,19 +70,30 @@ export default function ArticleDetailPage({
       <div className="bg-white">
         {/* Hero Section */}
         <div className="relative bg-gradient-to-br from-primary to-primary-600 h-64">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <svg
-              className="w-32 h-32 text-white/10"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                clipRule="evenodd"
+          {article.thumbnail_url ? (
+            <div className="absolute inset-0">
+              <img
+                src={article.thumbnail_url}
+                alt={article.title}
+                className="w-full h-full object-cover opacity-50"
               />
-            </svg>
-          </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 to-primary-600/50" />
+            </div>
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <svg
+                className="w-32 h-32 text-white/10"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+          )}
 
           {/* Title Overlay */}
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-secondary/80 to-transparent p-8">
@@ -61,14 +110,15 @@ export default function ArticleDetailPage({
             {/* Author */}
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center text-white font-semibold">
-                {article.author.name.charAt(0)}
+                {/* Fallback author initial */}
+                {(article.metadata?.author_name || "A").charAt(0)}
               </div>
               <div>
                 <p className="font-semibold text-secondary">
-                  {article.author.name}
+                  {article.metadata?.author_name || "Admin"}
                 </p>
                 <p className="text-sm text-secondary/60">
-                  {article.author.date}
+                  {new Date(article.created_at).toLocaleDateString()}
                 </p>
               </div>
             </div>
@@ -155,85 +205,99 @@ export default function ArticleDetailPage({
                 ),
               }}
             >
-              {article.content}
+              {article.content || ""}
             </ReactMarkdown>
           </div>
 
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mt-8 pt-8 border-t border-gray-200">
             <span className="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
-              {article.category}
+              {article.category?.name || "Artikel"}
             </span>
-            <span className="px-4 py-2 bg-gray-100 text-secondary rounded-full text-sm font-medium">
-              Terapi Audio
-            </span>
-            <span className="px-4 py-2 bg-gray-100 text-secondary rounded-full text-sm font-medium">
-              Penyembuhan
-            </span>
-            <span className="px-4 py-2 bg-gray-100 text-secondary rounded-full text-sm font-medium">
-              Kesehatan Mental
-            </span>
+            {article.tags &&
+              article.tags.map((tag: string, i: number) => (
+                <span
+                  key={i}
+                  className="px-4 py-2 bg-gray-100 text-secondary rounded-full text-sm font-medium"
+                >
+                  {tag}
+                </span>
+              ))}
           </div>
         </div>
 
         {/* Related Articles */}
-        <div className="bg-background py-12">
-          <div className="max-w-6xl mx-auto px-8">
-            <h2 className="text-2xl font-bold text-primary mb-6">
-              Artikel Terkait
-            </h2>
+        {relatedArticles.length > 0 && (
+          <div className="bg-background py-12">
+            <div className="max-w-6xl mx-auto px-8">
+              <h2 className="text-2xl font-bold text-primary mb-6">
+                Artikel Terkait
+              </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedArticles.map((relatedArticle) => (
-                <Link
-                  key={relatedArticle.id}
-                  href={`/dashboard/artikel/${relatedArticle.id}`}
-                >
-                  <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer">
-                    {/* Image */}
-                    <div className="aspect-video bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center relative overflow-hidden">
-                      <svg
-                        className="w-16 h-16 text-primary/30"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-5 space-y-3">
-                      <div className="flex items-center gap-2 text-xs text-secondary/60">
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {relatedArticles.map((relatedArticle: any) => (
+                  <Link
+                    key={relatedArticle.id}
+                    href={`/dashboard/artikel/${relatedArticle.slug}`}
+                  >
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer">
+                      {/* Image */}
+                      <div className="aspect-video bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center relative overflow-hidden">
+                        {relatedArticle.thumbnail_url ? (
+                          <img
+                            src={relatedArticle.thumbnail_url}
+                            alt={relatedArticle.title}
+                            className="w-full h-full object-cover"
                           />
-                        </svg>
-                        {relatedArticle.date}
+                        ) : (
+                          <>
+                            <svg
+                              className="w-16 h-16 text-primary/30"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                          </>
+                        )}
                       </div>
-                      <h3 className="font-bold text-secondary line-clamp-2 group-hover:text-primary transition-colors">
-                        {relatedArticle.title}
-                      </h3>
+
+                      {/* Content */}
+                      <div className="p-5 space-y-3">
+                        <div className="flex items-center gap-2 text-xs text-secondary/60">
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
+                          </svg>
+                          {new Date(
+                            relatedArticle.created_at,
+                          ).toLocaleDateString()}
+                        </div>
+                        <h3 className="font-bold text-secondary line-clamp-2 group-hover:text-primary transition-colors">
+                          {relatedArticle.title}
+                        </h3>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </DashboardLayout>
   );

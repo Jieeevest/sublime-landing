@@ -2,16 +2,28 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useForgotPasswordMutation } from "@/redux/api/sublimeApi";
+import { toast } from "react-hot-toast";
 
 export default function ForgotPasswordForm() {
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Add forgot password logic here
-    console.log("Forgot password request:", { email });
-    setIsSubmitted(true);
+    setErrorMsg("");
+
+    try {
+      await forgotPassword({ email }).unwrap();
+      toast.success("Link reset password dikirim!");
+      setIsSubmitted(true);
+    } catch (err: any) {
+      const msg = err?.data?.message || "Gagal mengirim permintaan";
+      setErrorMsg(msg);
+      toast.error(msg);
+    }
   };
 
   if (isSubmitted) {

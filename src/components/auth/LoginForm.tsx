@@ -2,16 +2,40 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useLoginMutation } from "@/redux/api/sublimeApi";
+
+import { toast } from "react-hot-toast";
 
 export default function LoginForm() {
+  const router = useRouter();
+  const [login, { isLoading }] = useLoginMutation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Add authentication logic here
-    console.log("Login attempt:", { email, password });
+    setErrorMsg("");
+
+    try {
+      const result = await login({ email, password }).unwrap();
+      if (result.success && result.data?.token) {
+        toast.success("Login berhasil!");
+        localStorage.setItem("token", result.data.token);
+        // Dispatch user data to store if needed, or rely on getMe query in dashboard
+        router.push("/dashboard");
+      } else {
+        const msg = result.message || "Login failed";
+        setErrorMsg(msg);
+        toast.error(msg);
+      }
+    } catch (err: any) {
+      const msg = err?.data?.message || "Terjadi kesalahan saat login";
+      setErrorMsg(msg);
+      toast.error(msg);
+    }
   };
 
   return (
@@ -112,12 +136,17 @@ export default function LoginForm() {
           </div>
         </div>
 
+        {errorMsg && (
+          <div className="text-red-500 text-sm text-center">{errorMsg}</div>
+        )}
+
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full min-w-[120px] h-11 flex items-center justify-center px-3 py-2 bg-[#3197A5] text-white text-base font-normal rounded-[99px] hover:bg-[#2a8694] transition-colors"
+          disabled={isLoading}
+          className="w-full min-w-[120px] h-11 flex items-center justify-center px-3 py-2 bg-[#3197A5] text-white text-base font-normal rounded-[99px] hover:bg-[#2a8694] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Login
+          {isLoading ? "Memproses..." : "Login"}
         </button>
       </form>
     </div>

@@ -2,25 +2,56 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useRegisterMutation } from "@/redux/api/sublimeApi";
+import { toast } from "react-hot-toast";
 
 export default function RegisterForm() {
+  const router = useRouter();
+  const [register, { isLoading }] = useRegisterMutation();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [referralCode, setReferralCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Add registration logic here
-    console.log("Register attempt:", {
-      firstName,
-      lastName,
-      email,
-      password,
-      referralCode,
-    });
+    setErrorMsg("");
+
+    try {
+      const name = `${firstName} ${lastName}`.trim();
+      const payload: any = {
+        name,
+        email,
+        password,
+      };
+      if (referralCode) {
+        payload.referral_code = referralCode;
+      }
+
+      const result = await register(payload).unwrap();
+
+      if (result.success) {
+        toast.success("Registrasi berhasil!");
+        if (result.data?.token) {
+          localStorage.setItem("token", result.data.token);
+          router.push("/dashboard");
+        } else {
+          router.push("/login");
+        }
+      } else {
+        const msg = result.message || "Registration failed";
+        setErrorMsg(msg);
+        toast.error(msg);
+      }
+    } catch (err: any) {
+      const msg = err?.data?.message || "Terjadi kesalahan saat mendaftar";
+      setErrorMsg(msg);
+      toast.error(msg);
+    }
   };
 
   return (
@@ -172,12 +203,17 @@ export default function RegisterForm() {
           </label>
         </div>
 
+        {errorMsg && (
+          <div className="text-red-500 text-sm text-center">{errorMsg}</div>
+        )}
+
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full min-w-[120px] h-11 flex items-center justify-center px-3 py-2 bg-[#3197A5] text-white text-base font-normal rounded-[99px] hover:bg-[#2a8694] transition-colors"
+          disabled={isLoading}
+          className="w-full min-w-[120px] h-11 flex items-center justify-center px-3 py-2 bg-[#3197A5] text-white text-base font-normal rounded-[99px] hover:bg-[#2a8694] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Buat Akun
+          {isLoading ? "Memproses..." : "Buat Akun"}
         </button>
 
         {/* Privacy Policy Text */}

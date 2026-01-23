@@ -5,6 +5,8 @@ import "./globals.css";
 import { AudioProvider } from "@/contexts/AudioContext";
 import { ReduxProvider } from "@/redux/provider";
 
+import { Toaster } from "react-hot-toast";
+
 export const metadata: Metadata = {
   title: "Sublime - Guided Audio Therapy",
   description:
@@ -20,7 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <ReduxProvider>
-          <AudioProvider>{children}</AudioProvider>
+          <AudioProvider>
+            {children}
+            <Toaster position="bottom-right" />
+          </AudioProvider>
         </ReduxProvider>
       </body>
     </html>

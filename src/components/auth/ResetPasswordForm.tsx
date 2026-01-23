@@ -2,14 +2,21 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useResetPasswordMutation } from "@/redux/api/sublimeApi";
+import { toast } from "react-hot-toast";
 
 export default function ResetPasswordForm() {
+  const router = useRouter();
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
   const [email, setEmail] = useState(""); // User can type their email
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const handleOtpChange = (index: number, value: string) => {
@@ -28,7 +35,7 @@ export default function ResetPasswordForm() {
 
   const handleOtpKeyDown = (
     index: number,
-    e: React.KeyboardEvent<HTMLInputElement>
+    e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     // Handle backspace
     if (e.key === "Backspace" && !otp[index] && index > 0) {
@@ -36,16 +43,45 @@ export default function ResetPasswordForm() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg("");
+    setSuccessMsg("");
+
+    if (newPassword !== confirmPassword) {
+      const msg = "Password tidak cocok";
+      setErrorMsg(msg);
+      toast.error(msg);
+      return;
+    }
+
     const otpCode = otp.join("");
-    console.log("Reset password:", {
-      email,
-      otpCode,
-      newPassword,
-      confirmPassword,
-    });
-    // TODO: Add reset password logic here
+    if (otpCode.length !== 6) {
+      const msg = "Masukkan kode 6 digit dengan benar";
+      setErrorMsg(msg);
+      toast.error(msg);
+      return;
+    }
+
+    try {
+      await resetPassword({
+        token: otpCode,
+        new_password: newPassword,
+      }).unwrap();
+
+      const success =
+        "Password berhasil diubah. Mengalihkan ke halaman login...";
+      setSuccessMsg(success);
+      toast.success(success);
+
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
+    } catch (err: any) {
+      const msg = err?.data?.message || "Gagal mengatur ulang kata sandi";
+      setErrorMsg(msg);
+      toast.error(msg);
+    }
   };
 
   const handleResendCode = () => {
