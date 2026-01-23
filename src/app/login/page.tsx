@@ -12,7 +12,7 @@ export default function LoginPage() {
   return (
     <AuthLayout
       title="Hi, Selamat Datang 👋"
-      subtitle="Lanjutkan perjalanan pemulihan pribadimu dengan tenang, jernih, dan penuh dukungan."
+      subtitle="Mari kita mulai perialanan pemulihan mandiri dengan dukungan penuh bersama Strovia."
     >
       <LoginForm />
     </AuthLayout>

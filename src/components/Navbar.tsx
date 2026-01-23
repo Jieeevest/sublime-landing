@@ -6,6 +6,14 @@ import NextImage from "next/image";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const [language, setLanguage] = useState("ID");
+
+  const toggleLanguage = () => setIsLangOpen(!isLangOpen);
+  const selectLanguage = (lang: string) => {
+    setLanguage(lang);
+    setIsLangOpen(false);
+  };
 
   return (
     <nav
@@ -185,7 +193,7 @@ export default function Navbar() {
       >
         {/* Language Dropdown */}
         <div
-          className="flex flex-col items-start"
+          className="relative flex flex-col items-start"
           style={{
             gap: "4px",
             width: "103px",
@@ -193,7 +201,8 @@ export default function Navbar() {
           }}
         >
           <button
-            className="flex flex-row items-center"
+            onClick={toggleLanguage}
+            className="flex flex-row items-center cursor-pointer transition-colors"
             style={{
               padding: "8px 12px",
               gap: "8px",
@@ -218,14 +227,14 @@ export default function Navbar() {
             <span
               className="font-normal flex items-center"
               style={{
-                width: "15px",
+                width: "20px",
                 fontFamily: "'PP Neue Montreal', sans-serif",
                 fontSize: "14px",
                 lineHeight: "24px",
                 color: "#1F1F1F",
               }}
             >
-              ID
+              {language}
             </span>
 
             {/* Chevron Down Icon */}
@@ -236,6 +245,9 @@ export default function Navbar() {
               fill="none"
               stroke="#1F1F1F"
               strokeWidth="1.5"
+              className={`transition-transform duration-200 ${
+                isLangOpen ? "rotate-180" : ""
+              }`}
             >
               <path
                 d="M6 9l6 6 6-6"
@@ -244,6 +256,35 @@ export default function Navbar() {
               />
             </svg>
           </button>
+
+          {/* Dropdown Menu */}
+          {isLangOpen && (
+            <div
+              className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col z-50"
+              style={{
+                minWidth: "140px",
+                width: "max-content",
+                border: "1px solid rgba(0,0,0,0.1)",
+              }}
+            >
+              <button
+                onClick={() => selectLanguage("ID")}
+                className={`px-4 py-3 text-left hover:bg-gray-50 text-sm font-medium transition-colors whitespace-nowrap ${
+                  language === "ID" ? "text-[#3197A5]" : "text-[#1F1F1F]"
+                }`}
+              >
+                ID (Indonesia)
+              </button>
+              <button
+                onClick={() => selectLanguage("EN")}
+                className={`px-4 py-3 text-left hover:bg-gray-50 text-sm font-medium transition-colors whitespace-nowrap ${
+                  language === "EN" ? "text-[#3197A5]" : "text-[#1F1F1F]"
+                }`}
+              >
+                EN (English)
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Login Button */}

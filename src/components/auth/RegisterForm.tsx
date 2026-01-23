@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRegisterMutation } from "@/redux/api/sublimeApi";
 import { toast } from "react-hot-toast";
+import Modal from "@/components/ui/Modal";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -17,6 +18,10 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+  /* State for Modals */
+  const [showTerms, setShowTerms] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
@@ -27,10 +32,8 @@ export default function RegisterForm() {
         name,
         email,
         password,
+        referral_code: referralCode ?? "",
       };
-      if (referralCode) {
-        payload.referral_code = referralCode;
-      }
 
       const result = await register(payload).unwrap();
 
@@ -199,7 +202,7 @@ export default function RegisterForm() {
             htmlFor="referralCode"
             className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
           >
-            Kode Referral
+            Kode Referral (Opsional)
           </label>
         </div>
 
@@ -219,15 +222,90 @@ export default function RegisterForm() {
         {/* Privacy Policy Text */}
         <p className="text-xs text-center text-[#8E8E8E]">
           Dengan mendaftar, saya menyetujui{" "}
-          <Link href="/terms" className="text-[#3197A5] hover:underline">
+          <button
+            type="button"
+            onClick={() => setShowTerms(true)}
+            className="text-[#3197A5] hover:underline"
+          >
             Terms of Use
-          </Link>{" "}
+          </button>{" "}
           dan{" "}
-          <Link href="/privacy" className="text-[#3197A5] hover:underline">
+          <button
+            type="button"
+            onClick={() => setShowPrivacy(true)}
+            className="text-[#3197A5] hover:underline"
+          >
             Privacy Policy
-          </Link>
+          </button>
         </p>
       </form>
+
+      {/* Terms Modal */}
+      <Modal
+        isOpen={showTerms}
+        onClose={() => setShowTerms(false)}
+        title="Syarat Ketentuan"
+      >
+        <div className="space-y-4">
+          <p>
+            Selamat datang di Strovia. Dengan menggunakan layanan kami, Anda
+            menyetujui Syarat Ketentuan ini.
+          </p>
+          <p>
+            <strong>1. Lisensi Penggunaan</strong>
+            <br />
+            Layanan kami disediakan untuk tujuan rehabilitasi pribadi. Anda
+            setuju untuk tidak menyalahgunakan atau mendistribusikan ulang
+            konten kami.
+          </p>
+          <p>
+            <strong>2. Penafian Medis</strong>
+            <br />
+            Strovia adalah alat pendukung dan tidak menggantikan saran medis
+            profesional. Selalu konsultasikan dengan dokter Anda mengenai
+            program rehabilitasi Anda.
+          </p>
+          <p>
+            <strong>3. Keamanan Akun</strong>
+            <br />
+            Anda bertanggung jawab untuk menjaga kerahasiaan kredensial akun
+            Anda.
+          </p>
+        </div>
+      </Modal>
+
+      {/* Privacy Modal */}
+      <Modal
+        isOpen={showPrivacy}
+        onClose={() => setShowPrivacy(false)}
+        title="Kebijakan Privasi"
+      >
+        <div className="space-y-4">
+          <p>
+            Privasi Anda penting bagi kami. Kebijakan Privasi ini menguraikan
+            bagaimana kami menangani data Anda.
+          </p>
+          <p>
+            <strong>1. Pengumpulan Data</strong>
+            <br />
+            Kami mengumpulkan informasi pribadi seperti nama dan email Anda
+            untuk menyediakan layanan kami. Kami tidak menjual data pribadi
+            Anda.
+          </p>
+          <p>
+            <strong>2. Data Penggunaan</strong>
+            <br />
+            Kami dapat mengumpulkan data penggunaan untuk meningkatkan aplikasi
+            kami dan pengalaman rehabilitasi Anda.
+          </p>
+          <p>
+            <strong>3. Keamanan</strong>
+            <br />
+            Kami menerapkan langkah-langkah keamanan untuk melindungi informasi
+            Anda, meskipun tidak ada metode transmisi yang 100% aman.
+          </p>
+        </div>
+      </Modal>
     </div>
   );
 }
