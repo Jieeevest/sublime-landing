@@ -1,3 +1,5 @@
+"use client";
+
 import NextImage from "next/image";
 import Navbar from "./Navbar";
 
@@ -77,6 +79,7 @@ export default function Hero() {
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
+                animation: "fadeInUp 0.8s ease-out forwards",
               }}
             >
               Panduan Penyembuhan untuk Perjalanan Pemulihan Stroke yang Lebih
@@ -99,6 +102,8 @@ export default function Hero() {
                 order: 1,
                 alignSelf: "stretch",
                 flexGrow: 0,
+                opacity: 0,
+                animation: "fadeInUp 0.8s ease-out 0.2s forwards",
               }}
             >
               Strovia memadukan terapi suara 528 Hz, afirmasi lembut, dan
@@ -127,6 +132,16 @@ export default function Hero() {
                 minWidth: "120px",
                 height: "40px",
                 background: "#3197A5",
+                transition: "all 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+                e.currentTarget.style.boxShadow =
+                  "0 10px 15px -3px rgba(49, 151, 165, 0.3)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "none";
               }}
             >
               <span
@@ -153,6 +168,15 @@ export default function Hero() {
                 height: "40px",
                 background: "#FFFFFF",
                 borderColor: "#E1E1E1",
+                transition: "all 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#3197A5";
+                e.currentTarget.style.color = "#3197A5";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#E1E1E1";
+                e.currentTarget.style.color = "#1F1F1F";
               }}
             >
               <span
@@ -230,6 +254,17 @@ export default function Hero() {
                 width: "343px",
                 height: "175px",
                 isolation: "isolate",
+                transition: "all 0.3s ease",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-5px)";
+                e.currentTarget.style.boxShadow =
+                  "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
               }}
             >
               {/* Background Image */}

@@ -169,6 +169,15 @@ export default function FAQ() {
                   alignSelf: "stretch",
                   background: "rgba(255, 255, 255, 0.04)",
                   border: "1px solid rgba(255, 255, 255, 0.07)",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background =
+                    "rgba(255, 255, 255, 0.08)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background =
+                    "rgba(255, 255, 255, 0.04)";
                 }}
               >
                 {/* Question Header - Clickable */}

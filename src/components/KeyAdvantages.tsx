@@ -1,27 +1,29 @@
+"use client";
+
 import NextImage from "next/image";
 
 export default function KeyAdvantages() {
   const advantages = [
     {
-      icon: "health",
+      icon: "/icons/icon-manfaat-1.svg",
       title: "Menenangkan Stres & Pikiran",
       description:
         "Frekuensi 528 Hz membantu menghadirkan rasa tenang dan keseimbangan pada pikiran dan sistem saraf.",
     },
     {
-      icon: "brain",
+      icon: "/icons/icon-manfaat-2.svg",
       title: "Mendukung Pemulihan Saraf",
       description:
         "Afirmasi subliminal membantu membangun pola pikir yang lebih positif dan stabil selama proses pemulihan.",
     },
     {
-      icon: "heart",
+      icon: "/icons/icon-manfaat-3.svg",
       title: "Dukungan Emosional dari AI",
       description:
         "Pendamping AI siap menemani, mendengarkan, dan memberikan panduan lembut kapan pun dibutuhkan.",
     },
     {
-      icon: "badge",
+      icon: "/icons/icon-manfaat-4.svg",
       title: "Terjangkau & Mudah Digunakan",
       description:
         "Satu paket 30 hari, tanpa perpanjangan otomatis, tanpa biaya tersembunyi — dirancang agar mudah digunakan oleh semua usia.",
@@ -160,9 +162,21 @@ export default function KeyAdvantages() {
                 key={index}
                 className="flex flex-row items-center rounded-lg"
                 style={{
-                  padding: "0px",
+                  padding: "12px",
                   gap: "16px",
                   alignSelf: "stretch",
+                  transition: "all 0.3s ease",
+                  cursor: "default",
+                  borderRadius: "16px",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor =
+                    "rgba(255, 255, 255, 0.08)";
+                  e.currentTarget.style.transform = "translateX(10px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.transform = "translateX(0)";
                 }}
               >
                 {/* Icon */}
@@ -176,14 +190,12 @@ export default function KeyAdvantages() {
                     border: "1px solid rgba(255, 255, 255, 0.07)",
                   }}
                 >
-                  <div
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      background: "#3197A5",
-                      opacity: 0.7,
-                      borderRadius: "4px",
-                    }}
+                  <NextImage
+                    src={advantage.icon}
+                    alt={advantage.title}
+                    width={40}
+                    height={40}
+                    className="object-contain"
                   />
                 </div>
 
@@ -243,8 +255,9 @@ export default function KeyAdvantages() {
               gap: "32px",
               alignSelf: "stretch",
               flex: "1",
-              background: "rgba(255, 255, 255, 0.04)",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
+              background: "rgba(255, 255, 255, 0.02)",
+              // border: "1px solid rgba(255, 255, 255, 0.1)",
+              justifyContent: "center",
               zIndex: 0,
             }}
           >
@@ -274,7 +287,7 @@ export default function KeyAdvantages() {
               }}
             >
               <NextImage
-                src="/phone-mockup-main.png"
+                src="/iphone-13.png"
                 alt="Strovia App"
                 width={326}
                 height={710}

@@ -1,3 +1,5 @@
+"use client";
+
 import NextImage from "next/image";
 
 export default function CTASection() {
@@ -115,6 +117,16 @@ export default function CTASection() {
               minWidth: "120px",
               height: "40px",
               background: "#3197A5",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.05)";
+              e.currentTarget.style.boxShadow =
+                "0 0 15px rgba(49, 151, 165, 0.5)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
             <span

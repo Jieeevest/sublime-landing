@@ -1,3 +1,5 @@
+"use client";
+
 import NextImage from "next/image";
 
 export default function WhatIsSublime() {
@@ -129,6 +131,16 @@ export default function WhatIsSublime() {
               alignSelf: "stretch",
               background: "rgba(49, 151, 165, 0.04)",
               isolation: "isolate",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-8px)";
+              e.currentTarget.style.boxShadow =
+                "0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
             {/* Title */}
@@ -267,6 +279,16 @@ export default function WhatIsSublime() {
               alignSelf: "stretch",
               background: "rgba(49, 151, 165, 0.04)",
               isolation: "isolate",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-8px)";
+              e.currentTarget.style.boxShadow =
+                "0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
             {/* Title */}
@@ -382,6 +404,16 @@ export default function WhatIsSublime() {
             width: "343.24px",
             background: "rgba(49, 151, 165, 0.04)",
             isolation: "isolate",
+            transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "translateY(-8px)";
+            e.currentTarget.style.boxShadow =
+              "0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "translateY(0)";
+            e.currentTarget.style.boxShadow = "none";
           }}
         >
           {/* Phone Image */}
@@ -431,6 +463,16 @@ export default function WhatIsSublime() {
             alignSelf: "stretch",
             background: "rgba(49, 151, 165, 0.04)",
             minHeight: "645px",
+            transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "translateY(-8px)";
+            e.currentTarget.style.boxShadow =
+              "0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "translateY(0)";
+            e.currentTarget.style.boxShadow = "none";
           }}
         >
           {/* Title */}

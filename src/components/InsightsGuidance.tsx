@@ -1,23 +1,57 @@
+"use client";
+
 import NextImage from "next/image";
+import { useRouter } from "next/navigation";
+import { useGetPublicContentsQuery } from "@/redux/api/sublimeApi";
+
+// Type for article data
+interface Article {
+  id: string;
+  slug: string;
+  image: string;
+  date: string;
+  title: string;
+}
 
 export default function InsightsGuidance() {
-  const articles = [
-    {
-      image: "/article-1.jpg",
-      date: "Nov 16, 2025",
-      title: "Frekuensi 528 Hz — Pengetahuan Ilmiah & Edukasi",
-    },
-    {
-      image: "/article-2.jpg",
-      date: "Nov 16, 2025",
-      title: "Bagaimana Subliminal Membantu Penderita Stroke?",
-    },
-    {
-      image: "/article-3.jpg",
-      date: "Nov 16, 2025",
-      title: "Tubuh Bisa Memperbaiki Diri Sendiri : Peran Otak Bawah Sa...",
-    },
-  ];
+  const router = useRouter();
+
+  // Fetch articles from API - get 3 most recent published articles
+  const { data, isLoading, error } = useGetPublicContentsQuery({
+    page: 1,
+    limit: 3,
+    type: "artikel", // Filter for articles only
+  });
+
+  // Format date helper
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("id-ID", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  // Map API data to article format
+  const articles: Article[] =
+    data?.data?.map((content: any) => ({
+      id: content.id,
+      slug: content.slug,
+      image: content.thumbnail || "/article-placeholder.jpg",
+      date: formatDate(content.published_at || content.created_at),
+      title: content.title,
+    })) || [];
+
+  // Handle article click
+  const handleArticleClick = (slug: string) => {
+    router.push(`/artikel/${slug}`);
+  };
+
+  // Handle view all click
+  const handleViewAllClick = () => {
+    router.push("/artikel");
+  };
 
   return (
     <section
@@ -131,99 +165,157 @@ export default function InsightsGuidance() {
           zIndex: 2,
         }}
       >
-        {articles.map((article, index) => (
-          <div
-            key={index}
-            className="flex flex-col justify-space-between items-start rounded-2xl overflow-hidden"
-            style={{
-              padding: "0px",
-              flex: "1 1 0",
-              minWidth: "330px",
-              height: "377.33px",
-              border: "1px solid rgba(255, 255, 255, 0.14)",
-              filter:
-                "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.02)) drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.04))",
-              position: "relative",
-            }}
-          >
-            {/* Image Background */}
+        {isLoading ? (
+          // Loading skeleton
+          Array.from({ length: 3 }).map((_, index) => (
             <div
+              key={`skeleton-${index}`}
+              className="flex flex-col justify-space-between items-start rounded-2xl overflow-hidden"
               style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: `linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%), url(${article.image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                borderRadius: "20px",
+                padding: "0px",
+                flex: "1 1 0",
+                minWidth: "330px",
+                height: "377.33px",
+                background: "rgba(49, 151, 165, 0.1)",
+                border: "1px solid rgba(255, 255, 255, 0.14)",
+                animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
               }}
             />
-
-            {/* Text Overlay */}
+          ))
+        ) : error ? (
+          // Error state
+          <div
+            style={{
+              width: "100%",
+              textAlign: "center",
+              padding: "40px",
+              color: "#999",
+            }}
+          >
+            <p>Gagal memuat artikel. Silakan coba lagi nanti.</p>
+          </div>
+        ) : articles.length === 0 ? (
+          // Empty state
+          <div
+            style={{
+              width: "100%",
+              textAlign: "center",
+              padding: "40px",
+              color: "#999",
+            }}
+          >
+            <p>Belum ada artikel yang tersedia.</p>
+          </div>
+        ) : (
+          articles.map((article, index) => (
             <div
-              className="flex flex-col items-start absolute bottom-0 left-0 right-0"
+              key={article.id || index}
+              className="flex flex-col justify-space-between items-start rounded-2xl overflow-hidden cursor-pointer"
               style={{
-                padding: "12px 16px",
-                gap: "8px",
-                background: "rgba(31, 31, 31, 0.4)",
-                backdropFilter: "blur(27px)",
+                padding: "0px",
+                flex: "1 1 0",
+                minWidth: "330px",
+                height: "377.33px",
+                border: "1px solid rgba(255, 255, 255, 0.14)",
+                filter:
+                  "drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.02)) drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.04))",
+                position: "relative",
+                transition: "all 0.3s ease",
+              }}
+              onClick={() => handleArticleClick(article.slug)}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-10px)";
+                e.currentTarget.style.boxShadow =
+                  "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
               }}
             >
-              {/* Date */}
+              {/* Image Background */}
               <div
-                className="flex flex-row items-center"
                 style={{
-                  padding: "0px",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: `linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%), url(${article.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  borderRadius: "20px",
+                }}
+              />
+
+              {/* Text Overlay */}
+              <div
+                className="flex flex-col items-start absolute bottom-0 left-0 right-0"
+                style={{
+                  padding: "12px 16px",
                   gap: "8px",
-                  alignSelf: "stretch",
+                  background: "rgba(31, 31, 31, 0.4)",
+                  backdropFilter: "blur(27px)",
                 }}
               >
-                {/* Calendar Icon */}
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <rect
-                    x="2"
-                    y="3"
-                    width="12"
-                    height="11"
-                    rx="2"
-                    stroke="#FFFFFF"
-                    strokeWidth="1.5"
-                  />
-                  <path d="M5 1v3M11 1v3" stroke="#FFFFFF" strokeWidth="1.5" />
-                  <path d="M2 6h12" stroke="#FFFFFF" strokeWidth="1.5" />
-                </svg>
-
-                <span
-                  className="font-normal text-center flex items-center"
+                {/* Date */}
+                <div
+                  className="flex flex-row items-center"
                   style={{
-                    fontFamily: "'PP Neue Montreal', sans-serif",
-                    fontSize: "14px",
-                    lineHeight: "150%",
-                    color: "#FFFFFF",
+                    padding: "0px",
+                    gap: "8px",
+                    alignSelf: "stretch",
                   }}
                 >
-                  {article.date}
-                </span>
-              </div>
+                  {/* Calendar Icon */}
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <rect
+                      x="2"
+                      y="3"
+                      width="12"
+                      height="11"
+                      rx="2"
+                      stroke="#FFFFFF"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M5 1v3M11 1v3"
+                      stroke="#FFFFFF"
+                      strokeWidth="1.5"
+                    />
+                    <path d="M2 6h12" stroke="#FFFFFF" strokeWidth="1.5" />
+                  </svg>
 
-              {/* Title */}
-              <h3
-                className="font-semibold flex items-center"
-                style={{
-                  fontFamily: "'PP Neue Montreal', sans-serif",
-                  fontSize: "24px",
-                  lineHeight: "32px",
-                  color: "#FFFFFF",
-                  alignSelf: "stretch",
-                }}
-              >
-                {article.title}
-              </h3>
+                  <span
+                    className="font-normal text-center flex items-center"
+                    style={{
+                      fontFamily: "'PP Neue Montreal', sans-serif",
+                      fontSize: "14px",
+                      lineHeight: "150%",
+                      color: "#FFFFFF",
+                    }}
+                  >
+                    {article.date}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3
+                  className="font-semibold flex items-center"
+                  style={{
+                    fontFamily: "'PP Neue Montreal', sans-serif",
+                    fontSize: "24px",
+                    lineHeight: "32px",
+                    color: "#FFFFFF",
+                    alignSelf: "stretch",
+                  }}
+                >
+                  {article.title}
+                </h3>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {/* CTA Button */}
@@ -237,6 +329,18 @@ export default function InsightsGuidance() {
           background: "#FFFFFF",
           border: "1px solid #E1E1E1",
           zIndex: 3,
+          transition: "all 0.3s ease",
+        }}
+        onClick={handleViewAllClick}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = "#3197A5";
+          e.currentTarget.style.color = "#3197A5";
+          e.currentTarget.style.transform = "scale(1.05)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = "#E1E1E1";
+          e.currentTarget.style.color = "#1F1F1F";
+          e.currentTarget.style.transform = "scale(1)";
         }}
       >
         <span
