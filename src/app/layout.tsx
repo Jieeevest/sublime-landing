@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { AudioProvider } from "@/contexts/AudioContext";
+import { ReduxProvider } from "@/redux/provider";
 
 export const metadata: Metadata = {
   title: "Sublime - Guided Audio Therapy",
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <AudioProvider>{children}</AudioProvider>
+        <ReduxProvider>
+          <AudioProvider>{children}</AudioProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
