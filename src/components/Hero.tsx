@@ -2,34 +2,16 @@
 
 import NextImage from "next/image";
 import Navbar from "./Navbar";
+import styles from "./Hero.module.css";
 
 export default function Hero() {
   return (
-    <section
-      className="relative overflow-hidden isolate"
-      style={{
-        background:
-          "linear-gradient(90deg, #55BDC0 0%, rgba(85, 189, 192, 0) 100%), #F5F9FA",
-        width: "1440px",
-        height: "800px",
-        maxWidth: "100vw",
-        overflow: "hidden",
-      }}
-    >
+    <section className={`${styles.heroSection} relative isolate`}>
       {/* Navbar */}
       <Navbar />
 
       {/* Wave Decoration - Background */}
-      <div
-        className="absolute opacity-15"
-        style={{
-          width: "1440px",
-          height: "798px",
-          left: "calc(50% - 1533px/2 + 0.5px)",
-          top: "calc(50% - 798px/2 - 1px)",
-          zIndex: 0,
-        }}
-      >
+      <div className={`${styles.waveDecoration} absolute`}>
         <NextImage
           src="/wave.png"
           alt="Wave decoration"
@@ -41,73 +23,21 @@ export default function Hero() {
 
       {/* Main Content Container */}
       <div
-        className="flex flex-row justify-between items-center relative"
-        style={{
-          padding: "108px 40px 80px",
-          gap: "40px",
-          isolation: "isolate",
-          zIndex: 1,
-        }}
+        className={`${styles.mainContent} flex flex-row justify-between items-center relative`}
       >
         {/* Left Column - Text Content */}
-        <div
-          className="flex flex-col items-start"
-          style={{
-            width: "490px",
-            gap: "24px",
-            margin: "0 auto",
-          }}
-        >
+        <div className={`${styles.leftColumn} flex flex-col items-start`}>
           {/* Content */}
-          <div
-            className="flex flex-col items-start"
-            style={{
-              width: "490px",
-              gap: "16px",
-            }}
-          >
+          <div className={`${styles.contentWrapper} flex flex-col items-start`}>
             {/* Heading */}
-            <h1
-              className="font-bold"
-              style={{
-                width: "450px",
-                height: "290px",
-                fontFamily: "'Neue Montreal', sans-serif",
-                fontSize: "40px",
-                lineHeight: "58px",
-                background:
-                  "linear-gradient(94.58deg, #C2F8FF 22.86%, #FFFFFF 62.57%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                animation: "fadeInUp 0.8s ease-out forwards",
-              }}
-            >
+            <h1 className={styles.heading}>
               Panduan Penyembuhan untuk Perjalanan Pemulihan Stroke yang Lebih
               Tenang
             </h1>
 
             {/* Description */}
-            <p
-              className="font-normal flex items-center"
-              style={{
-                width: "400px",
-                height: "192px",
-                fontFamily: "'Neue Montreal', sans-serif",
-                fontStyle: "normal",
-                fontWeight: 400,
-                fontSize: "18px",
-                lineHeight: "32px",
-                color: "#FFFFFF",
-                flex: "none",
-                order: 1,
-                alignSelf: "stretch",
-                flexGrow: 0,
-                opacity: 0,
-                animation: "fadeInUp 0.8s ease-out 0.2s forwards",
-              }}
-            >
-              Strovia memadukan terapi suara 528 Hz, afirmasi lembut, dan
+            <p className={`${styles.description} flex items-center`}>
+              Strovia memadukan terapi suara 528 Hz, afirmasi l embut, dan
               dukungan AI yang dipersonalisasi untuk membantu menenangkan
               pikiran, meningkatkan fokus, serta mendampingi setiap langkah
               pemulihan Anda — satu sesi damai pada satu waktu.
@@ -115,80 +45,21 @@ export default function Hero() {
           </div>
 
           {/* Action Buttons */}
-          <div
-            className="flex flex-row items-start"
-            style={{
-              gap: "16px",
-              width: "328px",
-              height: "40px",
-            }}
-          >
+          <div className={`${styles.buttonGroup} flex flex-row items-start`}>
             {/* Primary Button */}
             <button
-              className="flex flex-row justify-center items-center rounded-[99px]"
-              style={{
-                padding: "8px 12px",
-                gap: "4px",
-                width: "173px",
-                minWidth: "120px",
-                height: "40px",
-                background: "#3197A5",
-                transition: "all 0.3s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "scale(1.05)";
-                e.currentTarget.style.boxShadow =
-                  "0 10px 15px -3px rgba(49, 151, 165, 0.3)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
+              className={`${styles.primaryButton} flex flex-row justify-center items-center`}
             >
-              <span
-                className="font-normal text-center"
-                style={{
-                  fontFamily: "'Neue Montreal', sans-serif",
-                  fontSize: "14px",
-                  lineHeight: "24px",
-                  color: "#FFFFFF",
-                }}
-              >
+              <span className={`${styles.buttonText} text-white`}>
                 Mulai Perjalanan Anda
               </span>
             </button>
 
             {/* Outline Button */}
             <button
-              className="flex flex-row justify-center items-center rounded-[99px] border"
-              style={{
-                padding: "8px",
-                gap: "4px",
-                width: "139px",
-                minWidth: "120px",
-                height: "40px",
-                background: "#FFFFFF",
-                borderColor: "#E1E1E1",
-                transition: "all 0.3s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#3197A5";
-                e.currentTarget.style.color = "#3197A5";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#E1E1E1";
-                e.currentTarget.style.color = "#1F1F1F";
-              }}
+              className={`${styles.outlineButton} flex flex-row justify-center items-center`}
             >
-              <span
-                className="font-normal text-center"
-                style={{
-                  fontFamily: "'Neue Montreal', sans-serif",
-                  fontSize: "14px",
-                  lineHeight: "24px",
-                  color: "#1F1F1F",
-                }}
-              >
+              <span className={`${styles.buttonText} text-gray-900`}>
                 Unduh Aplikasi
               </span>
             </button>
@@ -196,40 +67,15 @@ export default function Hero() {
         </div>
 
         {/* Right Column - Cards */}
-        <div
-          className="flex flex-col items-start"
-          style={{
-            width: "343px",
-            gap: "24px",
-            margin: "0 auto",
-            zIndex: 2,
-          }}
-        >
+        <div className={`${styles.rightColumn} flex flex-col items-start`}>
           {/* Audio Player Card */}
-          <div
-            className="flex flex-col items-end"
-            style={{
-              width: "343px",
-              gap: "16px",
-            }}
-          >
+          <div className={`${styles.audioCard} flex flex-col items-end`}>
             {/* Header */}
             <div
-              className="flex flex-row items-center"
-              style={{
-                width: "343px",
-                height: "24px",
-                gap: "16px",
-              }}
+              className={`${styles.audioCardHeader} flex flex-row items-center`}
             >
               <p
-                className="font-normal flex items-center flex-1"
-                style={{
-                  fontFamily: "'Neue Montreal', sans-serif",
-                  fontSize: "14px",
-                  lineHeight: "150%",
-                  color: "#1F1F1F",
-                }}
+                className={`${styles.audioCardHeaderText} flex items-center flex-1`}
               >
                 Audio Pilihan untuk Anda
               </p>
@@ -250,23 +96,7 @@ export default function Hero() {
 
             {/* Card */}
             <div
-              className="flex flex-col items-end relative rounded-2xl overflow-hidden"
-              style={{
-                width: "343px",
-                height: "175px",
-                isolation: "isolate",
-                transition: "all 0.3s ease",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-5px)";
-                e.currentTarget.style.boxShadow =
-                  "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
+              className={`${styles.audioCardContent} flex flex-col items-end relative`}
             >
               {/* Background Image */}
               <div
@@ -282,13 +112,6 @@ export default function Hero() {
               <div
                 className="absolute inset-0"
                 style={{ background: "rgba(0, 0, 0, 0.65)" }}
-              />
-              <div
-                className="absolute inset-0"
-                // style={{
-                //   background:
-                //     "linear-gradient(180deg, rgba(0, 0, 0, 0) -1.23%, #000000 80%)",
-                // }}
               />
 
               {/* Content */}
@@ -368,31 +191,13 @@ export default function Hero() {
           </div>
 
           {/* Affirmation Header */}
-          <h3
-            className="font-bold text-center"
-            style={{
-              width: "343px",
-              height: "87px",
-              fontFamily: "'Neue Montreal', sans-serif",
-              fontSize: "24px",
-              lineHeight: "29px",
-              color: "#3197A5",
-            }}
-          >
+          <h3 className={`${styles.affirmationTitle} font-bold text-center`}>
             Audio terapi dan afirmasi penuh kesadaran, dalam satu tempat.
           </h3>
 
           {/* Affirmation Card with Glassmorphism */}
           <div
-            className="relative rounded-2xl flex flex-col justify-center items-center"
-            style={{
-              width: "343px",
-              height: "142px",
-              padding: "24px",
-              gap: "24px",
-              background: "rgba(49, 151, 165, 0.04)",
-              isolation: "isolate",
-            }}
+            className={`${styles.affirmationCard} relative rounded-2xl flex flex-col justify-center items-center`}
           >
             {/* Texture Background */}
             <div
@@ -439,42 +244,13 @@ export default function Hero() {
                 zIndex: 2,
               }}
             >
-              <p
-                className="font-medium"
-                style={{
-                  width: "295px",
-                  fontFamily: "'Neue Montreal', sans-serif",
-                  fontSize: "18px",
-                  lineHeight: "26px",
-                  color: "#1F1F1F",
-                  opacity: 0.2,
-                }}
-              >
+              <p className={`${styles.affirmationText} opacity-20`}>
                 Pikiranku mulai pulih.
               </p>
-              <p
-                className="font-medium"
-                style={{
-                  width: "295px",
-                  fontFamily: "'Neue Montreal', sans-serif",
-                  fontSize: "18px",
-                  lineHeight: "26px",
-                  color: "#1F1F1F",
-                }}
-              >
+              <p className={styles.affirmationText}>
                 Tubuhku ingat cara memulihkan diri.
               </p>
-              <p
-                className="font-medium"
-                style={{
-                  width: "295px",
-                  fontFamily: "'Neue Montreal', sans-serif",
-                  fontSize: "18px",
-                  lineHeight: "26px",
-                  color: "#1F1F1F",
-                  opacity: 0.5,
-                }}
-              >
+              <p className={`${styles.affirmationText} opacity-50`}>
                 Aku semakin kuat setiap hari.
               </p>
             </div>
@@ -483,48 +259,11 @@ export default function Hero() {
       </div>
 
       {/* Blur Circle Effects */}
-      <div
-        className="absolute"
-        style={{
-          width: "401px",
-          height: "304px",
-          left: "323px",
-          bottom: "284px",
-          background: "#3197A5",
-          filter: "blur(195px)",
-          transform: "rotate(-90deg)",
-          zIndex: -1,
-          opacity: 0.2,
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        className="absolute"
-        style={{
-          width: "387px",
-          height: "670px",
-          left: "calc(50% - 387px/2 - 130.5px)",
-          top: "761px",
-          background: "#3197A5",
-          filter: "blur(195px)",
-          transform: "rotate(-90deg)",
-          zIndex: -1,
-          opacity: 0.2,
-          pointerEvents: "none",
-        }}
-      />
+      <div className={`${styles.blurEffect1} absolute`} />
+      <div className={`${styles.blurEffect2} absolute`} />
 
       {/* Woman with Headphones Image */}
-      <div
-        className="absolute"
-        style={{
-          width: "814px",
-          height: "814px",
-          left: "calc(50% - 814px/2 + 71px)",
-          bottom: "-118px",
-          zIndex: 0,
-        }}
-      >
+      <div className={`${styles.characterImage} absolute`}>
         <NextImage
           src="/login-character.png"
           alt="Woman with headphones"
@@ -535,18 +274,7 @@ export default function Hero() {
       </div>
 
       {/* Bottom Shadow */}
-      <div
-        className="absolute"
-        style={{
-          width: "1440px",
-          height: "107px",
-          left: "calc(50% - 1440px/2)",
-          bottom: "0px",
-          background:
-            "linear-gradient(180deg, rgba(245, 249, 250, 0) 0%, rgba(245, 249, 250, 0.5) 100%)",
-          zIndex: 5,
-        }}
-      />
+      <div className={`${styles.bottomShadow} absolute`} />
     </section>
   );
 }

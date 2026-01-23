@@ -13,7 +13,7 @@ export default function Navbar() {
       style={{
         padding: "12px 90px",
         gap: "10px",
-        width: "1440px",
+        width: "100%",
         height: "68px",
         left: "0px",
         top: "0px",
@@ -71,7 +71,7 @@ export default function Navbar() {
             style={{
               width: "92px",
               height: "24px",
-              fontFamily: "PP Neue Montreal",
+              fontFamily: "'PP Neue Montreal', sans-serif",
               fontSize: "14px",
               lineHeight: "24px",
               color: "rgba(31, 31, 31, 0.7)",
@@ -95,7 +95,7 @@ export default function Navbar() {
             style={{
               width: "71px",
               height: "24px",
-              fontFamily: "PP Neue Montreal",
+              fontFamily: "'PP Neue Montreal', sans-serif",
               fontSize: "14px",
               lineHeight: "24px",
               color: "rgba(31, 31, 31, 0.7)",
@@ -119,7 +119,7 @@ export default function Navbar() {
             style={{
               width: "55px",
               height: "24px",
-              fontFamily: "PP Neue Montreal",
+              fontFamily: "'PP Neue Montreal', sans-serif",
               fontSize: "14px",
               lineHeight: "24px",
               color: "rgba(31, 31, 31, 0.7)",
@@ -143,7 +143,7 @@ export default function Navbar() {
             style={{
               width: "42px",
               height: "24px",
-              fontFamily: "PP Neue Montreal",
+              fontFamily: "'PP Neue Montreal', sans-serif",
               fontSize: "14px",
               lineHeight: "24px",
               color: "rgba(31, 31, 31, 0.7)",
@@ -167,7 +167,7 @@ export default function Navbar() {
             style={{
               width: "30px",
               height: "24px",
-              fontFamily: "PP Neue Montreal",
+              fontFamily: "'PP Neue Montreal', sans-serif",
               fontSize: "14px",
               lineHeight: "24px",
               color: "rgba(31, 31, 31, 0.7)",
@@ -224,7 +224,7 @@ export default function Navbar() {
               className="font-normal flex items-center"
               style={{
                 width: "15px",
-                fontFamily: "PP Neue Montreal",
+                fontFamily: "'PP Neue Montreal', sans-serif",
                 fontSize: "14px",
                 lineHeight: "24px",
                 color: "#1F1F1F",
@@ -261,6 +261,16 @@ export default function Navbar() {
             minWidth: "120px",
             height: "44px",
             background: "#3197A5",
+            transition: "all 0.3s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.05)";
+            e.currentTarget.style.boxShadow =
+              "0 10px 15px -3px rgba(49, 151, 165, 0.3)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.boxShadow = "none";
           }}
         >
           <span
@@ -268,7 +278,7 @@ export default function Navbar() {
             style={{
               width: "98px",
               height: "24px",
-              fontFamily: "PP Neue Montreal",
+              fontFamily: "'PP Neue Montreal', sans-serif",
               fontSize: "14px",
               lineHeight: "24px",
               color: "#FFFFFF",

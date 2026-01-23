@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import styles from "./FAQ.module.css";
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(1); // Default open second item as per screenshot
@@ -54,46 +55,15 @@ export default function FAQ() {
 
   return (
     <section
-      className="flex flex-col justify-center items-flex-start relative"
-      style={{
-        padding: "80px 120px",
-        gap: "80px",
-        width: "1440px",
-        maxWidth: "100vw",
-        background: "#023347",
-      }}
+      className={`${styles.section} flex flex-col justify-center items-flex-start relative`}
     >
       {/* Content Container */}
-      <div
-        className="flex flex-col items-center"
-        style={{
-          padding: "0px",
-          gap: "40px",
-          width: "1200px",
-          maxWidth: "100%",
-          zIndex: 1,
-        }}
-      >
+      <div className={`${styles.contentContainer} flex flex-col items-center`}>
         {/* Title Section */}
-        <div
-          className="flex flex-col items-center"
-          style={{
-            padding: "0px",
-            gap: "16px",
-            width: "1200px",
-            maxWidth: "100%",
-          }}
-        >
+        <div className={`${styles.titleSection} flex flex-col items-center`}>
           {/* Badge */}
           <div
-            className="flex flex-row justify-center items-center rounded-[99px]"
-            style={{
-              padding: "4px 16px",
-              gap: "4px",
-              width: "83px",
-              background: "rgba(255, 255, 255, 0.08)",
-              border: "1px solid rgba(255, 255, 255, 0.07)",
-            }}
+            className={`${styles.badge} flex flex-row justify-center items-center`}
           >
             {/* Star Icon */}
             <svg
@@ -116,69 +86,23 @@ export default function FAQ() {
               />
             </svg>
 
-            <span
-              className="font-medium"
-              style={{
-                fontFamily: "'PP Neue Montreal', sans-serif",
-                fontSize: "14px",
-                lineHeight: "28px",
-                color: "#FFFFFF",
-              }}
-            >
-              FAQ
-            </span>
+            <span className={styles.badgeText}>FAQ</span>
           </div>
 
           {/* Heading */}
-          <h2
-            className="font-bold text-center"
-            style={{
-              fontFamily: "'PP Neue Montreal', sans-serif",
-              fontSize: "64px",
-              lineHeight: "77px",
-              backgroundImage: "linear-gradient(90deg, #55BDC0, #9BE7E8)",
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              alignSelf: "stretch",
-            }}
-          >
+          <h2 className={`${styles.heading} font-bold text-center`}>
             Pertanyaan Umum tentang Strovia
           </h2>
         </div>
 
         {/* FAQ List */}
-        <div
-          className="flex flex-col items-start"
-          style={{
-            padding: "0px",
-            gap: "24px",
-            width: "1200px",
-            maxWidth: "100%",
-          }}
-        >
+        <div className={`${styles.faqList} flex flex-col items-start`}>
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
                 key={index}
-                className="flex flex-col justify-center items-center rounded-lg overflow-hidden transition-all duration-300"
-                style={{
-                  padding: "16px",
-                  gap: "8px",
-                  alignSelf: "stretch",
-                  background: "rgba(255, 255, 255, 0.04)",
-                  border: "1px solid rgba(255, 255, 255, 0.07)",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background =
-                    "rgba(255, 255, 255, 0.08)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background =
-                    "rgba(255, 255, 255, 0.04)";
-                }}
+                className={`${styles.faqItem} flex flex-col justify-center items-center`}
               >
                 {/* Question Header - Clickable */}
                 <button
@@ -193,15 +117,7 @@ export default function FAQ() {
                     textAlign: "left",
                   }}
                 >
-                  <h3
-                    className="font-medium flex-grow"
-                    style={{
-                      fontFamily: "'PP Neue Montreal', sans-serif",
-                      fontSize: "24px",
-                      lineHeight: "32px",
-                      color: "#FFFFFF",
-                    }}
-                  >
+                  <h3 className={`${styles.faqQuestion} font-medium flex-grow`}>
                     {faq.question}
                   </h3>
 
@@ -259,33 +175,16 @@ export default function FAQ() {
 
                 {/* Answer Content */}
                 <div
-                  className={`overflow-hidden transition-all duration-300 ease-in-out w-full`}
+                  className={styles.faqAnswerContainer}
                   style={{
                     maxHeight: isOpen ? "200px" : "0px",
                     opacity: isOpen ? 1 : 0,
                   }}
                 >
                   <div
-                    className="flex flex-col justify-center items-start w-full"
-                    style={{
-                      paddingTop: "8px",
-                      borderTop: isOpen
-                        ? "1px solid rgba(255,255,255,0.07)"
-                        : "none",
-                    }}
+                    className={`flex flex-col justify-center items-start w-full ${isOpen ? styles.faqAnswerBorder : ""}`}
                   >
-                    <p
-                      className="font-normal"
-                      style={{
-                        fontFamily: "'PP Neue Montreal', sans-serif",
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        color: "#FFFFFF",
-                        paddingTop: "16px",
-                      }}
-                    >
-                      {faq.answer}
-                    </p>
+                    <p className={styles.faqAnswer}>{faq.answer}</p>
                   </div>
                 </div>
               </div>

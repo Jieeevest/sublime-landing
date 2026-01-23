@@ -1,39 +1,17 @@
 "use client";
 
+import styles from "./HowItSupports.module.css";
+
 export default function HowItSupports() {
   return (
     <section
-      className="relative flex flex-col items-center isolate"
-      style={{
-        padding: "80px 120px",
-        gap: "40px",
-        width: "1440px",
-        maxWidth: "100vw",
-        background: "#F5F9FA",
-        overflow: "hidden",
-      }}
+      className={`${styles.section} relative flex flex-col items-center isolate`}
     >
       {/* Title Section */}
-      <div
-        className="flex flex-col items-center"
-        style={{
-          padding: "0px",
-          gap: "16px",
-          width: "1200px",
-          maxWidth: "100%",
-          zIndex: 0,
-        }}
-      >
+      <div className={`${styles.titleSection} flex flex-col items-center`}>
         {/* Badge */}
         <div
-          className="flex flex-row justify-center items-center rounded-[99px]"
-          style={{
-            padding: "4px 16px",
-            gap: "4px",
-            width: "125px",
-            background: "rgba(49, 151, 165, 0.08)",
-            border: "1px solid rgba(49, 151, 165, 0.07)",
-          }}
+          className={`${styles.badge} flex flex-row justify-center items-center`}
         >
           {/* Star Icon */}
           <svg
@@ -56,46 +34,16 @@ export default function HowItSupports() {
             />
           </svg>
 
-          <span
-            className="font-medium"
-            style={{
-              fontFamily: "'PP Neue Montreal', sans-serif",
-              fontSize: "14px",
-              lineHeight: "28px",
-              color: "#3197A5",
-            }}
-          >
-            Cara Kerja
-          </span>
+          <span className={styles.badgeText}>Cara Kerja</span>
         </div>
 
         {/* Main Heading */}
-        <h2
-          className="font-bold text-center"
-          style={{
-            width: "1200px",
-            maxWidth: "100%",
-            fontFamily: "'PP Neue Montreal', sans-serif",
-            fontSize: "64px",
-            lineHeight: "77px",
-            color: "#3197A5",
-          }}
-        >
+        <h2 className={`${styles.heading} font-bold text-center`}>
           Bagaimana Sublime Mendukung Proses Pemulihan Anda
         </h2>
 
         {/* Description */}
-        <p
-          className="font-normal text-center"
-          style={{
-            width: "1200px",
-            maxWidth: "100%",
-            fontFamily: "'PP Neue Montreal', sans-serif",
-            fontSize: "24px",
-            lineHeight: "32px",
-            color: "#1F1F1F",
-          }}
-        >
+        <p className={`${styles.description} font-normal text-center`}>
           Sublime menggunakan pendekatan terapi audio yang lembut untuk membantu
           menciptakan kondisi pikiran dan emosi yang lebih tenang, sehingga
           tubuh dapat menjalani proses pemulihan secara alami.
@@ -104,36 +52,10 @@ export default function HowItSupports() {
 
       {/* Content Cards */}
       <div
-        className="flex flex-col items-flex-start"
-        style={{
-          padding: "0px",
-          gap: "24px",
-          width: "1200px",
-          maxWidth: "100%",
-          zIndex: 1,
-        }}
+        className={`${styles.contentContainer} flex flex-col items-flex-start`}
       >
         {/* Card 1 - Frekuensi Terapi 528 Hz */}
-        <div
-          className="flex flex-col items-start rounded-2xl"
-          style={{
-            padding: "24px",
-            gap: "24px",
-            alignSelf: "stretch",
-            background: "rgba(49, 151, 165, 0.04)",
-            isolation: "isolate",
-            transition: "transform 0.3s ease, box-shadow 0.3s ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-8px)";
-            e.currentTarget.style.boxShadow =
-              "0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "none";
-          }}
-        >
+        <div className={`${styles.card} flex flex-col items-start rounded-2xl`}>
           <div
             className="flex flex-col justify-center items-start"
             style={{
@@ -143,28 +65,10 @@ export default function HowItSupports() {
               zIndex: 0,
             }}
           >
-            <h3
-              className="font-semibold"
-              style={{
-                fontFamily: "'PP Neue Montreal', sans-serif",
-                fontSize: "24px",
-                lineHeight: "32px",
-                color: "#1F1F1F",
-                alignSelf: "stretch",
-              }}
-            >
+            <h3 className={`${styles.cardTitle} font-semibold`}>
               Frekuensi Terapi 528 Hz
             </h3>
-            <div
-              className="font-normal"
-              style={{
-                fontFamily: "'PP Neue Montreal', sans-serif",
-                fontSize: "16px",
-                lineHeight: "24px",
-                color: "#1F1F1F",
-                alignSelf: "stretch",
-              }}
-            >
+            <div className={`${styles.cardDescription} font-normal`}>
               <p style={{ marginBottom: "16px" }}>
                 Setiap audio Sublime dirancang menggunakan frekuensi 528 Hz,
                 yang sering dikaitkan dengan ketenangan, keseimbangan, dan
@@ -189,24 +93,7 @@ export default function HowItSupports() {
 
         {/* Card 2 - Afirmasi Subliminal */}
         <div
-          className="flex flex-col justify-center items-center rounded-2xl"
-          style={{
-            padding: "24px",
-            gap: "24px",
-            alignSelf: "stretch",
-            background: "rgba(49, 151, 165, 0.04)",
-            isolation: "isolate",
-            transition: "transform 0.3s ease, box-shadow 0.3s ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-8px)";
-            e.currentTarget.style.boxShadow =
-              "0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "none";
-          }}
+          className={`${styles.card} flex flex-col justify-center items-center rounded-2xl`}
         >
           <div
             className="flex flex-col justify-center items-start"
@@ -217,27 +104,12 @@ export default function HowItSupports() {
               zIndex: 0,
             }}
           >
-            <h3
-              className="font-semibold"
-              style={{
-                fontFamily: "'PP Neue Montreal', sans-serif",
-                fontSize: "24px",
-                lineHeight: "32px",
-                color: "#1F1F1F",
-                alignSelf: "stretch",
-              }}
-            >
+            <h3 className={`${styles.cardTitle} font-semibold`}>
               Afirmasi Subliminal
             </h3>
             <p
-              className="font-normal"
-              style={{
-                fontFamily: "'PP Neue Montreal', sans-serif",
-                fontSize: "16px",
-                lineHeight: "24px",
-                color: "#1F1F1F",
-                alignSelf: "stretch",
-              }}
+              className={`${styles.cardDescription} font-normal`}
+              style={{ alignSelf: "stretch" }}
             >
               Sublime juga menyematkan afirmasi positif subliminal secara halus
               di dalam audio. Afirmasi ini tidak terdengar secara sadar, namun
@@ -254,38 +126,10 @@ export default function HowItSupports() {
       </div>
 
       {/* Blur Effect - Right */}
-      <div
-        className="absolute"
-        style={{
-          width: "401px",
-          height: "304px",
-          right: "-448px",
-          top: "92px",
-          background: "#3197A5",
-          filter: "blur(195px)",
-          transform: "rotate(-90deg)",
-          zIndex: -1,
-          opacity: 0.3,
-          pointerEvents: "none",
-        }}
-      />
+      <div className={`${styles.blurRight} absolute`} />
 
       {/* Blur Effect - Bottom */}
-      <div
-        className="absolute"
-        style={{
-          width: "401px",
-          height: "304px",
-          left: "calc(50% - 401px/2 - 170.5px)",
-          bottom: "-505px",
-          background: "#3197A5",
-          filter: "blur(195px)",
-          transform: "rotate(-90deg)",
-          zIndex: -1,
-          opacity: 0.3,
-          pointerEvents: "none",
-        }}
-      />
+      <div className={`${styles.blurBottom} absolute`} />
     </section>
   );
 }
