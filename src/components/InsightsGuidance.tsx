@@ -62,6 +62,7 @@ export default function InsightsGuidance() {
         width: "1440px",
         maxWidth: "100vw",
         background: "#F5F9FA",
+        overflow: "hidden",
       }}
     >
       {/* Blur Effect - Right */}

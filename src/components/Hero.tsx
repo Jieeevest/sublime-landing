@@ -13,6 +13,7 @@ export default function Hero() {
         width: "1440px",
         height: "800px",
         maxWidth: "100vw",
+        overflow: "hidden",
       }}
     >
       {/* Navbar */}

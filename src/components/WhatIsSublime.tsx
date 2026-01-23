@@ -1,27 +1,18 @@
 "use client";
 
 import NextImage from "next/image";
+import styles from "./WhatIsSublime.module.css";
 
 export default function WhatIsSublime() {
   return (
     <section
-      className="relative flex flex-col items-center isolate"
-      style={{
-        padding: "80px 90px",
-        gap: "40px",
-        width: "1440px",
-        maxWidth: "100vw",
-        background: "#F5F9FA",
-      }}
+      className={`${styles.aboutSection} relative flex flex-col items-center isolate`}
     >
       {/* Title Container */}
       <div
-        className="flex flex-col items-center"
+        className={`${styles.titleContainer} flex flex-col items-center`}
         style={{
           padding: "0px",
-          gap: "16px",
-          width: "1200px",
-          maxWidth: "100%",
         }}
       >
         {/* Title Section Badge */}
@@ -57,9 +48,8 @@ export default function WhatIsSublime() {
           </svg>
 
           <span
-            className="font-medium"
+            className={`${styles.badgeText} font-medium`}
             style={{
-              fontFamily: "'PP Neue Montreal', sans-serif",
               fontSize: "14px",
               lineHeight: "28px",
               color: "#3197A5",
@@ -70,32 +60,12 @@ export default function WhatIsSublime() {
         </div>
 
         {/* Heading */}
-        <h2
-          className="font-bold text-center"
-          style={{
-            width: "1200px",
-            maxWidth: "100%",
-            fontFamily: "'PP Neue Montreal', sans-serif",
-            fontSize: "64px",
-            lineHeight: "77px",
-            color: "#3197A5",
-          }}
-        >
+        <h2 className={`${styles.heading} font-bold text-center`}>
           Apa itu Strovia?
         </h2>
 
         {/* Description */}
-        <p
-          className="font-normal text-center"
-          style={{
-            width: "1200px",
-            maxWidth: "100%",
-            fontFamily: "'PP Neue Montreal', sans-serif",
-            fontSize: "24px",
-            lineHeight: "32px",
-            color: "#1F1F1F",
-          }}
-        >
+        <p className={`${styles.description} font-normal text-center`}>
           Strovia adalah terapi audio modern yang menggunakan frekuensi 528 Hz,
           afirmasi lembut, dan pendamping AI untuk membantu menghadirkan
           ketenangan, kejernihan, dan dukungan dalam proses pemulihan setiap
@@ -105,14 +75,8 @@ export default function WhatIsSublime() {
 
       {/* Content - 3 Columns */}
       <div
-        className="flex flex-row items-flex-start relative"
-        style={{
-          padding: "0px",
-          gap: "40px",
-          width: "1200px",
-          maxWidth: "100%",
-          zIndex: 1,
-        }}
+        className={`${styles.contentContainer} flex flex-row items-flex-start relative`}
+        style={{ padding: "0px", zIndex: 1 }}
       >
         {/* Left Column - 2 Cards */}
         <div
@@ -124,23 +88,10 @@ export default function WhatIsSublime() {
         >
           {/* Card 1.1 - Frekuensi Terapi 528 Hz */}
           <div
-            className="flex flex-col items-start rounded-2xl relative"
+            className={`${styles.card} flex flex-col items-start rounded-2xl relative`}
             style={{
-              padding: "24px",
-              gap: "24px",
               alignSelf: "stretch",
-              background: "rgba(49, 151, 165, 0.04)",
               isolation: "isolate",
-              transition: "transform 0.3s ease, box-shadow 0.3s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-8px)";
-              e.currentTarget.style.boxShadow =
-                "0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "none";
             }}
           >
             {/* Title */}
@@ -152,26 +103,10 @@ export default function WhatIsSublime() {
                 alignSelf: "stretch",
               }}
             >
-              <h3
-                className="font-semibold"
-                style={{
-                  fontFamily: "'PP Neue Montreal', sans-serif",
-                  fontSize: "24px",
-                  lineHeight: "32px",
-                  color: "#1F1F1F",
-                }}
-              >
+              <h3 className={`${styles.cardTitle} font-semibold`}>
                 Frekuensi Terapi 528 Hz
               </h3>
-              <p
-                className="font-normal"
-                style={{
-                  fontFamily: "'PP Neue Montreal', sans-serif",
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                  color: "#1F1F1F",
-                }}
-              >
+              <p className={`${styles.cardDescription} font-normal`}>
                 Setiap audio dirancang menggunakan frekuensi 528 Hz untuk
                 membantu tubuh dan pikiran kembali ke ritme yang lebih tenang
                 dan seimbang.
@@ -272,23 +207,10 @@ export default function WhatIsSublime() {
 
           {/* Card 1.2 - Afirmasi Subliminal */}
           <div
-            className="flex flex-col justify-center items-center rounded-2xl relative"
+            className={`${styles.card} flex flex-col justify-center items-center rounded-2xl relative`}
             style={{
-              padding: "24px",
-              gap: "24px",
               alignSelf: "stretch",
-              background: "rgba(49, 151, 165, 0.04)",
               isolation: "isolate",
-              transition: "transform 0.3s ease, box-shadow 0.3s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-8px)";
-              e.currentTarget.style.boxShadow =
-                "0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "none";
             }}
           >
             {/* Title */}
@@ -301,26 +223,10 @@ export default function WhatIsSublime() {
                 zIndex: 0,
               }}
             >
-              <h3
-                className="font-semibold"
-                style={{
-                  fontFamily: "'PP Neue Montreal', sans-serif",
-                  fontSize: "24px",
-                  lineHeight: "32px",
-                  color: "#1F1F1F",
-                }}
-              >
+              <h3 className={`${styles.cardTitle} font-semibold`}>
                 Afirmasi Subliminal
               </h3>
-              <p
-                className="font-normal"
-                style={{
-                  fontFamily: "'PP Neue Montreal', sans-serif",
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                  color: "#1F1F1F",
-                }}
-              >
+              <p className={`${styles.cardDescription} font-normal`}>
                 Pesan afirmasi disematkan secara halus untuk mendukung fokus,
                 suasana hati, dan kestabilan emosi.
               </p>
@@ -337,12 +243,8 @@ export default function WhatIsSublime() {
               }}
             >
               <p
-                className="font-medium"
+                className={`${styles.affirmationText} font-medium`}
                 style={{
-                  fontFamily: "'PP Neue Montreal', sans-serif",
-                  fontSize: "18px",
-                  lineHeight: "26px",
-                  color: "#1F1F1F",
                   opacity: 0.2,
                   alignSelf: "stretch",
                 }}
@@ -350,24 +252,14 @@ export default function WhatIsSublime() {
                 Pikiranku mulai pulih.
               </p>
               <p
-                className="font-medium"
-                style={{
-                  fontFamily: "'PP Neue Montreal', sans-serif",
-                  fontSize: "18px",
-                  lineHeight: "26px",
-                  color: "#1F1F1F",
-                  alignSelf: "stretch",
-                }}
+                className={`${styles.affirmationText} font-medium`}
+                style={{ alignSelf: "stretch" }}
               >
                 Tubuhku ingat cara memulihkan diri.
               </p>
               <p
-                className="font-medium"
+                className={`${styles.affirmationText} font-medium`}
                 style={{
-                  fontFamily: "'PP Neue Montreal', sans-serif",
-                  fontSize: "18px",
-                  lineHeight: "26px",
-                  color: "#1F1F1F",
                   opacity: 0.5,
                   alignSelf: "stretch",
                 }}
@@ -397,37 +289,21 @@ export default function WhatIsSublime() {
 
         {/* Card 2 - Phone Screenshot */}
         <div
-          className="flex flex-col items-start rounded-2xl relative"
+          className={`${styles.card} ${styles.phoneCard} flex flex-col items-start rounded-2xl relative`}
           style={{
-            padding: "24px",
-            gap: "24px",
-            width: "343.24px",
-            background: "rgba(49, 151, 165, 0.04)",
             isolation: "isolate",
-            transition: "transform 0.3s ease, box-shadow 0.3s ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-8px)";
-            e.currentTarget.style.boxShadow =
-              "0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "none";
           }}
         >
           {/* Phone Image */}
           <div
-            className="flex items-stretch justify-center rounded-[40px] overflow-hidden"
+            className={`${styles.phoneMockup} flex items-stretch justify-center rounded-[40px] overflow-hidden`}
             style={{
-              width: "295.24px",
-              height: "597px",
               background: "#0A0A0A",
               alignSelf: "stretch",
             }}
           >
             <NextImage
-              src="/phone-mockup-main.png"
+              src="/iphone-13-tentang-kami.png"
               alt="Strovia App"
               width={295}
               height={597}
@@ -455,24 +331,12 @@ export default function WhatIsSublime() {
 
         {/* Card 3 - Pendamping AI Personal */}
         <div
-          className="flex flex-col items-start rounded-2xl relative"
+          className={`${styles.card} flex flex-col items-start rounded-2xl relative`}
           style={{
-            padding: "24px",
             isolation: "isolate",
             flex: "1",
             alignSelf: "stretch",
-            background: "rgba(49, 151, 165, 0.04)",
             minHeight: "645px",
-            transition: "transform 0.3s ease, box-shadow 0.3s ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-8px)";
-            e.currentTarget.style.boxShadow =
-              "0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "none";
           }}
         >
           {/* Title */}
@@ -485,26 +349,10 @@ export default function WhatIsSublime() {
               zIndex: 0,
             }}
           >
-            <h3
-              className="font-semibold"
-              style={{
-                fontFamily: "'PP Neue Montreal', sans-serif",
-                fontSize: "24px",
-                lineHeight: "32px",
-                color: "#1F1F1F",
-              }}
-            >
+            <h3 className={`${styles.cardTitle} font-semibold`}>
               Pendamping AI Personal
             </h3>
-            <p
-              className="font-normal"
-              style={{
-                fontFamily: "'PP Neue Montreal', sans-serif",
-                fontSize: "16px",
-                lineHeight: "24px",
-                color: "#1F1F1F",
-              }}
-            >
+            <p className={`${styles.cardDescription} font-normal`}>
               AI pendamping yang siap membantu dengan panduan dan dukungan yang
               disesuaikan dengan kebutuhan Anda.
             </p>
@@ -569,12 +417,7 @@ export default function WhatIsSublime() {
               }}
             >
               <h3
-                className="font-bold text-center relative"
-                style={{
-                  fontFamily: "'PP Neue Montreal', sans-serif",
-                  fontSize: "24px",
-                  lineHeight: "29px",
-                }}
+                className={`${styles.aiCardTitle} font-bold text-center relative`}
               >
                 {/* Line 1 */}
                 <span className="inline-flex items-end justify-center gap-2">
@@ -608,14 +451,8 @@ export default function WhatIsSublime() {
                 </span>
               </h3>
               <p
-                className="font-normal text-center flex items-center"
-                style={{
-                  fontFamily: "'PP Neue Montreal', sans-serif",
-                  fontSize: "14px",
-                  lineHeight: "150%",
-                  color: "#1F1F1F",
-                  alignSelf: "stretch",
-                }}
+                className={`${styles.aiCardText} font-normal text-center flex items-center`}
+                style={{ alignSelf: "stretch" }}
               >
                 Siap mendampingi kapan pun kamu butuh ketenangan, jawaban, atau
                 panduan.
@@ -645,14 +482,8 @@ export default function WhatIsSublime() {
                 }}
               >
                 <p
-                  className="font-normal text-center flex items-center"
-                  style={{
-                    fontFamily: "'PP Neue Montreal', sans-serif",
-                    fontSize: "14px",
-                    lineHeight: "150%",
-                    color: "#1F1F1F",
-                    alignSelf: "stretch",
-                  }}
+                  className={`${styles.aiCardText} font-normal text-center flex items-center`}
+                  style={{ alignSelf: "stretch" }}
                 >
                   Rekomendasikan audio terapi yang cocok untuk kondisiku.
                 </p>
@@ -681,11 +512,8 @@ export default function WhatIsSublime() {
                   <input
                     type="text"
                     placeholder="Tanya apapun..."
-                    className="flex-1 bg-transparent border-none outline-none"
+                    className={`${styles.aiCardText} flex-1 bg-transparent border-none outline-none`}
                     style={{
-                      fontFamily: "'PP Neue Montreal', sans-serif",
-                      fontSize: "14px",
-                      lineHeight: "150%",
                       color: "#8E8E8E",
                     }}
                   />

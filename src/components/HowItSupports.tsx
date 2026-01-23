@@ -10,6 +10,7 @@ export default function HowItSupports() {
         width: "1440px",
         maxWidth: "100vw",
         background: "#F5F9FA",
+        overflow: "hidden",
       }}
     >
       {/* Title Section */}

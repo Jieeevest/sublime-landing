@@ -1,6 +1,7 @@
 "use client";
 
 import NextImage from "next/image";
+import styles from "./KeyAdvantages.module.css";
 
 export default function KeyAdvantages() {
   const advantages = [
@@ -32,23 +33,16 @@ export default function KeyAdvantages() {
 
   return (
     <section
-      className="flex flex-col justify-center items-flex-start relative"
+      className={`${styles.benefitsSection} flex flex-col justify-center items-flex-start relative`}
       style={{
-        padding: "80px 120px",
-        gap: "80px",
-        width: "1440px",
-        maxWidth: "100vw",
         background: "#023347",
       }}
     >
       {/* Content Container */}
       <div
-        className="flex flex-row items-start rounded-2xl"
+        className={`${styles.benefitsContent} flex items-start rounded-2xl`}
         style={{
           padding: "0px",
-          gap: "40px",
-          width: "1200px",
-          maxWidth: "100%",
         }}
       >
         {/* Left Side */}
@@ -102,9 +96,8 @@ export default function KeyAdvantages() {
               </svg>
 
               <span
-                className="font-medium"
+                className={`${styles.badgeText} font-medium`}
                 style={{
-                  fontFamily: "'PP Neue Montreal', sans-serif",
                   fontSize: "14px",
                   lineHeight: "28px",
                   color: "#FFFFFF",
@@ -116,11 +109,8 @@ export default function KeyAdvantages() {
 
             {/* Heading */}
             <h2
-              className="font-bold"
+              className={`${styles.benefitsHeading} font-bold`}
               style={{
-                fontFamily: "'PP Neue Montreal', sans-serif",
-                fontSize: "64px",
-                lineHeight: "77px",
                 backgroundImage: "linear-gradient(90deg, #55BDC0, #9BE7E8)",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
@@ -133,16 +123,13 @@ export default function KeyAdvantages() {
 
             {/* Description */}
             <p
-              className="font-normal"
+              className={`${styles.benefitsDescription} font-normal`}
               style={{
-                fontFamily: "'PP Neue Montreal', sans-serif",
-                fontSize: "24px",
-                lineHeight: "32px",
                 color: "#E1E1E1",
                 alignSelf: "stretch",
               }}
             >
-              Sublime menggabungkan audio terapi 528 Hz, afirmasi lembut, dan
+              Strovia menggabungkan audio terapi 528 Hz, afirmasi lembut, dan
               pendamping AI untuk membantu menciptakan ketenangan, fokus, dan
               dukungan dalam pemulihan sehari-hari.
             </p>
@@ -160,10 +147,8 @@ export default function KeyAdvantages() {
             {advantages.map((advantage, index) => (
               <div
                 key={index}
-                className="flex flex-row items-center rounded-lg"
+                className={`${styles.benefitsCard} flex flex-row items-center rounded-lg`}
                 style={{
-                  padding: "12px",
-                  gap: "16px",
                   alignSelf: "stretch",
                   transition: "all 0.3s ease",
                   cursor: "default",
@@ -208,11 +193,8 @@ export default function KeyAdvantages() {
                   }}
                 >
                   <h3
-                    className="font-semibold"
+                    className={`${styles.benefitsCardTitle} font-semibold`}
                     style={{
-                      fontFamily: "'PP Neue Montreal', sans-serif",
-                      fontSize: "24px",
-                      lineHeight: "32px",
                       color: "#FFFFFF",
                       alignSelf: "stretch",
                     }}
@@ -220,11 +202,8 @@ export default function KeyAdvantages() {
                     {advantage.title}
                   </h3>
                   <p
-                    className="font-normal"
+                    className={`${styles.benefitsCardDescription} font-normal`}
                     style={{
-                      fontFamily: "'PP Neue Montreal', sans-serif",
-                      fontSize: "16px",
-                      lineHeight: "24px",
                       color: "#E1E1E1",
                       alignSelf: "stretch",
                     }}
@@ -256,7 +235,6 @@ export default function KeyAdvantages() {
               alignSelf: "stretch",
               flex: "1",
               background: "rgba(255, 255, 255, 0.02)",
-              // border: "1px solid rgba(255, 255, 255, 0.1)",
               justifyContent: "center",
               zIndex: 0,
             }}
@@ -280,10 +258,9 @@ export default function KeyAdvantages() {
 
             {/* Phone Image */}
             <div
+              className={styles.benefitsPhoneMockup}
               style={{
                 position: "relative",
-                width: "326px",
-                height: "710px",
               }}
             >
               <NextImage
