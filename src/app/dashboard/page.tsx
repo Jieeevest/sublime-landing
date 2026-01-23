@@ -67,8 +67,8 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout activeItem="Home">
-      <div className="px-10 pt-[104px] pb-6 max-w-[1267px] mx-auto space-y-10">
-        <DashboardHero session={heroSession} playCount={playCount} />
+      <div className="px-10 pb-6 max-w-[1267px] mx-auto space-y-10">
+        <DashboardHero />
 
         {isLoadingAudios ? (
           <div className="text-center py-10">Loading tracks...</div>
