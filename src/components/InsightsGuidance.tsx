@@ -56,6 +56,7 @@ export default function InsightsGuidance() {
 
   return (
     <section
+      id="artikel"
       className={`${styles.section} relative flex flex-col items-center isolate`}
     >
       {/* Blur Effect - Right */}

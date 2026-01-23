@@ -7,6 +7,8 @@ import FAQ from "@/components/FAQ";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 
+import BackToTop from "@/components/BackToTop";
+
 export default function Home() {
   return (
     <main className="min-h-screen overflow-x-hidden">
@@ -18,6 +20,7 @@ export default function Home() {
       <FAQ />
       <CTASection />
       <Footer />
+      <BackToTop />
     </main>
   );
 }

@@ -6,6 +6,7 @@ import styles from "./WhatIsSublime.module.css";
 export default function WhatIsSublime() {
   return (
     <section
+      id="tentang-kami"
       className={`${styles.aboutSection} relative flex flex-col items-center isolate`}
     >
       {/* Title Container */}
@@ -75,7 +76,7 @@ export default function WhatIsSublime() {
 
       {/* Content - 3 Columns */}
       <div
-        className={`${styles.contentContainer} flex flex-row items-flex-start relative`}
+        className={`${styles.contentContainer} flex flex-row items-start relative`}
         style={{ padding: "0px", zIndex: 1 }}
       >
         {/* Left Column - 2 Cards */}
@@ -336,7 +337,6 @@ export default function WhatIsSublime() {
             isolation: "isolate",
             flex: "1",
             alignSelf: "stretch",
-            minHeight: "645px",
           }}
         >
           {/* Title */}

@@ -55,6 +55,7 @@ export default function FAQ() {
 
   return (
     <section
+      id="faq"
       className={`${styles.section} flex flex-col justify-center items-flex-start relative`}
     >
       {/* Content Container */}

@@ -33,6 +33,7 @@ export default function KeyAdvantages() {
 
   return (
     <section
+      id="manfaat"
       className={`${styles.benefitsSection} flex flex-col justify-center items-flex-start relative`}
       style={{
         background: "#023347",

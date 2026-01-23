@@ -5,6 +5,7 @@ import styles from "./HowItSupports.module.css";
 export default function HowItSupports() {
   return (
     <section
+      id="cara-kerja"
       className={`${styles.section} relative flex flex-col items-center isolate`}
     >
       {/* Title Section */}
