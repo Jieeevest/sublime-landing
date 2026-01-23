@@ -4,77 +4,105 @@ import { useState } from "react";
 
 export default function DashboardTopbar() {
   return (
-    <div className="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between">
+    <div className="bg-[#F5F9FA] px-10 py-6 flex items-center justify-between gap-6">
       {/* Search Bar */}
-      <div className="flex-1 max-w-md">
+      <div className="flex-1 max-w-3xl">
         <div className="relative">
           <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-500"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            strokeWidth={1.5}
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
           <input
             type="text"
             placeholder="Cari"
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            className="w-full pl-11 pr-4 py-3.5 border border-[#E1E1E1] rounded-lg text-sm text-gray-500 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
           />
         </div>
       </div>
 
       {/* Right Side */}
-      <div className="flex items-center gap-4">
-        {/* Premium Badge */}
-        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full text-sm font-medium hover:bg-primary-600 transition-colors">
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-          Jelajahi Premium
-        </button>
-
-        {/* Notification */}
-        <button className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+      <div className="flex items-center gap-3">
+        {/* Premium Button */}
+        <button className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-full text-base font-normal hover:bg-primary-600 transition-colors whitespace-nowrap">
           <svg
-            className="w-6 h-6 text-gray-600"
+            className="w-5 h-5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            strokeWidth={1.5}
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          Mulai Berlangganan
         </button>
 
-        {/* User Profile */}
-        <button className="flex items-center gap-2 hover:bg-gray-100 rounded-full pr-3 transition-colors">
-          <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center text-white font-semibold">
-            U
-          </div>
+        {/* Language Selector */}
+        <button className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-lg transition-colors">
           <svg
-            className="w-4 h-4 text-gray-600"
+            className="w-4.5 h-4.5 text-gray-500"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            strokeWidth={1.5}
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
+              d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
+            />
+          </svg>
+          <span className="text-base text-gray-500">EN</span>
+          <svg
+            className="w-6 h-6 text-gray-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="M19 9l-7 7-7-7"
             />
           </svg>
+        </button>
+
+        {/* Notification */}
+        <button className="relative p-3 hover:bg-gray-100 rounded-full transition-colors">
+          <svg
+            className="w-5 h-5 text-gray-500"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              opacity="0.32"
+              d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"
+            />
+            <path d="M12 6c-2.76 0-5 2.24-5 5v5l-2 2h14l-2-2v-5c0-2.76-2.24-5-5-5z" />
+          </svg>
+          <span className="absolute top-2 right-2 min-w-[20px] h-5 px-1.5 bg-[#F64C4C] rounded-full flex items-center justify-center">
+            <span className="text-white text-xs font-medium">3</span>
+          </span>
+        </button>
+
+        {/* User Profile */}
+        <button className="flex items-center hover:bg-gray-50 rounded-lg transition-colors">
+          <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center overflow-hidden">
+            <span className="text-white text-sm font-semibold">U</span>
+          </div>
         </button>
       </div>
     </div>

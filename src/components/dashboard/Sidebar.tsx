@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 interface SidebarProps {
   activeItem?: string;
@@ -26,12 +24,15 @@ export default function Sidebar({ activeItem = "Home" }: SidebarProps) {
   ];
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-20 bg-primary flex flex-col items-center py-6 z-40">
+    <aside className="fixed left-0 top-0 h-full w-[93px] bg-primary flex flex-col items-center py-0 z-40 border-r border-dashed border-white">
       {/* Logo */}
-      <Link href="/dashboard" className="mb-8">
-        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
+      <Link
+        href="/dashboard"
+        className="flex items-center justify-center py-4 w-full h-[72px]"
+      >
+        <div className="w-7 h-7 bg-white rounded-sm flex items-center justify-center">
           <svg
-            className="w-8 h-8 text-primary"
+            className="w-5 h-5 text-primary"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -41,55 +42,66 @@ export default function Sidebar({ activeItem = "Home" }: SidebarProps) {
       </Link>
 
       {/* Menu Items */}
-      <nav className="flex-1 flex flex-col gap-6">
+      <nav className="flex-1 flex flex-col items-center px-2 gap-6 pt-10">
         {menuItems.map((item) => {
           const isActive = activeItem.toLowerCase() === item.id;
           return (
             <Link
               key={item.id}
               href={item.href}
-              className={`flex flex-col items-center gap-2 px-4 py-3 rounded-xl transition-colors ${
-                isActive ? "bg-white/20" : "hover:bg-white/10"
+              className={`flex flex-col items-center justify-center gap-2 w-[77px] h-[77px] rounded-2xl transition-all ${
+                isActive ? "bg-white/16" : "hover:bg-white/8"
               }`}
             >
-              {item.icon === "home" && (
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
+              <div className="flex flex-col items-center gap-2">
+                {item.icon === "home" && (
+                  <svg
+                    className={`w-6 h-6 text-white ${
+                      isActive ? "opacity-100" : "opacity-50"
+                    }`}
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                  </svg>
+                )}
+                {item.icon === "article" && (
+                  <svg
+                    className={`w-6 h-6 text-white ${
+                      isActive ? "opacity-100" : "opacity-50"
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                    <path d="M9 9h6M9 13h6M9 17h3" strokeLinecap="round" />
+                  </svg>
+                )}
+                {item.icon === "chat" && (
+                  <svg
+                    className={`w-6 h-6 text-white ${
+                      isActive ? "opacity-100" : "opacity-50"
+                    }`}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M10 2c-4.418 0-8 3.134-8 7 0 1.434.493 2.767 1.338 3.877L2 17l4.083-.98A8.841 8.841 0 0010 17c4.418 0 8-3.134 8-7s-3.582-7-8-7z"
+                      opacity="0.5"
+                    />
+                    <ellipse cx="10" cy="9" rx="0.5" ry="0.5" fill="white" />
+                  </svg>
+                )}
+                <span
+                  className={`text-sm text-white font-medium ${
+                    isActive ? "opacity-100" : "opacity-100"
+                  }`}
                 >
-                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                </svg>
-              )}
-              {item.icon === "article" && (
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              )}
-              {item.icon === "chat" && (
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              )}
-              <span className="text-xs text-white font-medium">
-                {item.label}
-              </span>
+                  {item.label}
+                </span>
+              </div>
             </Link>
           );
         })}
