@@ -1,117 +1,261 @@
 "use client";
 
+import Image from "next/image";
+
 /**
  * DashboardPromoCards component.
- * Displays the subscription promotion and chatbot prompt cards.
+ * Displays the subscription promotion and chatbot prompt cards with specific styling.
  */
 export default function DashboardPromoCards() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[1.9fr_1fr] gap-10">
-      {/* Premium Card */}
-      <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-10 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-40 h-40 bg-white/20 rounded-full -mr-20 -mt-20"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/20 rounded-full -ml-16 -mb-16"></div>
+    <div className="flex flex-col xl:flex-row gap-[40px] w-full max-w-[1267px] mx-auto">
+      {/* ==============================================
+          LEFT CARD: Subscription
+          Width: 827px
+          ============================================== */}
+      <div
+        className="relative flex-1 rounded-[16px] flex items-center p-[40px] overflow-hidden group"
+        style={{
+          minHeight: "319px",
+          background: "#FFFFFF",
+          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
+        }}
+      >
+        {/* Background Layers */}
+        <div className="absolute inset-0 z-0">
+          {/* Main Gradients matching Figma 'Rectangle 5' and 'Rectangle 6' */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(112.83deg, rgba(255, 255, 255, 0.47) 0%, rgba(255, 255, 255, 0) 110.84%)",
+              backdropFilter: "blur(21px)",
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(112.32deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 101.12%)",
+              backdropFilter: "blur(21px)",
+            }}
+          />
 
-        <div className="relative flex items-center gap-6">
-          {/* Left Content */}
-          <div className="flex-1 space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1 bg-primary/8 border border-primary/7 rounded-full text-base font-medium text-primary">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              Berlangganan
+          {/* Texture Overlay */}
+          <Image
+            src="/grainy-gradient-background-noise-texture-backdrop-webpage-header-banner-design 1.png"
+            alt="texture"
+            fill
+            className="object-cover opacity-[0.16] mix-blend-soft-light"
+          />
+
+          {/* Color Overlay #Img_Cover_M.5 */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "#3197A5",
+              opacity: 0.16,
+            }}
+          />
+
+          {/* Decorative Vector */}
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              width: "1311px",
+              height: "326px",
+              right: "-235px",
+              top: "50%",
+              transform: "translateY(-50%) rotate(168.79deg)",
+              border: "0.2px solid #3197A5",
+              borderRadius: "50%",
+              opacity: 0.5,
+            }}
+          />
+        </div>
+
+        {/* Content Container (Z-10) */}
+        <div className="relative z-10 flex flex-row items-center w-full h-full gap-[24px]">
+          {/* LEFT COLUMN: Badge & Price */}
+          <div className="flex-1 flex flex-col items-start justify-center gap-[16px]">
+            {/* Header Group */}
+            <div className="flex flex-col gap-[16px]">
+              {/* Badge */}
+              <div
+                className="flex flex-row items-center justify-center gap-[4px] px-[16px] py-[4px] w-fit"
+                style={{
+                  background: "rgba(49, 151, 165, 0.08)",
+                  border: "1px solid rgba(49, 151, 165, 0.07)",
+                  borderRadius: "99px",
+                }}
+              >
+                {/* Stars Icon */}
+                <div className="flex gap-0.5">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="#3197A5"
+                    className="transform -scale-x-100"
+                  >
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                </div>
+                <span
+                  style={{
+                    fontFamily: "'PP Neue Montreal', sans-serif",
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    lineHeight: "28px",
+                    color: "#3197A5",
+                  }}
+                >
+                  Berlangganan
+                </span>
+              </div>
+
+              {/* Title */}
+              <h2
+                className="text-[#3197A5] max-w-[480px] leading-tight"
+                style={{
+                  fontFamily: "'PP Neue Montreal', sans-serif",
+                  fontWeight: 700,
+                  fontSize: "36px",
+                }}
+              >
+                Nikmati 30 hari hanya <br />
+                <span
+                  style={{
+                    fontSize: "56px",
+                    color: "#023347",
+                    display: "block",
+                    margin: "8px 0",
+                  }}
+                >
+                  Rp.138,000,-
+                </span>
+                Dengerin{" "}
+                <span
+                  className="bg-[#3197A5] text-white px-2 py-1 mx-1"
+                  style={{ borderRadius: "4px" }}
+                >
+                  Audio Therapy
+                </span>{" "}
+                di Berlangganan.
+              </h2>
             </div>
-
-            <h3 className="text-4xl font-bold text-primary leading-tight">
-              Nikmati 30 hari hanya Rp138.000.{" "}
-              <span className="text-primary">Dengerin Audio Therapy</span> di
-              Berlangganan.
-            </h3>
           </div>
 
-          {/* Right Content */}
-          <div className="w-[285px] space-y-4">
-            <div className="flex items-center justify-end gap-2">
-              <svg
-                className="w-7 h-7 text-primary"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-              </svg>
-              <span className="text-2xl font-bold text-primary">STROVIA</span>
+          {/* RIGHT COLUMN: Info & Actions */}
+          <div className="w-[300px] flex flex-col justify-center items-end gap-[24px]">
+            {/* Brand Line */}
+            <div className="relative w-[140px] h-[32px]">
+              <Image
+                src="/strovia-log.png"
+                alt="STROVIA"
+                fill
+                className="object-contain object-right"
+              />
             </div>
 
-            <p className="text-sm text-secondary leading-relaxed">
+            {/* Description */}
+            <p
+              className="text-[#023347] text-right"
+              style={{
+                fontFamily: "'PP Neue Montreal', sans-serif",
+                fontWeight: 400,
+                fontSize: "14px",
+                lineHeight: "21px",
+              }}
+            >
               Tanpa perpanjangan otomatis. Tidak ada autodebet. Kamu tetap
               sepenuhnya mengontrol langgananmu.
             </p>
 
-            <button className="px-5 py-2.5 bg-primary text-white rounded-full text-base font-normal hover:bg-primary-600 transition-colors">
-              Mulai Berlangganan
+            {/* Button */}
+            <button className="flex items-center justify-center px-[20px] py-[10px] bg-[#3197A5] hover:bg-[#288a96] rounded-full text-white transition-colors">
+              <span style={{ fontSize: "16px", fontWeight: 500 }}>
+                Mulai Berlangganan
+              </span>
             </button>
           </div>
         </div>
-
-        {/* Decorative rectangle */}
-        <div className="absolute left-0 top-[156px] w-[249px] h-10 bg-primary"></div>
       </div>
 
-      {/* Chatbot Card */}
-      <div className="bg-gradient-to-br from-primary to-primary-600 rounded-2xl p-10 relative overflow-hidden text-white">
-        <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16"></div>
+      {/* ==============================================
+          RIGHT CARD: Chatbot
+          Width: 400px
+          ============================================== */}
+      <div
+        className="relative rounded-[16px] overflow-hidden flex flex-col justify-center p-[40px] flex-shrink-0"
+        style={{
+          width: "100%",
+          maxWidth: "400px",
+          minHeight: "319px",
+          background: "#3197A5",
+        }}
+      >
+        {/* Background Gradients */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0, 0, 0, 0) -1.23%, #000000 80%)",
+            opacity: 0.2,
+          }}
+        />
 
-        {/* Decorative images */}
-        <div className="absolute -left-[60px] top-0 w-[100px] h-[100px] bg-white/10 rounded-full"></div>
-        <div className="absolute -right-[66px] bottom-[110px] w-[93px] h-[93px] bg-white/10 rounded-full"></div>
+        {/* Content Z-10 */}
+        <div className="relative z-10 flex flex-col gap-[16px] max-w-[320px]">
+          <h3
+            className="text-white"
+            style={{
+              fontFamily: "'PP Neue Montreal', sans-serif",
+              fontWeight: 700,
+              fontSize: "24px",
+              lineHeight: "29px",
+            }}
+          >
+            Butuh bimbingan dan dukungan informasi sepanjang proses pemulihan
+            diri anda?
+          </h3>
 
-        <div className="relative h-full flex flex-col justify-between">
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold leading-tight">
-              Butuh Bimbingan untuk Perjalanan Penyembuhan Anda?
-            </h3>
+          <p
+            className="text-white"
+            style={{
+              fontFamily: "'PP Neue Montreal', sans-serif",
+              fontWeight: 400,
+              fontSize: "14px",
+              lineHeight: "21px",
+            }}
+          >
+            Diskusi dengan Dokter Via kapan saja.
+          </p>
 
-            <p className="text-white/90 text-sm">
-              Bicaralah dengan Dokter Via kapan saja.
-            </p>
-
-            <button className="px-5 py-2.5 bg-white text-[#1F1F1F] rounded-full text-base font-normal hover:bg-gray-100 transition-colors">
+          <button className="flex items-center justify-center px-[20px] py-[8px] bg-white text-[#1F1F1F] rounded-full w-fit mt-2 hover:scale-105 transition-transform">
+            <span style={{ fontSize: "16px", fontWeight: 500 }}>
               Chat Sekarang
-            </button>
-          </div>
+            </span>
+          </button>
+        </div>
 
-          {/* Doctor Image Placeholder */}
-          <div className="absolute bottom-[-32px] right-0 w-[132px] h-[197px] bg-white/10 rounded-t-full flex items-center justify-center">
-            <svg
-              className="w-20 h-20 text-white/30"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
+        {/* Robot Image */}
+        <div className="absolute right-[-20px] bottom-[-40px] z-20 pointer-events-none">
+          <Image
+            src="/robot.png"
+            alt="Robot"
+            width={160}
+            height={220}
+            className="object-contain"
+          />
+        </div>
 
-          {/* Chatbot Icon */}
-          <div className="absolute bottom-[110px] right-[82px] w-[100px] h-[100px] bg-primary/40 rounded-full flex items-center justify-center">
-            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-              <svg
-                className="w-8 h-8 text-white"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-          </div>
+        {/* Abstract Circles/Decorations */}
+        <div className="absolute top-[-20px] left-[-20px] w-[100px] h-[100px] opacity-20 pointer-events-none">
+          <div className="w-full h-full rounded-full border-[10px] border-white/30" />
+        </div>
+        <div className="absolute bottom-[20%] right-[-10px] w-[60px] h-[60px] opacity-10 pointer-events-none">
+          <div className="w-full h-full rounded-full bg-white" />
         </div>
       </div>
     </div>

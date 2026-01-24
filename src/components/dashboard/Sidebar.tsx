@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 interface SidebarProps {
   activeItem?: string;
@@ -30,14 +31,14 @@ export default function Sidebar({ activeItem = "Home" }: SidebarProps) {
         href="/dashboard"
         className="flex items-center justify-center py-4 w-full h-[72px]"
       >
-        <div className="w-7 h-7 bg-white rounded-sm flex items-center justify-center">
-          <svg
-            className="w-5 h-5 text-primary"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-          </svg>
+        <div className="w-12 h-12 flex items-center justify-center">
+          <Image
+            src="/strovia-logo-sidebar.svg"
+            alt="Strovia Logo"
+            width={48}
+            height={48}
+            className="w-full h-full object-contain"
+          />
         </div>
       </Link>
 
