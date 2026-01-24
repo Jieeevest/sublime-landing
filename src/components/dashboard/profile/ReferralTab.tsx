@@ -267,7 +267,9 @@ export default function ReferralTab() {
             <div>
               <h3 className="text-2xl font-bold text-[#1F1F1F]">
                 Rp{" "}
-                {affiliateData?.data?.balance?.toLocaleString("id-ID") || "0"}
+                {Number(
+                  affiliateData?.data?.total_earnings || 0,
+                ).toLocaleString("id-ID")}
               </h3>
               <p className="text-xs text-gray-400">Saldo Referral</p>
             </div>
@@ -355,23 +357,27 @@ export default function ReferralTab() {
                   {referralsData.data.map((ref: any, idx: number) => (
                     <tr key={idx}>
                       <td className="py-4 px-4 font-medium text-[#1F1F1F]">
-                        {ref.user?.name || "User"}
+                        {ref.referredUser?.name || "User"}
+                        <div className="text-xs text-gray-400 font-normal">
+                          {ref.referredUser?.email}
+                        </div>
                       </td>
                       <td className="py-4 px-4 text-gray-500">
-                        {new Date(ref.createdAt).toLocaleDateString("id-ID")}
+                        {new Date(ref.created_at).toLocaleDateString("id-ID")}
                       </td>
                       <td className="py-4 px-4 text-[#3197A5] font-medium">
-                        Rp 25.000
+                        Rp{" "}
+                        {(ref.commission_amount || 0).toLocaleString("id-ID")}
                       </td>
                       <td className="py-4 px-4">
                         <span
                           className={`px-2 py-1 rounded-full text-[10px] uppercase font-bold tracking-wide ${
-                            ref.status === "active"
+                            ref.status === "active" || ref.status === "paid"
                               ? "bg-green-100 text-green-700"
                               : "bg-gray-100 text-gray-500"
                           }`}
                         >
-                          {ref.status || "Registered"}
+                          {ref.status || "Pending"}
                         </span>
                       </td>
                     </tr>
@@ -457,7 +463,7 @@ export default function ReferralTab() {
       <WithdrawalModal
         isOpen={isWithdrawModalOpen}
         onClose={() => setIsWithdrawModalOpen(false)}
-        balance={affiliateData?.data?.balance || 0}
+        balance={Number(affiliateData?.data?.total_earnings || 0)}
         savedBank={affiliateData?.data?.paymentInfo}
         onUpdateBank={handleUpdateBank}
         onRequestWithdrawal={handleProcessWithdrawal}

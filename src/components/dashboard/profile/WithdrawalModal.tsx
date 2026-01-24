@@ -128,6 +128,11 @@ export default function WithdrawalModal({
           <span className="w-1 h-1 rounded-full bg-gray-400"></span> Transaksi
           bebas nominal Rp 10.000
         </p>
+        {parseInt(amount) > balance && (
+          <p className="text-xs text-red-500 mt-2 font-medium">
+            Saldo tidak mencukupi
+          </p>
+        )}
       </div>
 
       <div className="mb-8">

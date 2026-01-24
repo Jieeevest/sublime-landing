@@ -2,16 +2,31 @@
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGetMeQuery } from "@/redux/api/sublimeApi";
 import PersonalInfoTab from "@/components/dashboard/profile/PersonalInfoTab";
 import ReferralTab from "@/components/dashboard/profile/ReferralTab";
 import SubscriptionTab from "@/components/dashboard/profile/SubscriptionTab";
 import SecurityTab from "@/components/dashboard/profile/SecurityTab";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 export default function ProfilePage() {
-  const [activeTab, setActiveTab] = useState("Informasi Pribadi");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const currentTab = searchParams.get("tab") || "Informasi Pribadi";
+  // We can still use state to avoid flicker or just rely on searchParams direct
+  // Using direct searchParams is cleaner for SSOT (Single Source of Truth)
+  // Mapping display names to URL safe keys might be better, but user asked for ?tab=Value
+
   const { data: user, isLoading } = useGetMeQuery(undefined);
+
+  const handleTabChange = (tab: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("tab", tab);
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   if (isLoading) {
     return (
@@ -85,15 +100,80 @@ export default function ProfilePage() {
               (tab) => (
                 <button
                   key={tab}
-                  onClick={() => setActiveTab(tab)}
+                  onClick={() => handleTabChange(tab)}
                   className={`h-full px-6 text-sm font-medium font-sans relative transition-colors ${
-                    activeTab === tab
+                    currentTab === tab
                       ? "text-[#3197A5]"
                       : "text-[#8E8E8E] hover:text-gray-700"
                   }`}
                 >
-                  {tab}
-                  {activeTab === tab && (
+                  <span className="flex items-center gap-2">
+                    {tab === "Informasi Pribadi" && (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                      </svg>
+                    )}
+                    {tab === "Referral" && (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <circle cx="18" cy="5" r="3" />
+                        <circle cx="6" cy="12" r="3" />
+                        <circle cx="18" cy="19" r="3" />
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                      </svg>
+                    )}
+                    {tab === "Berlangganan" && (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <rect
+                          x="3"
+                          y="4"
+                          width="18"
+                          height="18"
+                          rx="2"
+                          ry="2"
+                        />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                      </svg>
+                    )}
+                    {tab === "Keamanan" && (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+                      </svg>
+                    )}
+                    {tab}
+                  </span>
+                  {currentTab === tab && (
                     <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#3197A5]"></span>
                   )}
                 </button>
@@ -104,10 +184,10 @@ export default function ProfilePage() {
 
         {/* Content Tabs */}
         <div>
-          {activeTab === "Informasi Pribadi" && <PersonalInfoTab />}
-          {activeTab === "Referral" && <ReferralTab />}
-          {activeTab === "Berlangganan" && <SubscriptionTab />}
-          {activeTab === "Keamanan" && <SecurityTab />}
+          {currentTab === "Informasi Pribadi" && <PersonalInfoTab />}
+          {currentTab === "Referral" && <ReferralTab />}
+          {currentTab === "Berlangganan" && <SubscriptionTab />}
+          {currentTab === "Keamanan" && <SecurityTab />}
         </div>
       </div>
     </DashboardLayout>
