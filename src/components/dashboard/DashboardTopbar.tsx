@@ -205,7 +205,13 @@ export default function DashboardTopbar() {
                 </p>
               </div>
               <div className="p-2">
-                <button className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+                <button
+                  onClick={() => {
+                    router.push("/dashboard/profile");
+                    setIsProfileOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                >
                   <svg
                     className="w-4 h-4"
                     fill="none"
