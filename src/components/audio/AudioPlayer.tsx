@@ -1,6 +1,7 @@
 "use client";
 
 import { useAudio } from "@/contexts/AudioContext";
+import Image from "next/image";
 
 export default function AudioPlayer() {
   const {
@@ -36,123 +37,266 @@ export default function AudioPlayer() {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50 animate-slide-up">
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center gap-6">
-          {/* Track Info */}
-          <div className="flex items-center gap-4 flex-1 min-w-0">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-600 rounded-lg flex-shrink-0 flex items-center justify-center">
-              <svg
-                className="w-8 h-8 text-white"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z" />
-              </svg>
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-0 animate-slide-up pointer-events-none">
+      <div className="relative w-full max-w-[1440px] pointer-events-auto h-[104px]">
+        {/* Glassmorphism Background */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            background:
+              "linear-gradient(74.91deg, #3197A5 5.58%, rgba(49, 151, 165, 0) 99.84%)",
+          }}
+        >
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "rgba(29, 33, 35, 0.3)",
+              borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+              backdropFilter: "blur(15px)",
+            }}
+          />
+        </div>
+
+        {/* Content Container */}
+        <div className="relative z-10 flex items-center justify-between h-full px-6 md:px-[24px] gap-[24px]">
+          {/* Left: Track Info */}
+          <div className="flex items-center gap-[12px] min-w-[300px]">
+            {/* Thumbnail */}
+            <div className="w-[44px] h-[44px] relative rounded-[8px] overflow-hidden bg-gray-700 flex-shrink-0">
+              {currentTrack.imageUrl ? (
+                <Image
+                  src="/audio-fallback.svg"
+                  alt={currentTrack.title}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-[#3197A5] to-teal-800" />
+              )}
             </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-secondary truncate">
+
+            {/* Text */}
+            <div className="flex flex-col">
+              <h3
+                className="text-white truncate max-w-[250px]"
+                style={{
+                  fontFamily: "'PP Neue Montreal', sans-serif",
+                  fontWeight: 500,
+                  fontSize: "14px",
+                  lineHeight: "22px",
+                }}
+              >
                 {currentTrack.title}
               </h3>
-              <p className="text-sm text-secondary/60 truncate">
-                {currentTrack.description}
+              <p
+                className="text-[#E1E1E1] truncate max-w-[250px]"
+                style={{
+                  fontFamily: "'PP Neue Montreal', sans-serif",
+                  fontWeight: 400,
+                  fontSize: "12px",
+                  lineHeight: "18px",
+                }}
+              >
+                {currentTrack.subtitle || currentTrack.description}
               </p>
             </div>
           </div>
 
-          {/* Controls */}
-          <div className="flex flex-col items-center gap-2 flex-1">
-            {/* Play/Pause Button */}
-            <div className="flex items-center gap-4">
+          {/* Center: Controls & Progress */}
+          <div className="flex flex-col items-center gap-[4px] flex-1 max-w-[629px]">
+            {/* Playback Controls */}
+            <div className="flex items-center justify-center gap-[24px]">
+              {/* Shuffle (Mock) */}
+              <button className="text-white/70 hover:text-white transition-colors">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M16 3h5v5" />
+                  <path d="M4 20L21 3" />
+                  <path d="M21 16v5h-5" />
+                  <path d="M15 15l-5 5-4-4" />
+                  <path d="M4 4l5 5" />
+                </svg>
+              </button>
+
+              {/* Previous */}
+              <button className="text-white hover:text-primary-300 transition-colors">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
+                </svg>
+              </button>
+
+              {/* Play/Pause */}
               <button
                 onClick={isPlaying ? pause : resume}
-                className="w-12 h-12 bg-primary hover:bg-primary-600 rounded-full flex items-center justify-center text-white transition-colors"
+                className="w-[48px] h-[48px] bg-white rounded-full flex items-center justify-center hover:scale-105 transition-transform"
               >
                 {isPlaying ? (
                   <svg
-                    className="w-6 h-6"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="#1F1F1F"
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z"
-                      clipRule="evenodd"
-                    />
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
                   </svg>
                 ) : (
                   <svg
-                    className="w-6 h-6"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="#1F1F1F"
+                    className="ml-1"
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                      clipRule="evenodd"
-                    />
+                    <path d="M8 5v14l11-7z" />
                   </svg>
                 )}
+              </button>
+
+              {/* Next */}
+              <button className="text-white hover:text-primary-300 transition-colors">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+                </svg>
+              </button>
+
+              {/* Repeat (Mock) */}
+              <button className="text-white/70 hover:text-white transition-colors">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M17 1l4 4-4 4" />
+                  <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+                  <path d="M7 23l-4-4 4-4" />
+                  <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+                </svg>
               </button>
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full flex items-center gap-3">
-              <span className="text-xs text-secondary/60 font-medium min-w-[40px]">
+            <div className="flex items-center gap-[8px] w-full">
+              <span
+                className="text-[#E1E1E1] text-xs w-[31px] text-right"
+                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+              >
                 {formatTime(progress)}
               </span>
+
               <div
+                className="relative flex-1 h-[5px] group cursor-pointer flex items-center"
                 onClick={handleProgressClick}
-                className="flex-1 h-2 bg-gray-200 rounded-full cursor-pointer group"
               >
+                {/* Track Background */}
+                <div className="absolute w-full h-[5px] bg-white/30 rounded-[4px]" />
+
+                {/* buffer bar (optional visual) */}
                 <div
-                  className="h-full bg-primary rounded-full relative transition-all"
+                  className="absolute h-[5px] bg-white/50 rounded-[4px]"
+                  style={{ width: "60%" }}
+                />
+
+                {/* Actual Progress */}
+                <div
+                  className="absolute h-[5px] bg-white rounded-[4px] flex items-center justify-end"
                   style={{ width: `${(progress / duration) * 100}%` }}
                 >
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                  {/* Thumb (only visible on hover/active) */}
+                  <div className="w-[12px] h-[12px] bg-white rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2" />
                 </div>
               </div>
-              <span className="text-xs text-secondary/60 font-medium min-w-[40px]">
+
+              <span
+                className="text-[#E1E1E1] text-xs w-[30px]"
+                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+              >
                 {formatTime(duration)}
               </span>
             </div>
           </div>
 
-          {/* Volume & Close */}
-          <div className="flex items-center gap-4 flex-1 justify-end">
-            {/* Volume Control */}
-            <div className="flex items-center gap-2">
+          {/* Right: Volume & Options */}
+          <div className="flex items-center justify-end gap-[24px] min-w-[300px]">
+            {/* Lyrics/Captions */}
+            <button className="text-white/70 hover:text-white">
               <svg
-                className="w-5 h-5 text-secondary/60"
-                fill="currentColor"
-                viewBox="0 0 20 20"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z"
-                  clipRule="evenodd"
-                />
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={volume}
-                onChange={(e) => setVolume(Number(e.target.value))}
-                className="w-24 h-2 bg-gray-200 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer"
-              />
+            </button>
+
+            {/* Volume Block */}
+            <div className="flex items-center gap-[8px]">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+              >
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
+
+              {/* Volume Slider */}
+              <div className="w-[100px] h-[3px] bg-white/50 rounded-full relative group cursor-pointer">
+                <div
+                  className="absolute top-0 left-0 h-full bg-white rounded-full"
+                  style={{ width: `${volume}%` }}
+                />
+                {/* Invisble input range for interaction */}
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={volume}
+                  onChange={(e) => setVolume(Number(e.target.value))}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+              </div>
             </div>
 
-            {/* Close Button */}
+            {/* Simple Close/Menu */}
             <button
               onClick={closePlayer}
-              className="w-8 h-8 flex items-center justify-center text-secondary/60 hover:text-secondary hover:bg-gray-100 rounded-full transition-colors"
+              className="p-2 text-white/50 hover:text-white"
             >
               <svg
-                className="w-5 h-5"
+                width="20"
+                height="20"
                 fill="none"
-                viewBox="0 0 24 24"
                 stroke="currentColor"
+                viewBox="0 0 24 24"
               >
                 <path
                   strokeLinecap="round"

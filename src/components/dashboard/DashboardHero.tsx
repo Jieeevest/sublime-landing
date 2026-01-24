@@ -8,11 +8,8 @@ import Image from "next/image";
  * Static component with no props, using specific CSS layout and SVG image.
  */
 export default function DashboardHero() {
-  // Hardcoded session data for play functionality
-  // In a real app, this might still come from props, but user requested static for now/specific layout
   const handlePlay = () => {
-    // Placeholder for play logic if needed, or re-integrate context if we want it functional
-    console.log("Play clicked");
+    console.log("Play clicked (Static)");
   };
 
   return (
@@ -40,49 +37,12 @@ export default function DashboardHero() {
           zIndex: 0,
         }}
       >
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 1116 277"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 138.5C200 138.5 300 50 550 50C800 50 900 200 1115 200"
-            stroke="white"
-            strokeOpacity="0.2"
-            strokeWidth="1"
-            fill="none"
-          />
-          <path
-            d="M50 138.5C250 138.5 350 80 600 80C850 80 950 180 1165 180"
-            stroke="white"
-            strokeOpacity="0.2"
-            strokeWidth="1"
-            fill="none"
-          />
-          <path
-            d="M-50 138.5C150 138.5 250 20 500 20C750 20 850 220 1065 220"
-            stroke="white"
-            strokeOpacity="0.1"
-            strokeWidth="1"
-            fill="none"
-          />
-          {[...Array(20)].map((_, i) => (
-            <path
-              key={i}
-              d={`M${-100 + i * 20} 150 C${100 + i * 20} 150 ${200 + i * 20} ${
-                50 + i * 5
-              } ${450 + i * 20} ${50 + i * 5} C${700 + i * 20} ${50 + i * 5} ${
-                800 + i * 20
-              } ${200 + i * 5} ${1015 + i * 20} ${200 + i * 5}`}
-              stroke="white"
-              strokeOpacity="0.05"
-              strokeWidth="0.5"
-              fill="none"
-            />
-          ))}
-        </svg>
+        <Image
+          src="/vector-dashboard-hero.svg"
+          alt="Vector Wave"
+          fill
+          className="object-contain"
+        />
       </div>
 
       {/* Content (Left Side) */}

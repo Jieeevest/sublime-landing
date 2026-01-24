@@ -21,7 +21,7 @@ export const audioSessions: AudioSession[] = [
     durationSeconds: 132,
     category: "Stroke Recovery",
     imageUrl: "/audio-session-1.jpg",
-    audioUrl: "/audio/stroke-recovery-calm.mp3",
+    audioUrl: "/audio/fallback.mp3",
   },
   {
     id: "2",
@@ -34,7 +34,7 @@ export const audioSessions: AudioSession[] = [
     durationSeconds: 132,
     category: "Stroke Recovery",
     imageUrl: "/audio-session-2.jpg",
-    audioUrl: "/audio/deep-sleep-healing.mp3",
+    audioUrl: "/audio/fallback.mp3",
   },
   {
     id: "3",
@@ -47,7 +47,7 @@ export const audioSessions: AudioSession[] = [
     durationSeconds: 132,
     category: "Anxiety",
     imageUrl: "/audio-session-3.jpg",
-    audioUrl: "/audio/anxiety-relief.mp3",
+    audioUrl: "/audio/fallback.mp3",
   },
   {
     id: "4",
@@ -58,7 +58,7 @@ export const audioSessions: AudioSession[] = [
     durationSeconds: 900,
     category: "Meditation",
     imageUrl: "/audio-session-4.jpg",
-    audioUrl: "/audio/morning-meditation.mp3",
+    audioUrl: "/audio/fallback.mp3",
   },
   {
     id: "5",
@@ -69,7 +69,7 @@ export const audioSessions: AudioSession[] = [
     durationSeconds: 1500,
     category: "Pain Relief",
     imageUrl: "/audio-session-5.jpg",
-    audioUrl: "/audio/pain-management.mp3",
+    audioUrl: "/audio/fallback.mp3",
   },
   {
     id: "6",
@@ -80,7 +80,7 @@ export const audioSessions: AudioSession[] = [
     durationSeconds: 1800,
     category: "Stress Relief",
     imageUrl: "/audio-session-6.jpg",
-    audioUrl: "/audio/stress-release.mp3",
+    audioUrl: "/audio/fallback.mp3",
   },
   {
     id: "7",
@@ -92,7 +92,7 @@ export const audioSessions: AudioSession[] = [
     durationSeconds: 2100,
     category: "Emotional Healing",
     imageUrl: "/audio-session-7.jpg",
-    audioUrl: "/audio/emotional-balance.mp3",
+    audioUrl: "/audio/fallback.mp3",
   },
   {
     id: "8",
@@ -103,7 +103,7 @@ export const audioSessions: AudioSession[] = [
     durationSeconds: 1200,
     category: "Focus",
     imageUrl: "/audio-session-8.jpg",
-    audioUrl: "/audio/focus-concentration.mp3",
+    audioUrl: "/audio/fallback.mp3",
   },
 ];
 
