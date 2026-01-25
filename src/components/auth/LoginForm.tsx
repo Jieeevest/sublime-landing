@@ -25,7 +25,14 @@ export default function LoginForm() {
         toast.success("Login berhasil!");
         localStorage.setItem("token", result.data.token);
         // Dispatch user data to store if needed, or rely on getMe query in dashboard
-        router.push("/dashboard");
+
+        // Check for admin role and redirect accordingly
+        const userRole = result.data?.user?.role || result.data?.role;
+        if (userRole === "admin" || userRole === "super_admin") {
+          router.push("/cms");
+        } else {
+          router.push("/dashboard");
+        }
       } else {
         const msg = result.message || "Login failed";
         setErrorMsg(msg);

@@ -5,11 +5,7 @@ import AudioTrackList from "@/components/dashboard/AudioTrackList";
 import DashboardHero from "@/components/dashboard/DashboardHero";
 import DashboardPromoCards from "@/components/dashboard/DashboardPromoCards";
 import DashboardArticles from "@/components/dashboard/DashboardArticles";
-// Dummy data renamed for backup
-import {
-  audioSessions as dummyAudioSessions,
-  AudioSession,
-} from "@/data/audioSessions";
+import { AudioSession } from "@/data/audioSessions";
 import {
   useGetAudiosQuery,
   useGetPublicContentsQuery,
@@ -61,10 +57,6 @@ export default function DashboardPage() {
     audioUrl: item.audio_url,
   }));
 
-  // Determine the hero session: use first real session, or fallback to dummy
-  const heroSession = sessions.length > 0 ? sessions[0] : dummyAudioSessions[0];
-  const playCount = (rawSessions[0] as any)?.play_count || "1.322.931";
-
   return (
     <DashboardLayout activeItem="Home">
       <div className="px-10 pb-6 max-w-[1267px] mx-auto space-y-10">
@@ -73,9 +65,7 @@ export default function DashboardPage() {
         {isLoadingAudios ? (
           <div className="text-center py-10">Loading tracks...</div>
         ) : (
-          <AudioTrackList
-            sessions={sessions.length > 0 ? sessions : dummyAudioSessions}
-          />
+          <AudioTrackList sessions={sessions.length > 0 ? sessions : []} />
         )}
 
         <DashboardPromoCards />

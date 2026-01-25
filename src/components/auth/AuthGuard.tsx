@@ -43,9 +43,12 @@ export default function AuthGuard({
 
   // Admin Check
   useEffect(() => {
-    if (requireAdmin && userData?.data && userData.data.role !== "admin") {
-      // Redirect non-admins trying to access admin routes
-      router.push("/dashboard");
+    if (requireAdmin && userData?.data) {
+      const role = userData.data.role;
+      if (role !== "admin" && role !== "super_admin") {
+        // Redirect non-admins trying to access admin routes
+        router.push("/dashboard");
+      }
     }
   }, [requireAdmin, userData, router]);
 
@@ -58,7 +61,11 @@ export default function AuthGuard({
   }
 
   // Prevent render if admin required but not admin (while redirecting)
-  if (requireAdmin && userData?.data?.role !== "admin") {
+  if (
+    requireAdmin &&
+    userData?.data?.role !== "admin" &&
+    userData?.data?.role !== "super_admin"
+  ) {
     return null;
   }
 
