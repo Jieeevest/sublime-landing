@@ -21,7 +21,7 @@ export default function InsightsGuidance() {
   const { data, isLoading, error } = useGetPublicContentsQuery({
     page: 1,
     limit: 3,
-    type: "artikel", // Filter for articles only
+    type: "article", // Filter for articles only
   });
 
   // Format date helper
@@ -39,19 +39,22 @@ export default function InsightsGuidance() {
     data?.data?.map((content: any) => ({
       id: content.id,
       slug: content.slug,
-      image: content.thumbnail || "/article-placeholder.jpg",
+      image:
+        content.cover_image_url ||
+        content.thumbnail_url ||
+        "/article-placeholder.jpg",
       date: formatDate(content.published_at || content.created_at),
       title: content.title,
     })) || [];
 
   // Handle article click
   const handleArticleClick = (slug: string) => {
-    router.push(`/artikel/${slug}`);
+    router.push(`/dashboard/artikel/${slug}`);
   };
 
   // Handle view all click
   const handleViewAllClick = () => {
-    router.push("/artikel");
+    router.push("/dashboard/artikel");
   };
 
   return (
