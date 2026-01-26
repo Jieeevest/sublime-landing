@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   useUploadThumbnailMutation,
-  useGetCategoriesQuery,
+  useGetContentCategoriesQuery,
 } from "@/redux/api/sublimeApi";
 import { toast } from "react-hot-toast";
 
@@ -23,7 +23,7 @@ export default function ArticleForm({
 }: ArticleFormProps) {
   const router = useRouter();
   const [uploadThumbnail] = useUploadThumbnailMutation();
-  const { data: categoriesData } = useGetCategoriesQuery(undefined);
+  const { data: categoriesData } = useGetContentCategoriesQuery(undefined);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -47,9 +47,12 @@ export default function ArticleForm({
         title: initialData.title || "",
         excerpt: initialData.excerpt || "",
         body: initialData.body || "",
-        category: initialData.category || "",
+        category: initialData.category?.name || initialData.category || "",
         cover_image_url:
-          initialData.cover_image_url || initialData.thumbnail_url || "",
+          initialData.cover_image_url ||
+          initialData.thumbnail_url ||
+          initialData.cover_image ||
+          "",
         tags: Array.isArray(initialData.tags)
           ? initialData.tags.join(", ")
           : "",
@@ -94,7 +97,7 @@ export default function ArticleForm({
         const thumbFormData = new FormData();
         thumbFormData.append("file", thumbnailFile);
         const thumbRes = await uploadThumbnail(thumbFormData).unwrap();
-        currentCoverUrl = thumbRes.data.url;
+        currentCoverUrl = thumbRes.data.thumbnail_url;
       }
 
       // Format tags
@@ -162,15 +165,39 @@ export default function ArticleForm({
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
             >
               <option value="">Pilih Kategori</option>
-              {categoriesData?.data?.map((cat: any) => (
-                <option key={cat.id} value={cat.name}>
-                  {cat.name}
-                </option>
-              ))}
-              {/* Fallback if user wants to type or if no categories */}
               <option value="General">General</option>
-              <option value="Technology">Technology</option>
               <option value="Health">Health</option>
+              <option value="Tips">Tips</option>
+              <option value="Technology">Technology</option>
+              <option value="Education">Education</option>
+
+              {categoriesData?.data?.map((cat: any, index: number) => {
+                const catName =
+                  typeof cat === "string"
+                    ? cat
+                    : cat.name || cat.title || cat.label || "Unknown";
+
+                const catKey =
+                  typeof cat === "object" && cat.id ? cat.id : index;
+
+                // Avoid duplicates if API returns same as static
+                if (
+                  [
+                    "General",
+                    "Health",
+                    "Tips",
+                    "Technology",
+                    "Education",
+                  ].includes(catName)
+                )
+                  return null;
+
+                return (
+                  <option key={catKey} value={catName}>
+                    {catName}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>

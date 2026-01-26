@@ -74,9 +74,6 @@ export default function ContentManagement({
                 Kategori
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Durasi
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
               </th>
               <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -138,11 +135,6 @@ export default function ContentManagement({
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="text-sm text-gray-700">
                       {item.category || "-"}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-gray-700 font-mono">
-                      {item.duration || "-"}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">

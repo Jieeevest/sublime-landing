@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import ContentManagement from "@/components/cms/ContentManagement";
+import Modal from "@/components/ui/Modal";
 import { useRouter } from "next/navigation";
 import {
   useGetAdminContentsQuery,
@@ -30,6 +31,10 @@ export default function CmsArticlePage() {
   const [isPosted, setIsPosted] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
 
+  // Modal state
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+
   // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,41 +62,34 @@ export default function CmsArticlePage() {
       id: item.id,
       title: item.title,
       description: item.description || item.slug,
-      category: item.category?.name || "-",
-      duration: "-",
-      imgSrc: item.thumbnail_url || defaultImgSrc,
+      category: item.category || "-",
+      imgSrc: item.cover_image_url || defaultImgSrc,
       isCurrent: item.status === "published" || item.is_published,
       status: item.status || (item.is_published ? "published" : "draft"),
     })) || [];
 
   const handlePost = async (id: string) => {
-    const item = content.find((i: any) => i.id === id);
-    const isCurrentlyPosted = item?.isCurrent;
-
-    if (
-      confirm(isCurrentlyPosted ? "Unpost this article?" : "Post this article?")
-    ) {
-      try {
-        await togglePublish(id).unwrap();
-        setIsPosted(true);
-        setTimeout(() => setIsPosted(false), 3000);
-      } catch (err) {
-        console.error("Failed to toggle status:", err);
-        alert("Action failed");
-      }
-    }
+    // Action disabled as per request
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this article?")) {
-      try {
-        await deleteContent(id).unwrap();
-        setIsDeleted(true);
-        setTimeout(() => setIsDeleted(false), 3000);
-      } catch (err) {
-        console.error("Failed to delete content:", err);
-        alert("Delete failed");
-      }
+  const handleDelete = (id: string) => {
+    setItemToDelete(id);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+
+    try {
+      await deleteContent(itemToDelete).unwrap();
+      setIsDeleted(true);
+      setTimeout(() => setIsDeleted(false), 3000);
+    } catch (err) {
+      console.error("Failed to delete content:", err);
+      alert("Delete failed");
+    } finally {
+      setDeleteModalOpen(false);
+      setItemToDelete(null);
     }
   };
 
@@ -181,9 +179,38 @@ export default function CmsArticlePage() {
             handleViewTemplate={handleView}
             contents={content}
             breadcrumbs={breadcrumbs}
+            showPostAction={false}
           />
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        title="Hapus Artikel"
+      >
+        <div className="space-y-4">
+          <p className="text-gray-600">
+            Apakah Anda yakin ingin menghapus artikel ini? Tindakan ini tidak
+            dapat dibatalkan.
+          </p>
+          <div className="flex justify-end gap-3 pt-4">
+            <button
+              onClick={() => setDeleteModalOpen(false)}
+              className="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium"
+            >
+              Batal
+            </button>
+            <button
+              onClick={confirmDelete}
+              className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors font-medium"
+            >
+              Hapus
+            </button>
+          </div>
+        </div>
+      </Modal>
 
       {/* Simple Alerts */}
       {isPosted && (
