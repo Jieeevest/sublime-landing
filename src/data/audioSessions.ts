@@ -8,6 +8,7 @@ export interface AudioSession {
   category: string;
   imageUrl: string;
   audioUrl: string;
+  lyrics?: string[];
 }
 
 export const audioSessions: AudioSession[] = [
@@ -22,6 +23,18 @@ export const audioSessions: AudioSession[] = [
     category: "Stroke Recovery",
     imageUrl: "/audio-session-1.jpg",
     audioUrl: "/audio/fallback.mp3",
+    lyrics: [
+      "My body restores itself gently.",
+      "I honor my healing pace.",
+      "My mind is clear and focused.",
+      "I am becoming stronger every day.",
+      "Every cell in my body is healing.",
+      "I release all tension and stress.",
+      "Peace flows through me.",
+      "I am grateful for my body's resilience.",
+      "Healing is happening now.",
+      "I trust the process of recovery.",
+    ],
   },
   {
     id: "2",
@@ -35,6 +48,12 @@ export const audioSessions: AudioSession[] = [
     category: "Stroke Recovery",
     imageUrl: "/audio-session-2.jpg",
     audioUrl: "/audio/fallback.mp3",
+    lyrics: [
+      "My body restores itself gently.",
+      "I honor my healing pace.",
+      "My mind is clear and focused.",
+      "I am becoming stronger every day.",
+    ],
   },
   {
     id: "3",
