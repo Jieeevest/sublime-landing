@@ -59,7 +59,10 @@ export default function DashboardPage() {
     durationSeconds: item.duration_seconds,
     category: item.category?.name || "General",
     imageUrl: item.thumbnail_url || "/default-audio.jpg", // Fallback image
-    audioUrl: item.audio_url,
+    audioUrl:
+      item.audio_url ||
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/audios/stream/${item.id}`,
+    lyrics: item.lyrics,
   }));
 
   return (

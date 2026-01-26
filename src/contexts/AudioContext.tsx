@@ -75,7 +75,20 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     }
   }, [volume]);
 
-  const playTrack = (track: AudioSession) => {
+  /*
+   * Ref to store the current Blob URL so we can revoke it when changing tracks
+   * to avoid memory leaks.
+   */
+  const currentBlobUrlRef = useRef<string | null>(null);
+
+  const cleanupBlobUrl = () => {
+    if (currentBlobUrlRef.current) {
+      URL.revokeObjectURL(currentBlobUrlRef.current);
+      currentBlobUrlRef.current = null;
+    }
+  };
+
+  const playTrack = async (track: AudioSession) => {
     if (audioRef.current) {
       // If same track, just resume
       if (currentTrack?.id === track.id && !isPlaying) {
@@ -84,13 +97,57 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
+      // Cleanup previous blob URL if exists
+      cleanupBlobUrl();
+
       // Load new track
       setCurrentTrack(track);
-      audioRef.current.src = track.audioUrl;
-      audioRef.current.play();
-      setIsPlaying(true);
-      setIsPlayerVisible(true);
-      setProgress(0);
+
+      // Check if URL requires Auth (api endpoints)
+      const token =
+        typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+      // If it's an API URL and we have a token, fetch with headers
+      if (track.audioUrl.includes("/api/") && token) {
+        try {
+          const response = await fetch(track.audioUrl, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`Failed to fetch audio: ${response.statusText}`);
+          }
+
+          const blob = await response.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          currentBlobUrlRef.current = blobUrl;
+
+          audioRef.current.src = blobUrl;
+        } catch (error) {
+          console.error("Error loading protected audio:", error);
+          // Fallback or simple error handling - maybe try direct URL just in case
+          audioRef.current.src = track.audioUrl;
+        }
+      } else {
+        // Standard public URL
+        audioRef.current.src = track.audioUrl;
+      }
+
+      // Play
+      // We use a small timeout or wait for the src to be set?
+      // Setting src is synchronous for the DOM property, but loading is async.
+      // However we can call play() immediately, the browser handles buffering.
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+        setIsPlayerVisible(true);
+        setProgress(0);
+      } catch (err) {
+        console.error("Playback failed:", err);
+        setIsPlaying(false);
+      }
     }
   };
 

@@ -8,7 +8,7 @@ export interface AudioSession {
   category: string;
   imageUrl: string;
   audioUrl: string;
-  lyrics?: string[];
+  lyrics?: string | string[];
 }
 
 export const audioSessions: AudioSession[] = [
