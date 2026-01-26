@@ -919,6 +919,7 @@ export const {
   // Payments
   usePurchaseSubscriptionMutation,
   useCheckPaymentStatusQuery,
+  useLazyCheckPaymentStatusQuery,
   useGetPaymentMethodsQuery,
   useDevBypassPaymentMutation,
 
