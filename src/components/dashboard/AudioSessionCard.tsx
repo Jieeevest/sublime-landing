@@ -82,7 +82,9 @@ export default function AudioSessionCard({ session }: AudioSessionCardProps) {
         {/* Duration Badge */}
         <div className="absolute bottom-3 right-3">
           <span className="px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-xs font-medium text-white">
-            {formatDuration(session.duration)}
+            {session.durationSeconds
+              ? formatDuration(session.durationSeconds)
+              : session.duration}
           </span>
         </div>
       </div>
