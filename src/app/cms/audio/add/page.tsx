@@ -1,21 +1,21 @@
 "use client";
 
-import ArticleForm from "@/components/cms/artikel/ArticleForm";
-import { useCreateContentMutation } from "@/redux/api/sublimeApi";
+import AudioForm from "@/components/cms/audio/AudioForm";
+import { useCreateAudioMutation } from "@/redux/api/sublimeApi";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 
-export default function ArticleAdd() {
+export default function AddAudioPage() {
   const router = useRouter();
-  const [createContent, { isLoading }] = useCreateContentMutation();
+  const [createAudio, { isLoading }] = useCreateAudioMutation();
 
   const handleSubmit = async (data: any) => {
     try {
-      await createContent({ ...data, type: "article" }).unwrap();
-      toast.success("Artikel berhasil ditambahkan!");
-      router.push("/cms/artikel");
+      await createAudio(data).unwrap();
+      toast.success("Audio berhasil ditambahkan!");
+      router.push("/cms/audio");
     } catch (error: any) {
-      toast.error(error?.data?.message || "Gagal menambahkan artikel");
+      toast.error(error?.data?.message || "Gagal menambahkan audio");
     }
   };
 
@@ -24,16 +24,16 @@ export default function ArticleAdd() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
-            Tambah Artikel Baru
+            Tambah Audio Baru
           </h1>
           <p className="text-gray-500 mt-1">
-            Tambahkan konten artikel edukasi baru
+            Tambahkan konten audio baru ke perpustakaan
           </p>
         </div>
       </div>
 
-      <ArticleForm
-        title="Form Artikel Baru"
+      <AudioForm
+        title="Form Audio Baru"
         onSubmit={handleSubmit}
         isLoading={isLoading}
       />

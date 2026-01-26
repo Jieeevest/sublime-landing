@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ContentManagement from "@/components/cms/ContentManagement";
 import { useRouter } from "next/navigation";
 import {
@@ -25,8 +25,18 @@ const breadcrumbs = [
 
 export default function CmsArticlePage() {
   const router = useRouter();
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [isPosted, setIsPosted] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [search]);
 
   // Fetch articles (type='article') using RTK Query
   const {
@@ -35,23 +45,23 @@ export default function CmsArticlePage() {
     refetch,
   } = useGetAdminContentsQuery({
     type: "article",
-    limit: 1000,
+    limit: 50,
+    search: debouncedSearch,
   });
 
   const [togglePublish] = useToggleContentPublishMutation();
   const [deleteContent] = useDeleteContentMutation();
-
-  // Note: Breadcrumbs Context usage removed to simplify dependency if context missing
-  // useBreadcrumbs(breadcrumbs);
 
   const content =
     contentsData?.data?.map((item: any) => ({
       id: item.id,
       title: item.title,
       description: item.description || item.slug,
+      category: item.category?.name || "-",
+      duration: "-",
       imgSrc: item.thumbnail_url || defaultImgSrc,
-      isCurrent: item.status === "published",
-      status: item.status,
+      isCurrent: item.status === "published" || item.is_published,
+      status: item.status || (item.is_published ? "published" : "draft"),
     })) || [];
 
   const handlePost = async (id: string) => {
@@ -94,14 +104,15 @@ export default function CmsArticlePage() {
   };
 
   const handleView = (id: string) => {
-    router.push(`/dashboard/artikel`);
+    // Navigate to actual article public page for now
+    router.push(`/dashboard/artikel/${id}`);
   };
 
   return (
     <div className="">
       {/* Enhanced Page Header */}
       <div className="px-10 py-8 bg-gradient-to-br from-white via-gray-50/30 to-[#1CA09A]/5 border-b border-gray-200">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center gap-4">
           <div>
             <div>
               <h1 className="text-3xl font-bold text-gray-800 mb-1">Artikel</h1>
@@ -110,25 +121,52 @@ export default function CmsArticlePage() {
               </p>
             </div>
           </div>
-          <button
-            onClick={handleAdd}
-            className="group flex items-center gap-2.5 px-6 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-[#1CA09A] to-[#178F87] text-white hover:shadow-md hover:scale-105 transition-all duration-200 shadow-md"
-          >
-            <svg
-              className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
+
+          <div className="flex items-center gap-4">
+            {/* Search Input */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Cari artikel..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#1CA09A]/20 focus:border-[#1CA09A] outline-none w-[300px]"
               />
-            </svg>
-            Tambah Artikel
-          </button>
+              <svg
+                className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+
+            <button
+              onClick={handleAdd}
+              className="group flex items-center gap-2.5 px-6 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-[#1CA09A] to-[#178F87] text-white hover:shadow-md hover:scale-105 transition-all duration-200 shadow-md whitespace-nowrap"
+            >
+              <svg
+                className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Tambah Artikel
+            </button>
+          </div>
         </div>
       </div>
       <div className="px-10">
