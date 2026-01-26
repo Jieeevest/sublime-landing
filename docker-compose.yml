@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  sublime-landing:
+    image: sublime-landing
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sublime-landing
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    ports:
+      - "3045:3045"
