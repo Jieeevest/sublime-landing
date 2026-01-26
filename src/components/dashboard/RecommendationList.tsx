@@ -126,7 +126,9 @@ export default function RecommendationList({
 
               {/* Duration */}
               <div className="flex-shrink-0 text-sm text-secondary/60 font-medium">
-                {formatDuration(session.duration)}
+                {session.durationSeconds
+                  ? formatDuration(session.durationSeconds)
+                  : session.duration}
               </div>
 
               {/* Actions */}
