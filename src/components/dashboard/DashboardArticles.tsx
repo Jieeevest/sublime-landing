@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 /**
  * Props for the DashboardArticles component.
@@ -20,6 +21,8 @@ export default function DashboardArticles({
   articles,
   isLoading,
 }: DashboardArticlesProps) {
+  const router = useRouter();
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -54,13 +57,14 @@ export default function DashboardArticles({
           articles.map((article: any, index: number) => (
             <div
               key={index}
-              className="relative rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group cursor-pointer border border-white/14 h-[377px]"
+              onClick={() => router.push(`/dashboard/artikel/${article.slug}`)}
+              className="relative rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group cursor-pointer border border-white/14 h-[377px]"
             >
               {/* Image Background */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary-400 to-primary-600">
-                {article.thumbnail_url ? (
+                {article.cover_image_url ? (
                   <img
-                    src={article.thumbnail_url}
+                    src={article.cover_image_url}
                     alt={article.title}
                     className="w-full h-full object-cover"
                   />

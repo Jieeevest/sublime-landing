@@ -70,10 +70,10 @@ export default function ArticleDetailPage({
       <div className="bg-white">
         {/* Hero Section */}
         <div className="relative bg-gradient-to-br from-primary to-primary-600 h-64">
-          {article.thumbnail_url ? (
+          {article.cover_image_url ? (
             <div className="absolute inset-0">
               <img
-                src={article.thumbnail_url}
+                src={article.cover_image_url}
                 alt={article.title}
                 className="w-full h-full object-cover opacity-50"
               />
@@ -181,7 +181,7 @@ export default function ArticleDetailPage({
                   </h3>
                 ),
                 p: ({ children }: { children?: ReactNode }) => (
-                  <p className="text-secondary/80 mb-4 leading-relaxed">
+                  <p className="text-secondary/80 mb-4 leading-relaxed text-justify">
                     {children}
                   </p>
                 ),
@@ -205,7 +205,7 @@ export default function ArticleDetailPage({
                 ),
               }}
             >
-              {article.content || ""}
+              {article.body || article.content || ""}
             </ReactMarkdown>
           </div>
 
@@ -243,9 +243,9 @@ export default function ArticleDetailPage({
                     <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer">
                       {/* Image */}
                       <div className="aspect-video bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center relative overflow-hidden">
-                        {relatedArticle.thumbnail_url ? (
+                        {relatedArticle.cover_image_url ? (
                           <img
-                            src={relatedArticle.thumbnail_url}
+                            src={relatedArticle.cover_image_url}
                             alt={relatedArticle.title}
                             className="w-full h-full object-cover"
                           />

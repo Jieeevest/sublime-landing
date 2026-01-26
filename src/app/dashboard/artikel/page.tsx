@@ -13,7 +13,7 @@ export default function ArtikelPage() {
     <DashboardLayout activeItem="Artikel">
       <div className="p-8 max-w-7xl mx-auto space-y-8">
         {/* Header */}
-        <div className="space-y-2">
+        <div className="space-y-2  mb-3 ">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path
@@ -38,11 +38,11 @@ export default function ArtikelPage() {
             {/* Featured Article (First one) */}
             {articles[0] && (
               <Link href={`/dashboard/artikel/${articles[0].slug}`}>
-                <div className="relative bg-gradient-to-br from-primary-100 to-primary-200 rounded-3xl overflow-hidden h-96 group cursor-pointer">
+                <div className="hover:scale-[1.005] transition-all  relative bg-gradient-to-br from-primary-100 to-primary-200 rounded-3xl overflow-hidden h-96 group cursor-pointer">
                   {/* Placeholder or Real Image */}
-                  {articles[0].thumbnail_url ? (
+                  {articles[0].cover_image_url ? (
                     <img
-                      src={articles[0].thumbnail_url}
+                      src={articles[0].cover_image_url}
                       alt={articles[0].title}
                       className="absolute inset-0 w-full h-full object-cover"
                     />
@@ -108,9 +108,9 @@ export default function ArtikelPage() {
                     <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer border border-gray-100">
                       {/* Image */}
                       <div className="aspect-video bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center relative overflow-hidden">
-                        {article.thumbnail_url ? (
+                        {article.cover_image_url ? (
                           <img
-                            src={article.thumbnail_url}
+                            src={article.cover_image_url}
                             alt={article.title}
                             className="w-full h-full object-cover"
                           />
