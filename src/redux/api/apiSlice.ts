@@ -35,6 +35,7 @@ export const apiSlice = createApi({
     "Invoices",
     "Uploads",
     "Files",
+    "AI",
   ],
   endpoints: () => ({}),
 });

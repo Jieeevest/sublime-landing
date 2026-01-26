@@ -731,6 +731,56 @@ export const sublimeApi = apiSlice.injectEndpoints({
     }),
 
     // =========================================================================
+    // AI Chat
+    // =========================================================================
+    chat: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/ai/chat",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getChatSessions: builder.query({
+      query: () => "/api/v1/ai/chats",
+      providesTags: ["AI"],
+    }),
+    getChatSessionById: builder.query({
+      query: (id) => `/api/v1/ai/chats/${id}`,
+      providesTags: (result, error, id) => [{ type: "AI", id }],
+    }),
+
+    // =========================================================================
+    // Affiliate Banks
+    // =========================================================================
+    getBanks: builder.query({
+      query: () => "/api/v1/affiliates/banks",
+      providesTags: ["Affiliates"],
+    }),
+    addBank: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/affiliates/banks",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Affiliates"],
+    }),
+    deleteBank: builder.mutation({
+      query: (id) => ({
+        url: `/api/v1/affiliates/banks/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Affiliates"],
+    }),
+    getSupportedBanks: builder.query({
+      query: () => "/api/v1/affiliates/banks/list",
+      providesTags: ["Affiliates"],
+    }),
+    getWithdrawalBalance: builder.query({
+      query: () => "/api/v1/affiliates/withdrawals/balance",
+      providesTags: ["Affiliates"],
+    }),
+
+    // =========================================================================
     // Files (CDN) - Usually handled directly by the browser via URL, but if an
     // endpoint wrapper is needed for logic:
     // =========================================================================
@@ -877,6 +927,18 @@ export const {
   useUploadThumbnailMutation,
   useUploadAudioWithThumbnailMutation,
   useUploadAvatarMutation,
+
+  // AI Chat
+  useChatMutation,
+  useGetChatSessionsQuery,
+  useGetChatSessionByIdQuery,
+
+  // Affiliate Banks
+  useGetBanksQuery,
+  useAddBankMutation,
+  useDeleteBankMutation,
+  useGetSupportedBanksQuery,
+  useGetWithdrawalBalanceQuery,
 
   // Files
   useGetFileQuery,

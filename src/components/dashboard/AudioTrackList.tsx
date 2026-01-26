@@ -2,7 +2,9 @@
 
 import { useAudio } from "@/contexts/AudioContext";
 import { AudioSession } from "@/data/audioSessions";
+import { useGetMySubscriptionQuery } from "@/redux/api/sublimeApi";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface AudioTrackListProps {
   sessions: AudioSession[];
@@ -13,7 +15,10 @@ export default function AudioTrackList({
   sessions,
   title = "Audio Pilihan untuk Anda",
 }: AudioTrackListProps) {
+  const router = useRouter();
   const { playTrack, currentTrack } = useAudio();
+  const { data: subscriptionData } = useGetMySubscriptionQuery(undefined);
+  const isSubscribed = subscriptionData?.is_subscribed ?? false;
 
   return (
     <div className="flex flex-col gap-[24px]">
@@ -40,7 +45,11 @@ export default function AudioTrackList({
             return (
               <div
                 key={session.id}
-                className="flex items-center px-6 py-3 gap-[24px] rounded-lg cursor-pointer group hover:bg-white/50 transition-colors"
+                className={`relative overflow-hidden flex items-center px-6 py-3 gap-[24px] rounded-lg group transition-colors ${
+                  isSubscribed
+                    ? "cursor-pointer hover:bg-white/50"
+                    : "cursor-default hover:bg-gray-50/50"
+                }`}
                 style={{
                   height: "68px",
                 }}
@@ -60,7 +69,7 @@ export default function AudioTrackList({
                 {/* Thumbnail */}
                 <div
                   className="w-[44px] h-[44px] rounded-[8px] overflow-hidden flex-shrink-0 relative group-hover:scale-105 transition-transform"
-                  onClick={() => playTrack(session)}
+                  onClick={() => isSubscribed && playTrack(session)}
                 >
                   {/* Image Placeholder / Gradient */}
                   <Image
@@ -158,6 +167,52 @@ export default function AudioTrackList({
                     <circle cx="16" cy="10" r="2" fill="#8E8E8E" />
                   </svg>
                 </button>
+
+                {/* Subscription Overlay */}
+                {!isSubscribed && (
+                  <div className="absolute inset-0 bg-[#0F0F0F]/30 flex flex-row items-center justify-center gap-6 opacity-0 group-hover:opacity-100 transition-all duration-300 z-50 backdrop-blur-[2px]">
+                    <div className="flex items-center gap-3">
+                      <div className="p-1.5 bg-white/20 rounded-full backdrop-blur-md">
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="white"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect
+                            x="3"
+                            y="11"
+                            width="18"
+                            height="11"
+                            rx="2"
+                            ry="2"
+                          />
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                      </div>
+                      <p
+                        className="text-white text-sm font-medium tracking-wide"
+                        style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+                      >
+                        Silahkan berlangganan untuk menikmati audio
+                      </p>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push("/dashboard/subscriptions");
+                      }}
+                      className="px-5 py-2 bg-white text-[#1F1F1F] rounded-full text-xs font-semibold hover:bg-gray-100 transition-transform hover:scale-105 shadow-lg"
+                      style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+                    >
+                      Berlangganan Sekarang
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })

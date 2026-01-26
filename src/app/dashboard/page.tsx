@@ -9,6 +9,7 @@ import { AudioSession } from "@/data/audioSessions";
 import {
   useGetAudiosQuery,
   useGetPublicContentsQuery,
+  useGetMySubscriptionQuery,
 } from "@/redux/api/sublimeApi";
 
 /**
@@ -23,6 +24,10 @@ export default function DashboardPage() {
   // Fetch articles data
   const { data: articlesData, isLoading: isLoadingArticles } =
     useGetPublicContentsQuery({ type: "article", limit: 3 });
+
+  // Fetch subscription status
+  const { data: subscriptionData } = useGetMySubscriptionQuery(undefined);
+  const isSubscribed = subscriptionData?.is_subscribed ?? false;
 
   // Use real data or fallback to empty array
   // API returns { success: true, data: [...] }
@@ -68,7 +73,7 @@ export default function DashboardPage() {
           <AudioTrackList sessions={sessions.length > 0 ? sessions : []} />
         )}
 
-        <DashboardPromoCards />
+        {!isSubscribed && <DashboardPromoCards />}
 
         <DashboardArticles articles={articles} isLoading={isLoadingArticles} />
       </div>

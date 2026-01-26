@@ -1,12 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 /**
  * DashboardPromoCards component.
  * Displays the subscription promotion and chatbot prompt cards with specific styling.
  */
 export default function DashboardPromoCards() {
+  const router = useRouter();
   return (
     <div className="flex flex-col xl:flex-row gap-[40px] w-full max-w-[1267px] mx-auto">
       {/* ==============================================
@@ -157,7 +159,6 @@ export default function DashboardPromoCards() {
                 className="object-contain object-right"
               />
             </div>
-
             {/* Description */}
             <p
               className="text-[#023347] text-right"
@@ -171,9 +172,11 @@ export default function DashboardPromoCards() {
               Tanpa perpanjangan otomatis. Tidak ada autodebet. Kamu tetap
               sepenuhnya mengontrol langgananmu.
             </p>
-
             {/* Button */}
-            <button className="flex items-center justify-center px-[20px] py-[10px] bg-[#3197A5] hover:bg-[#288a96] rounded-full text-white transition-colors">
+            <button
+              onClick={() => router.push("/dashboard/subscriptions")}
+              className="flex items-center justify-center px-[20px] py-[10px] bg-[#3197A5] hover:bg-[#288a96] rounded-full text-white transition-colors"
+            >
               <span style={{ fontSize: "16px", fontWeight: 500 }}>
                 Mulai Berlangganan
               </span>
@@ -232,7 +235,10 @@ export default function DashboardPromoCards() {
             Diskusi dengan Dokter Via kapan saja.
           </p>
 
-          <button className="flex items-center justify-center px-[20px] py-[8px] bg-white text-[#1F1F1F] rounded-full w-fit mt-2 hover:scale-105 transition-transform">
+          <button
+            onClick={() => router.push("/dashboard/ai-chat")}
+            className="flex items-center justify-center px-[20px] py-[8px] bg-white text-[#1F1F1F] rounded-full w-fit mt-2 hover:scale-105 transition-transform"
+          >
             <span style={{ fontSize: "16px", fontWeight: 500 }}>
               Chat Sekarang
             </span>
