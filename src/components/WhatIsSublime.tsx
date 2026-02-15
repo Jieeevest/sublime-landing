@@ -67,10 +67,13 @@ export default function WhatIsSublime() {
 
         {/* Description */}
         <p className={`${styles.description} font-normal text-center`}>
-          Strovia adalah terapi audio modern yang menggunakan frekuensi 528 Hz,
+          {/* Strovia adalah terapi audio modern yang menggunakan frekuensi 528 Hz,
           afirmasi lembut, dan pendamping AI untuk membantu menghadirkan
           ketenangan, kejernihan, dan dukungan dalam proses pemulihan setiap
-          hari.
+          hari. */}
+          Strovia adalah audio subliminal berbasis frekuensi khusus yang
+          tujuannya membangkitkan kemampuan pemulihan mandiri dalam diri
+          penderita stroke.
         </p>
       </div>
 
@@ -105,12 +108,15 @@ export default function WhatIsSublime() {
               }}
             >
               <h3 className={`${styles.cardTitle} font-semibold`}>
-                Frekuensi Terapi 528 Hz
+                Audio Strovia 528 Hz
               </h3>
               <p className={`${styles.cardDescription} font-normal`}>
-                Setiap audio dirancang menggunakan frekuensi 528 Hz untuk
+                {/* Setiap audio dirancang menggunakan frekuensi 528 Hz untuk
                 membantu tubuh dan pikiran kembali ke ritme yang lebih tenang
-                dan seimbang.
+                dan seimbang. */}
+                Frekuensi 528Hz adalah frekuensi yang dapat mempengaruhi
+                gelombang otak agar tubuh dapat mengalami relaksasi yang sangat
+                mendalam.
               </p>
             </div>
 
@@ -167,7 +173,8 @@ export default function WhatIsSublime() {
                         color: "#FFFFFF",
                       }}
                     >
-                      Stroke Recovery Calm Indonesian Version
+                      {/* Stroke Recovery Calm Indonesian Version */}
+                      Audio Strovia Versi Bahasa Indonesia
                     </p>
                     <p
                       className="font-normal"
@@ -228,13 +235,15 @@ export default function WhatIsSublime() {
                 Afirmasi Subliminal
               </h3>
               <p className={`${styles.cardDescription} font-normal`}>
-                Pesan afirmasi disematkan secara halus untuk mendukung fokus,
-                suasana hati, dan kestabilan emosi.
+                {/* Pesan afirmasi disematkan secara halus untuk mendukung fokus,
+                suasana hati, dan kestabilan emosi. */}
+                Pesan positif yang disampaikan secara tersembunyi ke pikiran
+                bawah sadar sehingga pesan dapat bekerja secara efektif.
               </p>
             </div>
 
             {/* Affirmation Texts */}
-            <div
+            {/* <div
               className="flex flex-col justify-center items-center"
               style={{
                 padding: "0px",
@@ -267,7 +276,7 @@ export default function WhatIsSublime() {
               >
                 Aku semakin kuat setiap hari.
               </p>
-            </div>
+            </div> */}
 
             {/* Blur Effect for this card */}
             <div
@@ -353,8 +362,8 @@ export default function WhatIsSublime() {
               Pendamping AI Personal
             </h3>
             <p className={`${styles.cardDescription} font-normal`}>
-              AI pendamping yang siap membantu dengan panduan dan dukungan yang
-              disesuaikan dengan kebutuhan Anda.
+              AI pendamping yang siap membantu memberikan segala informasi yang
+              Anda butuhkan.
             </p>
           </div>
 

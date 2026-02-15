@@ -31,17 +31,21 @@ export default function Hero() {
           <div className={`${styles.contentWrapper} flex flex-col items-start`}>
             {/* Heading */}
             <h1 className={styles.heading}>
-              Panduan Penyembuhan untuk Perjalanan Pemulihan Stroke yang Lebih
-              Tenang
+              {/* Panduan Penyembuhan untuk Perjalanan Pemulihan Stroke yang Lebih
+              Tenang */}
+              Audio Subliminal yang memicu pemulihan mandiri penderita stroke
             </h1>
 
             {/* Description */}
-            <p className={`${styles.description} flex items-center`}>
-              Strovia memadukan terapi suara 528 Hz, afirmasi l embut, dan
+            {/* <p className={`${styles.description} flex items-center`}> */}
+            {/* Strovia memadukan terapi suara 528 Hz, afirmasi l embut, dan
               dukungan AI yang dipersonalisasi untuk membantu menenangkan
               pikiran, meningkatkan fokus, serta mendampingi setiap langkah
-              pemulihan Anda — satu sesi damai pada satu waktu.
-            </p>
+              pemulihan Anda — satu sesi damai pada satu waktu. */}
+            {/* Strovia adalah audio subliminal berbasis frekuensi khusus yang
+              tujuannya membangkitkan kemampuan pemulihan mandiri dalam diri
+              penderita stroke */}
+            {/* </p> */}
           </div>
 
           {/* Action Buttons */}
@@ -149,7 +153,8 @@ export default function Hero() {
                           color: "#FFFFFF",
                         }}
                       >
-                        Stroke Recovery Calm Indonesian Version
+                        {/* Stroke Recovery Calm Indonesian Version */}
+                        Audio Strovia Versi Bahasa Indonesia
                       </p>
                       <p
                         className="font-normal"
@@ -192,7 +197,8 @@ export default function Hero() {
 
           {/* Affirmation Header */}
           <h3 className={`${styles.affirmationTitle} font-bold text-center`}>
-            Audio terapi dan afirmasi penuh kesadaran, dalam satu tempat.
+            {/* Audio terapi dan afirmasi penuh kesadaran, dalam satu tempat. */}
+            Audio Subliminal Strovia
           </h3>
 
           {/* Affirmation Card with Glassmorphism */}

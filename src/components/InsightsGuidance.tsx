@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import { useGetPublicContentsQuery } from "@/redux/api/sublimeApi";
 import styles from "./InsightsGuidance.module.css";
+import Image from "next/image";
 
 // Type for article data
 interface Article {
@@ -16,6 +17,17 @@ interface Article {
 
 export default function InsightsGuidance() {
   const router = useRouter();
+
+  const isOptimizable = (src: string) => {
+    try {
+      if (!src) return false;
+      if (src.startsWith("/")) return true;
+      const url = new URL(src);
+      return ["localhost", "72.61.215.67"].includes(url.hostname);
+    } catch {
+      return true;
+    }
+  };
 
   // Fetch articles from API - get 3 most recent published articles
   const { data, isLoading, error } = useGetPublicContentsQuery({
@@ -40,9 +52,7 @@ export default function InsightsGuidance() {
       id: content.id,
       slug: content.slug,
       image:
-        content.cover_image_url ||
-        content.thumbnail_url ||
-        "/article-placeholder.jpg",
+        content.cover_image_url || content.thumbnail_url || "/image-cover.png",
       date: formatDate(content.published_at || content.created_at),
       title: content.title,
     })) || [];
@@ -141,20 +151,25 @@ export default function InsightsGuidance() {
               className={`${styles.articleCard} flex flex-col justify-space-between items-start`}
               onClick={() => handleArticleClick(article.slug)}
             >
-              {/* Image Background */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  background: `linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%), url(${article.image})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  borderRadius: "20px",
-                }}
-              />
+              {/* Image Layer */}
+              <div className={styles.imageWrapper} aria-hidden="true">
+                <div className={styles.imageMedia}>
+                  <Image
+                    src={article.image}
+                    alt={article.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
+                    quality={50}
+                    priority={index === 0}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "low"}
+                    unoptimized={!isOptimizable(article.image)}
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+                <div className={styles.imageDim} />
+                <div className={styles.imageGradient} />
+              </div>
 
               {/* Text Overlay */}
               <div

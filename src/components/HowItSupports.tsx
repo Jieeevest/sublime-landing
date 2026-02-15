@@ -40,12 +40,12 @@ export default function HowItSupports() {
 
         {/* Main Heading */}
         <h2 className={`${styles.heading} font-bold text-center`}>
-          Bagaimana Sublime Mendukung Proses Pemulihan Anda
+          Bagaimana Strovia Mendukung Proses Pemulihan Anda
         </h2>
 
         {/* Description */}
         <p className={`${styles.description} font-normal text-center`}>
-          Sublime menggunakan pendekatan terapi audio yang lembut untuk membantu
+          Strovia menggunakan pendekatan audio yang lembut untuk membantu
           menciptakan kondisi pikiran dan emosi yang lebih tenang, sehingga
           tubuh dapat menjalani proses pemulihan secara alami.
         </p>
@@ -55,7 +55,7 @@ export default function HowItSupports() {
       <div
         className={`${styles.contentContainer} flex flex-col items-flex-start`}
       >
-        {/* Card 1 - Frekuensi Terapi 528 Hz */}
+        {/* Card 1 - Frekuensi 528 Hz */}
         <div className={`${styles.card} flex flex-col items-start rounded-2xl`}>
           <div
             className="flex flex-col justify-center items-start"
@@ -67,11 +67,11 @@ export default function HowItSupports() {
             }}
           >
             <h3 className={`${styles.cardTitle} font-semibold`}>
-              Frekuensi Terapi 528 Hz
+              Frekuensi 528 Hz
             </h3>
             <div className={`${styles.cardDescription} font-normal`}>
               <p style={{ marginBottom: "16px" }}>
-                Setiap audio Sublime dirancang menggunakan frekuensi 528 Hz,
+                Setiap audio Strovia dirancang menggunakan frekuensi 528 Hz,
                 yang sering dikaitkan dengan ketenangan, keseimbangan, dan
                 relaksasi mendalam. Beberapa penelitian ilmiah menunjukkan bahwa
                 stimulasi suara non-invasif dapat membantu:
@@ -112,7 +112,7 @@ export default function HowItSupports() {
               className={`${styles.cardDescription} font-normal`}
               style={{ alignSelf: "stretch" }}
             >
-              Sublime juga menyematkan afirmasi positif subliminal secara halus
+              Strovia juga menyematkan afirmasi positif subliminal secara halus
               di dalam audio. Afirmasi ini tidak terdengar secara sadar, namun
               tetap dapat diterima oleh alam bawah sadar. Penelitian di jurnal{" "}
               <em>Frontiers in Human Neuroscience</em> menunjukkan bahwa

@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   title: "Sublime - Guided Audio Therapy",
   description:
     "Guided healing for a smoother recovery journey with 432 Hz audio therapy.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
