@@ -110,7 +110,7 @@ export default function InsightsGuidance() {
 
         {/* Heading */}
         <h2 className={`${styles.heading} font-bold text-center`}>
-          Panduan untuk membantu Anda tetap tenang dan seimbang.
+          Panduan untuk membantu Anda tetap tenang dan seimbang
         </h2>
       </div>
 
@@ -157,23 +157,48 @@ export default function InsightsGuidance() {
               {/* Image Layer */}
               <div className={styles.imageWrapper} aria-hidden="true">
                 <div className={styles.imageMedia}>
-                  <Image
-                    src={
-                      fallbacks[article.id] ? "/image-cover.png" : article.image
+                  {(() => {
+                    const original = fallbacks[article.id]
+                      ? "/image-cover.png"
+                      : article.image;
+                    let effective = original;
+                    if (!fallbacks[article.id]) {
+                      try {
+                        const u = new URL(article.image);
+                        if (u.hostname.toLowerCase().endsWith("strovia.app")) {
+                          effective = `/api/image-proxy?src=${encodeURIComponent(
+                            article.image,
+                          )}`;
+                        }
+                      } catch {
+                        /* noop */
+                      }
                     }
-                    alt={article.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
-                    quality={50}
-                    priority={index === 0}
-                    loading={index === 0 ? "eager" : "lazy"}
-                    fetchPriority={index === 0 ? "high" : "low"}
-                    unoptimized={!isOptimizable(article.image)}
-                    style={{ objectFit: "cover" }}
-                    onError={() =>
-                      setFallbacks((prev) => ({ ...prev, [article.id]: true }))
-                    }
-                  />
+                    const unopt =
+                      effective.startsWith("/api/image-proxy") ||
+                      !isOptimizable(effective);
+                    return (
+                      <Image
+                        src={effective}
+                        alt={article.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
+                        quality={50}
+                        priority={index === 0}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        fetchPriority={index === 0 ? "high" : "low"}
+                        unoptimized={unopt}
+                        style={{ objectFit: "cover" }}
+                        referrerPolicy="no-referrer"
+                        onError={() =>
+                          setFallbacks((prev) => ({
+                            ...prev,
+                            [article.id]: true,
+                          }))
+                        }
+                      />
+                    );
+                  })()}
                 </div>
                 <div className={styles.imageDim} />
                 <div className={styles.imageGradient} />
