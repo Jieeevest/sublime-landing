@@ -8,10 +8,23 @@ import {
   useUploadThumbnailMutation,
 } from "@/redux/api/sublimeApi";
 import { toast } from "react-hot-toast";
+import { useI18n } from "@/i18n";
+
+type FormState = {
+  title: string;
+  subtitle: string;
+  description: string;
+  category_id: string;
+  is_premium: boolean;
+  frequency: string;
+  duration: string;
+  audio_url: string;
+  thumbnail_url: string;
+};
 
 interface AudioFormProps {
-  initialData?: any;
-  onSubmit: (data: any) => Promise<void>;
+  initialData?: Partial<FormState>;
+  onSubmit: (data: FormState) => Promise<void>;
   isLoading: boolean;
   title: string;
 }
@@ -23,11 +36,12 @@ export default function AudioForm({
   title,
 }: AudioFormProps) {
   const router = useRouter();
+  const { t } = useI18n();
   const { data: categoriesData } = useGetCategoriesQuery(undefined);
   const [uploadAudio] = useUploadAudioMutation();
   const [uploadThumbnail] = useUploadThumbnailMutation();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormState>({
     title: "",
     subtitle: "",
     description: "",
@@ -111,18 +125,17 @@ export default function AudioForm({
         currentThumbnailUrl = thumbRes.data.url;
       }
 
-      const payload = {
+      const payload: FormState = {
         ...formData,
         audio_url: currentAudioUrl,
         thumbnail_url: currentThumbnailUrl,
       };
 
       await onSubmit(payload);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Form submission error:", error);
-      toast.error(
-        error?.data?.message || "Terjadi kesalahan saat menyimpan data",
-      );
+      const message = (error as { data?: { message?: string } })?.data?.message;
+      toast.error(message ?? t("audio_form_submit_failed"));
     } finally {
       setIsUploading(false);
     }
@@ -137,7 +150,7 @@ export default function AudioForm({
           {/* Title */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">
-              Judul Audio
+              {t("audio_form_label_title")}
             </label>
             <input
               type="text"
@@ -146,14 +159,14 @@ export default function AudioForm({
               onChange={handleChange}
               required
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-              placeholder="Contoh: Deep Focus"
+              placeholder={t("audio_form_placeholder_title")}
             />
           </div>
 
           {/* Subtitle */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">
-              Subtitle
+              {t("audio_form_label_subtitle")}
             </label>
             <input
               type="text"
@@ -161,7 +174,7 @@ export default function AudioForm({
               value={formData.subtitle}
               onChange={handleChange}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-              placeholder="Contoh: Musik untuk fokus bekerja"
+              placeholder={t("audio_form_placeholder_subtitle")}
             />
           </div>
         </div>
@@ -170,7 +183,7 @@ export default function AudioForm({
           {/* Category */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">
-              Kategori
+              {t("audio_form_label_category")}
             </label>
             <select
               name="category_id"
@@ -179,8 +192,8 @@ export default function AudioForm({
               required
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
             >
-              <option value="">Pilih Kategori</option>
-              {categoriesData?.data?.map((cat: any) => (
+              <option value="">{t("audio_form_select_category")}</option>
+              {categoriesData?.data?.map((cat: { id: string; name: string }) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name}
                 </option>
@@ -191,7 +204,7 @@ export default function AudioForm({
           {/* Frequency */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">
-              Frekuensi
+              {t("audio_form_label_frequency")}
             </label>
             <input
               type="text"
@@ -199,21 +212,21 @@ export default function AudioForm({
               value={formData.frequency}
               onChange={handleChange}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-              placeholder="Contoh: 528Hz"
+              placeholder={t("audio_form_placeholder_frequency")}
             />
           </div>
         </div>
 
         {/* Description */}
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-gray-700">Deskripsi</label>
+          <label className="text-sm font-medium text-gray-700">{t("audio_form_label_description")}</label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
             rows={4}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none"
-            placeholder="Deskripsi singkat tentang audio ini..."
+            placeholder={t("audio_form_placeholder_description")}
           />
         </div>
 
@@ -221,7 +234,7 @@ export default function AudioForm({
           {/* Audio File */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">
-              File Audio
+              {t("audio_form_label_audio_file")}
             </label>
             <div className="border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition-colors">
               <input
@@ -232,7 +245,7 @@ export default function AudioForm({
               />
               {formData.audio_url && !audioFile && (
                 <p className="text-xs text-gray-500 mt-2 truncate">
-                  Current: {formData.audio_url}
+                  {t("audio_form_current")}: {formData.audio_url}
                 </p>
               )}
             </div>
@@ -241,7 +254,7 @@ export default function AudioForm({
           {/* Thumbnail File */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">
-              Thumbnail
+              {t("audio_form_label_thumbnail")}
             </label>
             <div className="border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition-colors">
               <input
@@ -254,7 +267,7 @@ export default function AudioForm({
                 <div className="mt-2">
                   <img
                     src={formData.thumbnail_url}
-                    alt="Current thumbnail"
+                    alt={t("audio_form_alt_current_thumbnail")}
                     className="h-10 w-10 object-cover rounded"
                   />
                 </div>
@@ -266,14 +279,14 @@ export default function AudioForm({
         <div className="grid grid-cols-1 Md:grid-cols-2 gap-6">
           {/* Duration */}
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-gray-700">Durasi</label>
+            <label className="text-sm font-medium text-gray-700">{t("audio_form_label_duration")}</label>
             <input
               type="text"
               name="duration"
               value={formData.duration}
               onChange={handleChange}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-              placeholder="Contoh: 15:00"
+              placeholder={t("audio_form_placeholder_duration")}
             />
           </div>
 
@@ -300,7 +313,7 @@ export default function AudioForm({
               htmlFor="is_premium"
               className="text-sm font-medium text-gray-700 cursor-pointer"
             >
-              Konten Premium
+              {t("audio_form_label_premium")}
             </label>
           </div>
         </div>
@@ -312,7 +325,7 @@ export default function AudioForm({
             onClick={() => router.back()}
             className="px-6 py-2.5 border border-gray-300 rounded-full text-gray-700 font-medium hover:bg-gray-50 transition-colors"
           >
-            Batal
+            {t("audio_form_button_cancel")}
           </button>
           <button
             type="submit"
@@ -341,7 +354,7 @@ export default function AudioForm({
                 ></path>
               </svg>
             )}
-            Simpan Audio
+            {t("audio_form_button_save")}
           </button>
         </div>
       </form>

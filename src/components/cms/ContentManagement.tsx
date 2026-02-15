@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useI18n } from "@/i18n";
 
 interface Breadcrumb {
   title: string;
@@ -38,6 +39,7 @@ export default function ContentManagement({
   breadcrumbs,
   showPostAction = true,
 }: ContentManagementProps & { showPostAction?: boolean }) {
+  const { t } = useI18n();
   return (
     <div className="space-y-6 py-6">
       {/* Breadcrumbs */}
@@ -65,19 +67,19 @@ export default function ContentManagement({
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Thumbnail
+                {t("table_thumbnail")}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Judul & Deskripsi
+                {t("table_title_desc")}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Kategori
+                {t("table_category")}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
+                {t("table_status")}
               </th>
               <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Aksi
+                {t("table_action")}
               </th>
             </tr>
           </thead>
@@ -88,7 +90,7 @@ export default function ContentManagement({
                   colSpan={6}
                   className="px-6 py-10 text-center text-gray-500"
                 >
-                  Tidak ada data.
+                  {t("empty_no_data")}
                 </td>
               </tr>
             ) : (
@@ -145,7 +147,7 @@ export default function ContentManagement({
                           : "bg-gray-100 text-gray-800"
                       }`}
                     >
-                      {item.isCurrent ? "Published" : "Draft"}
+                      {item.isCurrent ? t("status_published") : t("status_draft")}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
@@ -153,7 +155,7 @@ export default function ContentManagement({
                       <button
                         onClick={() => handleViewTemplate(item.id)}
                         className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="View"
+                        title={t("action_view")}
                       >
                         <svg
                           className="w-5 h-5"
@@ -179,7 +181,7 @@ export default function ContentManagement({
                       <button
                         onClick={() => handleEditTemplate(item.id)}
                         className="p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                        title="Edit"
+                        title={t("action_edit")}
                       >
                         <svg
                           className="w-5 h-5"
@@ -200,7 +202,7 @@ export default function ContentManagement({
                         <button
                           onClick={() => handlePostTemplate(item.id)}
                           className={`p-2 rounded-lg transition-colors ${item.isCurrent ? "text-orange-500 hover:bg-orange-50" : "text-green-500 hover:bg-green-50"}`}
-                          title={item.isCurrent ? "Unpost" : "Post"}
+                          title={item.isCurrent ? t("action_unpost") : t("action_post")}
                         >
                           {item.isCurrent ? (
                             <svg
@@ -237,7 +239,7 @@ export default function ContentManagement({
                       <button
                         onClick={() => handleDeleteTemplate(item.id)}
                         className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        title="Delete"
+                        title={t("action_delete")}
                       >
                         <svg
                           className="w-5 h-5"

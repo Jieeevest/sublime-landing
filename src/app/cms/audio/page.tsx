@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -8,23 +9,14 @@ import {
   useToggleAudioPublishMutation,
   useDeleteAudioMutation,
 } from "@/redux/api/sublimeApi";
+import { useI18n } from "@/i18n";
 
 const defaultImgSrc =
   "https://i.pinimg.com/564x/39/2a/26/392a261b73dbcd361a0dac2e93a05284.jpg";
 
-const breadcrumbs = [
-  {
-    title: "Home",
-    href: "/cms",
-  },
-  {
-    title: "Audio",
-    href: "/cms/audio",
-  },
-];
-
 export default function CmsAudioPage() {
   const router = useRouter();
+  const { t } = useI18n();
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [isPosted, setIsPosted] = useState(false);
@@ -39,11 +31,7 @@ export default function CmsAudioPage() {
   }, [search]);
 
   // Fetch audios using RTK Query
-  const {
-    data: contentsData,
-    isLoading,
-    refetch,
-  } = useGetAdminAudiosQuery({
+  const { data: contentsData, isLoading } = useGetAdminAudiosQuery({
     limit: 50,
     search: debouncedSearch,
   });
@@ -77,7 +65,9 @@ export default function CmsAudioPage() {
 
     if (
       confirm(
-        isCurrentlyPosted ? "Unpublish this audio?" : "Publish this audio?",
+        isCurrentlyPosted
+          ? t("audio_confirm_unpublish")
+          : t("audio_confirm_publish"),
       )
     ) {
       try {
@@ -86,20 +76,20 @@ export default function CmsAudioPage() {
         setTimeout(() => setIsPosted(false), 3000);
       } catch (err) {
         console.error("Failed to toggle status:", err);
-        alert("Action failed");
+        alert(t("audio_action_failed"));
       }
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this audio?")) {
+    if (confirm(t("audio_delete_confirm"))) {
       try {
         await deleteAudio(id).unwrap();
         setIsDeleted(true);
         setTimeout(() => setIsDeleted(false), 3000);
       } catch (err) {
         console.error("Failed to delete content:", err);
-        alert("Delete failed");
+        alert(t("audio_delete_failed"));
       }
     }
   };
@@ -125,11 +115,9 @@ export default function CmsAudioPage() {
           <div>
             <div>
               <h1 className="text-3xl font-bold text-gray-800 mb-1">
-                Audio Management
+                {t("audio_title")}
               </h1>
-              <p className="text-gray-600 text-base">
-                Kelola konten audio dan track
-              </p>
+              <p className="text-gray-600 text-base">{t("audio_subtitle")}</p>
             </div>
           </div>
 
@@ -138,7 +126,7 @@ export default function CmsAudioPage() {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Cari audio..."
+                placeholder={t("audio_search_placeholder")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#1CA09A]/20 focus:border-[#1CA09A] outline-none w-[300px]"
@@ -175,14 +163,14 @@ export default function CmsAudioPage() {
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-              Tambah Audio
+              {t("audio_add_button")}
             </button>
           </div>
         </div>
       </div>
       <div className="px-10">
         {isLoading ? (
-          <div className="py-10 text-center">Loading Data...</div>
+          <div className="py-10 text-center">{t("audio_loading")}</div>
         ) : (
           <ContentManagement
             handlePostTemplate={handlePost}
@@ -191,7 +179,10 @@ export default function CmsAudioPage() {
             handleEditTemplate={handleEdit}
             handleViewTemplate={handleView}
             contents={content}
-            breadcrumbs={breadcrumbs}
+            breadcrumbs={[
+              { title: t("breadcrumb_home"), href: "/cms" },
+              { title: t("menu_audio"), href: "/cms/audio" },
+            ]}
             showPostAction={false}
           />
         )}
@@ -200,14 +191,17 @@ export default function CmsAudioPage() {
       {/* Simple Alerts */}
       {isPosted && (
         <div className="fixed bottom-10 right-10 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50 shadow-lg">
-          <strong className="font-bold">Success!</strong>
-          <span className="block sm:inline"> Status updated successfully.</span>
+          <strong className="font-bold">{t("common_success")}</strong>
+          <span className="block sm:inline">
+            {" "}
+            {t("audio_success_status_updated")}
+          </span>
         </div>
       )}
       {isDeleted && (
         <div className="fixed bottom-10 right-10 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 shadow-lg">
-          <strong className="font-bold">Deleted!</strong>
-          <span className="block sm:inline"> Audio deleted successfully.</span>
+          <strong className="font-bold">{t("common_deleted")}</strong>
+          <span className="block sm:inline"> {t("audio_deleted_success")}</span>
         </div>
       )}
     </div>

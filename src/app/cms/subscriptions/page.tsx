@@ -6,8 +6,10 @@ import {
   useGetAdminPlansQuery,
   useDeletePlanMutation,
 } from "@/redux/api/sublimeApi";
+import { useI18n } from "@/i18n";
 
 export default function CmsSubscriptionsPage() {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState("subscribers"); // 'subscribers' | 'plans'
 
   // Subscriptions Data
@@ -26,13 +28,13 @@ export default function CmsSubscriptionsPage() {
   const plans = plansData?.data || [];
 
   const handleDeletePlan = async (id: string) => {
-    if (confirm("Are you sure you want to delete this plan?")) {
+    if (confirm(t("plans_confirm_delete"))) {
       try {
         await deletePlan(id).unwrap();
         refetchPlans();
       } catch (e) {
         console.error(e);
-        alert("Failed to delete plan");
+        alert(t("plans_delete_failed"));
       }
     }
   };
@@ -41,12 +43,8 @@ export default function CmsSubscriptionsPage() {
     <div className="p-10 space-y-8">
       <div className="flex justify-between items-center mb-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-1">
-            Subscription Management
-          </h1>
-          <p className="text-gray-600">
-            Manage user subscriptions and pricing plans
-          </p>
+          <h1 className="text-3xl font-bold text-gray-800 mb-1">{t("subscriptions_title")}</h1>
+          <p className="text-gray-600">{t("subscriptions_subtitle")}</p>
         </div>
       </div>
 
@@ -56,13 +54,13 @@ export default function CmsSubscriptionsPage() {
           onClick={() => setActiveTab("subscribers")}
           className={`pb-3 text-sm font-bold transition-colors border-b-2 ${activeTab === "subscribers" ? "border-[#3197A5] text-[#3197A5]" : "border-transparent text-gray-400 hover:text-gray-600"}`}
         >
-          Subscribers List
+          {t("subscriptions_tab_subscribers")}
         </button>
         <button
           onClick={() => setActiveTab("plans")}
           className={`pb-3 text-sm font-bold transition-colors border-b-2 ${activeTab === "plans" ? "border-[#3197A5] text-[#3197A5]" : "border-transparent text-gray-400 hover:text-gray-600"}`}
         >
-          Plans Management
+          {t("subscriptions_tab_plans")}
         </button>
       </div>
 
@@ -73,31 +71,31 @@ export default function CmsSubscriptionsPage() {
             <table className="w-full text-sm text-left">
               <thead className="bg-gray-50 text-gray-500 font-medium">
                 <tr>
-                  <th className="px-6 py-4">User</th>
-                  <th className="px-6 py-4">Plan</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4">Start Date</th>
-                  <th className="px-6 py-4">Next Billing</th>
+                  <th className="px-6 py-4">{t("subscriptions_table_user")}</th>
+                  <th className="px-6 py-4">{t("subscriptions_table_plan")}</th>
+                  <th className="px-6 py-4">{t("subscriptions_table_status")}</th>
+                  <th className="px-6 py-4">{t("subscriptions_table_start")}</th>
+                  <th className="px-6 py-4">{t("subscriptions_table_next_billing")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {isLoadingSubs ? (
                   <tr>
                     <td colSpan={5} className="text-center py-8">
-                      Loading...
+                      {t("common_loading")}
                     </td>
                   </tr>
                 ) : subscriptions.length > 0 ? (
-                  subscriptions.map((sub: any, idx: number) => (
+                  subscriptions.map((sub, idx: number) => (
                     <tr key={idx} className="hover:bg-gray-50/50">
                       <td className="px-6 py-4 font-medium text-gray-800">
-                        {sub.user?.name || sub.user?.email || "Unknown User"}
+                        {sub.user?.name || sub.user?.email || t("subscriptions_unknown_user")}
                         <div className="text-xs text-gray-400 font-normal">
                           {sub.user?.email}
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        {sub.plan?.name || "Unknown Plan"}
+                        {sub.plan?.name || t("subscriptions_unknown_plan")}
                       </td>
                       <td className="px-6 py-4">
                         <span
@@ -125,7 +123,7 @@ export default function CmsSubscriptionsPage() {
                 ) : (
                   <tr>
                     <td colSpan={5} className="text-center py-8 text-gray-400">
-                      No subscriptions found
+                      {t("subscriptions_none")}
                     </td>
                   </tr>
                 )}
@@ -140,14 +138,14 @@ export default function CmsSubscriptionsPage() {
         <div className="space-y-6">
           <div className="flex justify-end">
             <button className="bg-[#3197A5] text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-[#288a96] transition-colors">
-              + Create New Plan
+              {t("plans_create_button")}
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {isLoadingPlans ? (
-              <div>Loading Plans...</div>
+              <div>{t("plans_loading")}</div>
             ) : (
-              plans.map((plan: any) => (
+              plans.map((plan) => (
                 <div
                   key={plan.id}
                   className="bg-white p-6 rounded-2xl border border-gray-200 hover:border-[#3197A5] transition-colors group relative"
@@ -166,13 +164,13 @@ export default function CmsSubscriptionsPage() {
                   </p>
                   <div className="flex gap-2">
                     <button className="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 py-2 rounded-lg text-sm font-bold transition-colors">
-                      Edit
+                      {t("action_edit")}
                     </button>
                     <button
                       onClick={() => handleDeletePlan(plan.id)}
                       className="flex-1 bg-red-50 hover:bg-red-100 text-red-700 py-2 rounded-lg text-sm font-bold transition-colors"
                     >
-                      Delete
+                      {t("action_delete")}
                     </button>
                   </div>
                 </div>

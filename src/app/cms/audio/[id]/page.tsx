@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { use, useEffect } from "react";
+import { use } from "react";
 import AudioForm from "@/components/cms/audio/AudioForm";
 import {
   useGetAudioByIdQuery,
@@ -8,6 +9,7 @@ import {
 } from "@/redux/api/sublimeApi";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { useI18n } from "@/i18n";
 
 export default function EditAudioPage({
   params,
@@ -16,6 +18,7 @@ export default function EditAudioPage({
 }) {
   const { id } = use(params);
   const router = useRouter();
+  const { t } = useI18n();
   const { data: audioData, isLoading: isFetching } = useGetAudioByIdQuery({
     id,
   });
@@ -24,10 +27,11 @@ export default function EditAudioPage({
   const handleSubmit = async (data: any) => {
     try {
       await updateAudio({ id, ...data }).unwrap();
-      toast.success("Audio berhasil diperbarui!");
+      toast.success(t("audio_update_success"));
       router.push("/cms/audio");
     } catch (error: any) {
-      toast.error(error?.data?.message || "Gagal memperbarui audio");
+      console.error(error);
+      toast.error(t("audio_update_failed"));
     }
   };
 
@@ -42,12 +46,14 @@ export default function EditAudioPage({
   return (
     <div className="p-8 w-full">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Edit Audio</h1>
-        <p className="text-gray-500 mt-1">Perbarui detail konten audio</p>
+        <h1 className="text-2xl font-bold text-gray-900">
+          {t("audio_edit_page_title")}
+        </h1>
+        <p className="text-gray-500 mt-1">{t("audio_edit_page_subtitle")}</p>
       </div>
 
       <AudioForm
-        title="Form Edit Audio"
+        title={t("audio_form_edit_title")}
         initialData={audioData?.data}
         onSubmit={handleSubmit}
         isLoading={isUpdating}
