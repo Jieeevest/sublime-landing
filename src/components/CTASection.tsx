@@ -122,7 +122,7 @@ export default function CTASection() {
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "scale(1.05)";
               e.currentTarget.style.boxShadow =
-                "0 0 15px rgba(49, 151, 165, 0.5)";
+                "0 10px 15px -3px rgba(49, 151, 165, 0.3)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "scale(1)";
@@ -152,6 +152,22 @@ export default function CTASection() {
               height: "40px",
               background: "#FFFFFF",
               border: "1px solid #E1E1E1",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.05)";
+              e.currentTarget.style.boxShadow =
+                "0 10px 15px -3px rgba(49, 151, 165, 0.15)";
+              e.currentTarget.style.borderColor = "#3197A5";
+              const label = e.currentTarget.querySelector("span") as HTMLSpanElement | null;
+              if (label) label.style.color = "#3197A5";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "none";
+              e.currentTarget.style.borderColor = "#E1E1E1";
+              const label = e.currentTarget.querySelector("span") as HTMLSpanElement | null;
+              if (label) label.style.color = "#1F1F1F";
             }}
           >
             {/* Download Icon */}

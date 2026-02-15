@@ -50,7 +50,6 @@ export default function Hero() {
 
           {/* Action Buttons */}
           <div className={`${styles.buttonGroup} flex flex-row items-start`}>
-            {/* Primary Button */}
             <button
               className={`${styles.primaryButton} flex flex-row justify-center items-center`}
             >
@@ -59,7 +58,6 @@ export default function Hero() {
               </span>
             </button>
 
-            {/* Outline Button */}
             <button
               className={`${styles.outlineButton} flex flex-row justify-center items-center`}
             >

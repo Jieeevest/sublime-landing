@@ -105,6 +105,8 @@
 .outlineButton:hover {
   border-color: #3197a5;
   color: #3197a5;
+  transform: scale(1.05);
+  box-shadow: 0 10px 15px -3px rgba(49, 151, 165, 0.15);
 }
 
 .buttonText {

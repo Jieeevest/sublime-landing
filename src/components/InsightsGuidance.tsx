@@ -230,7 +230,6 @@ export default function InsightsGuidance() {
       >
         <span className={styles.ctaButtonText}>Lihat Semua</span>
 
-        {/* Arrow Icon */}
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
           <path
             d="M5 10h10m0 0l-4-4m4 4l-4 4"
