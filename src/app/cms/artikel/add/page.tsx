@@ -9,13 +9,39 @@ export default function ArticleAdd() {
   const router = useRouter();
   const [createContent, { isLoading }] = useCreateContentMutation();
 
-  const handleSubmit = async (data: any) => {
+  type CreateArticlePayload = {
+    title: string;
+    excerpt: string;
+    body: string;
+    type: "article";
+    category: string;
+    cover_image_url?: string;
+    tags?: string[];
+    is_published: boolean;
+    is_featured: boolean;
+    seo_title?: string;
+    seo_description?: string;
+  };
+
+  const handleSubmit = async (data: CreateArticlePayload) => {
     try {
       await createContent({ ...data, type: "article" }).unwrap();
       toast.success("Artikel berhasil ditambahkan!");
       router.push("/cms/artikel");
-    } catch (error: any) {
-      toast.error(error?.data?.message || "Gagal menambahkan artikel");
+    } catch (error: unknown) {
+      let message = "Gagal menambahkan artikel";
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "data" in error &&
+        typeof (error as { data?: unknown }).data === "object" &&
+        (error as { data?: { message?: unknown } }).data?.message &&
+        typeof (error as { data: { message: unknown } }).data.message ===
+          "string"
+      ) {
+        message = (error as { data: { message: string } }).data.message;
+      }
+      toast.error(message);
     }
   };
 

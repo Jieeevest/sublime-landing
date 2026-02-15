@@ -7,13 +7,48 @@ import {
   useGetContentCategoriesQuery,
 } from "@/redux/api/sublimeApi";
 import { toast } from "react-hot-toast";
+import RichTextEditor from "@/components/common/RichTextEditor";
+
+type ArticleContent = {
+  title?: string;
+  excerpt?: string;
+  body?: string;
+  category?: { name?: string } | string | null;
+  cover_image_url?: string | null;
+  thumbnail_url?: string | null;
+  cover_image?: string | null;
+  tags?: string[];
+  is_published?: boolean;
+  is_featured?: boolean;
+  seo_title?: string | null;
+  seo_description?: string | null;
+};
+
+type ArticlePayload = {
+  title: string;
+  excerpt: string;
+  body: string;
+  type: "article";
+  category: string;
+  cover_image_url: string;
+  tags: string[];
+  is_published: boolean;
+  is_featured: boolean;
+  seo_title: string;
+  seo_description: string;
+};
 
 interface ArticleFormProps {
-  initialData?: any;
-  onSubmit: (data: any) => Promise<void>;
+  initialData?: ArticleContent;
+  onSubmit: (data: ArticlePayload) => Promise<void>;
   isLoading: boolean;
   title: string;
 }
+
+const getCategoryString = (cat: ArticleContent["category"]) => {
+  if (!cat) return "";
+  return typeof cat === "string" ? cat : (cat.name ?? "");
+};
 
 export default function ArticleForm({
   initialData,
@@ -47,7 +82,7 @@ export default function ArticleForm({
         title: initialData.title || "",
         excerpt: initialData.excerpt || "",
         body: initialData.body || "",
-        category: initialData.category?.name || initialData.category || "",
+        category: getCategoryString(initialData.category),
         cover_image_url:
           initialData.cover_image_url ||
           initialData.thumbnail_url ||
@@ -97,7 +132,9 @@ export default function ArticleForm({
         const thumbFormData = new FormData();
         thumbFormData.append("file", thumbnailFile);
         const thumbRes = await uploadThumbnail(thumbFormData).unwrap();
-        currentCoverUrl = thumbRes.data.thumbnail_url;
+        const url = (thumbRes as { data?: { thumbnail_url?: string } })?.data
+          ?.thumbnail_url;
+        if (url) currentCoverUrl = url;
       }
 
       // Format tags
@@ -106,7 +143,7 @@ export default function ArticleForm({
         .map((tag) => tag.trim())
         .filter((tag) => tag.length > 0);
 
-      const payload = {
+      const payload: ArticlePayload = {
         title: formData.title,
         excerpt: formData.excerpt,
         body: formData.body,
@@ -121,11 +158,21 @@ export default function ArticleForm({
       };
 
       await onSubmit(payload);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Form submission error:", error);
-      toast.error(
-        error?.data?.message || "Terjadi kesalahan saat menyimpan article",
-      );
+      let message = "Terjadi kesalahan saat menyimpan article";
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "data" in error &&
+        typeof (error as { data?: unknown }).data === "object" &&
+        (error as { data?: { message?: unknown } }).data?.message &&
+        typeof (error as { data: { message: unknown } }).data.message ===
+          "string"
+      ) {
+        message = (error as { data: { message: string } }).data.message;
+      }
+      toast.error(message);
     } finally {
       setIsUploading(false);
     }
@@ -171,14 +218,29 @@ export default function ArticleForm({
               <option value="Technology">Technology</option>
               <option value="Education">Education</option>
 
-              {categoriesData?.data?.map((cat: any, index: number) => {
-                const catName =
-                  typeof cat === "string"
-                    ? cat
-                    : cat.name || cat.title || cat.label || "Unknown";
+              {categoriesData?.data?.map((cat: unknown, index: number) => {
+                const catName = (() => {
+                  if (typeof cat === "string") return cat;
+                  if (cat && typeof cat === "object") {
+                    const obj = cat as Record<string, unknown>;
+                    const n = obj["name"];
+                    if (typeof n === "string") return n;
+                    const t = obj["title"];
+                    if (typeof t === "string") return t;
+                    const l = obj["label"];
+                    if (typeof l === "string") return l;
+                  }
+                  return "Unknown";
+                })();
 
-                const catKey =
-                  typeof cat === "object" && cat.id ? cat.id : index;
+                let catKey: string | number = index;
+                if (cat && typeof cat === "object") {
+                  const obj = cat as Record<string, unknown>;
+                  const idv = obj["id"];
+                  if (typeof idv === "string" || typeof idv === "number") {
+                    catKey = idv;
+                  }
+                }
 
                 // Avoid duplicates if API returns same as static
                 if (
@@ -222,14 +284,17 @@ export default function ArticleForm({
           <label className="text-sm font-medium text-gray-700">
             Konten Artikel (Body)
           </label>
-          <textarea
-            name="body"
-            value={formData.body}
-            onChange={handleChange}
-            rows={15}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none font-mono text-sm"
-            placeholder="Tulis konten artikel di sini (Markdown atau HTML support)..."
-          />
+          <div className="border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary overflow-hidden">
+            <RichTextEditor
+              value={formData.body}
+              onChange={(html) =>
+                setFormData((prev) => ({ ...prev, body: html }))
+              }
+              placeholder="Tulis konten artikel di sini..."
+              minHeight={320}
+              className="bg-white"
+            />
+          </div>
         </div>
 
         {/* Cover Image */}
