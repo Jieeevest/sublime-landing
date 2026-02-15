@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -103,7 +104,7 @@ export default function CmsArticlePage() {
 
   const handleView = (id: string) => {
     // Navigate to actual article public page for now
-    router.push(`/dashboard/artikel/${id}`);
+    router.push(`/cms/artikel/${id}`);
   };
 
   return (
