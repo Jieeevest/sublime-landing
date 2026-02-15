@@ -40,12 +40,12 @@ export default function CmsSidebar() {
       icon: "users",
       href: "/cms/affiliates",
     },
-    {
-      id: "prompts",
-      label: t("menu_prompts"),
-      icon: "chat",
-      href: "/cms/prompts",
-    },
+    // {
+    //   id: "prompts",
+    //   label: t("menu_prompts"),
+    //   icon: "chat",
+    //   href: "/cms/prompts",
+    // },
   ];
 
   return (
