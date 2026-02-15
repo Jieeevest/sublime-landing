@@ -211,7 +211,7 @@ export default function Hero() {
                 height: "359.97px",
                 left: "calc(50% - 386.98px/2 - 0.01px)",
                 top: "calc(50% - 359.97px/2 - 0.02px)",
-                backgroundImage: "url(/image-cover.png)",
+                // backgroundImage: "url(/image-cover.png)",
                 mixBlendMode: "soft-light",
                 opacity: 0.2,
                 zIndex: 0,
