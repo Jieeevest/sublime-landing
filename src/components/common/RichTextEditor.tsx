@@ -42,19 +42,26 @@ export default function RichTextEditor({
         (QuillModule as unknown)) as QuillConstructor;
       if (!mounted || !editorRef.current) return;
 
+      const toolbar: unknown[] = [
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ font: [] }],
+        [{ size: ["small", false, "large", "huge"] }],
+        ["bold", "italic", "underline", "strike"],
+        [{ color: [] }, { background: [] }],
+        [{ script: "sub" }, { script: "super" }],
+        ["blockquote", "code-block"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ indent: "-1" }, { indent: "+1" }],
+        [{ align: [] }],
+        ["link", "image", "video"],
+        ["clean"],
+      ];
+
       const options: Record<string, unknown> = {
         theme: "snow",
         readOnly,
         placeholder,
-        modules: {
-          toolbar: [
-            [{ header: [1, 2, 3, false] }],
-            ["bold", "italic", "underline", "strike"],
-            [{ list: "ordered" }, { list: "bullet" }],
-            ["link"],
-            ["clean"],
-          ],
-        },
+        modules: { toolbar },
       };
 
       quillRef.current = new QuillCtor(editorRef.current, options);
@@ -74,6 +81,18 @@ export default function RichTextEditor({
       quillRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    const q = quillRef.current;
+    if (!q) return;
+    const normalize = (html: string) =>
+      html.replace(/<p><br><\/p>/g, "").trim();
+    const current = normalize(q.root.innerHTML || "");
+    const incoming = normalize(value || "");
+    if (incoming !== current) {
+      q.clipboard.dangerouslyPasteHTML(value || "");
+    }
+  }, [value]);
 
   return (
     <div className={className}>

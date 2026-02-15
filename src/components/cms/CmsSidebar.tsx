@@ -3,44 +3,46 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useI18n } from "@/i18n";
 
 export default function CmsSidebar() {
   const pathname = usePathname();
+  const { t } = useI18n();
 
   const menuItems = [
     {
       id: "dashboard",
-      label: "Dashboard",
+      label: t("menu_dashboard"),
       icon: "home",
       href: "/cms/dashboard",
     },
     {
       id: "artikel",
-      label: "Artikel",
+      label: t("menu_article"),
       icon: "article",
       href: "/cms/artikel",
     },
     {
       id: "audio",
-      label: "Audio",
+      label: t("menu_audio"),
       icon: "audio",
       href: "/cms/audio",
     },
     {
       id: "subscriptions",
-      label: "Subs",
+      label: t("menu_subscriptions"),
       icon: "card",
       href: "/cms/subscriptions",
     },
     {
       id: "affiliates",
-      label: "Affiliates",
+      label: t("menu_affiliates"),
       icon: "users",
       href: "/cms/affiliates",
     },
     {
       id: "prompts",
-      label: "Prompts",
+      label: t("menu_prompts"),
       icon: "chat",
       href: "/cms/prompts",
     },

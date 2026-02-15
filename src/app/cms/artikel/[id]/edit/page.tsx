@@ -8,6 +8,7 @@ import {
 } from "@/redux/api/sublimeApi";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { useI18n } from "@/i18n";
 
 export default function ArticleEdit({
   params,
@@ -16,6 +17,7 @@ export default function ArticleEdit({
 }) {
   const { id } = use(params);
   const router = useRouter();
+  const { t } = useI18n();
 
   // Fetch article data
   const { data: contentData, isLoading: isFetching } =
@@ -73,12 +75,12 @@ export default function ArticleEdit({
   return (
     <div className="p-8 w-full">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Edit Artikel</h1>
-        <p className="text-gray-500 mt-1">Perbarui konten artikel</p>
+        <h1 className="text-2xl font-bold text-gray-900">{t("edit_title")}</h1>
+        <p className="text-gray-500 mt-1">{t("edit_subtitle")}</p>
       </div>
 
       <ArticleForm
-        title="Form Edit Artikel"
+        title={t("edit_formTitle")}
         initialData={contentData?.data}
         onSubmit={handleSubmit}
         isLoading={isUpdating}

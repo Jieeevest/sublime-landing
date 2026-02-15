@@ -1,18 +1,20 @@
 import AuthGuard from "@/components/auth/AuthGuard";
 import CmsSidebar from "@/components/cms/CmsSidebar";
 import CmsTopbar from "@/components/cms/CmsTopbar";
+import { I18nProvider } from "@/i18n";
 
 export default function CmsLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthGuard requireAdmin>
-      <div className="min-h-screen bg-[#F5F9FA] flex">
-        <CmsSidebar />
-
-        <div className="flex-1 ml-[93px] flex flex-col">
-          <CmsTopbar />
-          <main className="flex-1 overflow-auto pb-32">{children}</main>
+      <I18nProvider>
+        <div className="min-h-screen bg-[#F5F9FA] flex">
+          <CmsSidebar />
+          <div className="flex-1 ml-[93px] flex flex-col">
+            <CmsTopbar />
+            <main className="flex-1 overflow-auto pb-32">{children}</main>
+          </div>
         </div>
-      </div>
+      </I18nProvider>
     </AuthGuard>
   );
 }

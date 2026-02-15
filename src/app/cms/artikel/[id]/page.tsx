@@ -4,6 +4,7 @@ import { use } from "react";
 import Link from "next/link";
 import NextImage from "next/image";
 import { useGetContentByIdQuery } from "@/redux/api/sublimeApi";
+import { useI18n } from "@/i18n";
 
 type Content = {
   id?: string;
@@ -29,6 +30,7 @@ export default function ArticleView({ params }: Params) {
   const { id } = use(params);
   const { data, isLoading } = useGetContentByIdQuery(id);
   const content: Content | undefined = data?.data;
+  const { t } = useI18n();
   const categoryName = content?.category
     ? typeof content.category === "string"
       ? content.category
@@ -61,13 +63,13 @@ export default function ArticleView({ params }: Params) {
     <div className="p-8 w-full">
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Detail Artikel</h1>
-          <p className="text-gray-500 mt-1">Pratinjau konten artikel</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t("view_detailTitle")}</h1>
+          <p className="text-gray-500 mt-1">{t("view_subtitle")}</p>
         </div>
         <div className="flex items-center gap-3">
           <Link
             href="/cms/artikel"
-            aria-label="Kembali ke daftar artikel"
+            aria-label={t("view_back")}
             className="group inline-flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-full text-gray-700 font-medium hover:bg-gray-50 hover:shadow-sm active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
           >
             <svg
@@ -79,11 +81,11 @@ export default function ArticleView({ params }: Params) {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            <span>Kembali</span>
+            <span>{t("view_back")}</span>
           </Link>
           <Link
             href={`/cms/artikel/${id}/edit`}
-            aria-label="Edit artikel"
+            aria-label={t("view_edit")}
             className="group inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-full font-medium hover:bg-primary-600 hover:shadow-md active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
           >
             <svg
@@ -95,7 +97,7 @@ export default function ArticleView({ params }: Params) {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M4 20h4l10.607-10.607a1.5 1.5 0 000-2.121l-2.486-2.486a1.5 1.5 0 00-2.121 0L4 15.5V20z" />
             </svg>
-            <span>Edit</span>
+            <span>{t("view_edit")}</span>
           </Link>
         </div>
       </div>
@@ -104,7 +106,7 @@ export default function ArticleView({ params }: Params) {
         <div className="lg:col-span-2">
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
             <h2 className="text-xl font-semibold text-gray-900">
-              {content?.title || "Tanpa Judul"}
+              {content?.title || t("untitled")}
             </h2>
             {content?.excerpt && (
               <p className="text-gray-600 mt-2">{content.excerpt}</p>
@@ -139,14 +141,12 @@ export default function ArticleView({ params }: Params) {
 
         <div className="space-y-6">
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-            <h3 className="text-base font-semibold text-gray-900 mb-4">
-              Informasi
-            </h3>
+            <h3 className="text-base font-semibold text-gray-900 mb-4">{t("info_title")}</h3>
             <div className="flex flex-wrap gap-2 mb-4">
               <span
                 className={`px-2.5 py-1 rounded-full text-xs font-medium ${content?.is_published ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}`}
               >
-                {content?.is_published ? "Published" : "Draft"}
+                {content?.is_published ? t("status_published") : t("status_draft")}
               </span>
               {content?.is_featured && (
                 <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
@@ -156,11 +156,11 @@ export default function ArticleView({ params }: Params) {
             </div>
             <dl className="text-sm text-gray-700 space-y-3">
               <div className="flex items-center justify-between">
-                <dt className="text-gray-500">Kategori</dt>
+                <dt className="text-gray-500">{t("info_category")}</dt>
                 <dd className="text-gray-900">{categoryName}</dd>
               </div>
               <div className="flex items-center justify-between">
-                <dt className="text-gray-500">Dibuat</dt>
+                <dt className="text-gray-500">{t("info_created")}</dt>
                 <dd className="text-gray-900">
                   {content?.created_at
                     ? new Date(content.created_at).toLocaleString()
@@ -168,7 +168,7 @@ export default function ArticleView({ params }: Params) {
                 </dd>
               </div>
               <div className="flex items-center justify-between">
-                <dt className="text-gray-500">Diperbarui</dt>
+                <dt className="text-gray-500">{t("info_updated")}</dt>
                 <dd className="text-gray-900">
                   {content?.updated_at
                     ? new Date(content.updated_at).toLocaleString()
@@ -179,7 +179,7 @@ export default function ArticleView({ params }: Params) {
           </div>
 
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-            <h3 className="text-base font-semibold text-gray-900 mb-4">Tags</h3>
+            <h3 className="text-base font-semibold text-gray-900 mb-4">{t("tags_title")}</h3>
             {Array.isArray(content?.tags) && content.tags.length > 0 ? (
               <div className="flex flex-wrap gap-2">
                 {content.tags.map((t: string, i: number) => (
@@ -192,21 +192,21 @@ export default function ArticleView({ params }: Params) {
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-gray-500">Tidak ada tags</p>
+              <p className="text-sm text-gray-500">{t("tags_empty")}</p>
             )}
           </div>
 
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-            <h3 className="text-base font-semibold text-gray-900 mb-4">SEO</h3>
+            <h3 className="text-base font-semibold text-gray-900 mb-4">{t("seo_title")}</h3>
             <div className="space-y-2">
               <div>
-                <p className="text-xs text-gray-500">SEO Title</p>
+                <p className="text-xs text-gray-500">{t("seo_title_label")}</p>
                 <p className="text-sm text-gray-900">
                   {content?.seo_title || "-"}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500">SEO Description</p>
+                <p className="text-xs text-gray-500">{t("seo_desc_label")}</p>
                 <p className="text-sm text-gray-900">
                   {content?.seo_description || "-"}
                 </p>

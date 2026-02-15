@@ -4,12 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetMeQuery } from "@/redux/api/sublimeApi";
 import UserDropdown from "@/components/shared/UserDropdown";
+import { useI18n } from "@/i18n";
 
 export default function CmsTopbar() {
   const router = useRouter();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [language, setLanguage] = useState("EN");
+  const { code, setLang, t } = useI18n();
 
   const { data: user, isLoading } = useGetMeQuery(undefined);
 
@@ -23,8 +24,8 @@ export default function CmsTopbar() {
     setIsLangOpen(false);
   };
 
-  const selectLanguage = (lang: string) => {
-    setLanguage(lang);
+  const selectLanguage = (lang: "ID" | "EN") => {
+    setLang(lang === "EN" ? "en" : "id");
     setIsLangOpen(false);
   };
 
@@ -48,9 +49,10 @@ export default function CmsTopbar() {
 
   return (
     <div className="bg-[#F5F9FA] px-10 py-6 flex items-center justify-between gap-6 z-30 relative border-b border-gray-200">
-      {/* CMS Title / Breadcrumbs (Placeholder) */}
       <div className="flex-1 max-w-3xl">
-        <h1 className="text-2xl font-semibold text-gray-800">Admin CMS</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">
+          {t("cmsTitle")}
+        </h1>
       </div>
 
       {/* Right Side */}
@@ -74,7 +76,7 @@ export default function CmsTopbar() {
                 d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
               />
             </svg>
-            <span className="text-base text-gray-500">{language}</span>
+            <span className="text-base text-gray-500">{code}</span>
             <svg
               className={`w-6 h-6 text-gray-500 transition-transform ${
                 isLangOpen ? "rotate-180" : ""
@@ -98,9 +100,7 @@ export default function CmsTopbar() {
               <button
                 onClick={() => selectLanguage("ID")}
                 className={`w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 transition-colors ${
-                  language === "ID"
-                    ? "text-primary font-medium"
-                    : "text-gray-700"
+                  code === "ID" ? "text-primary font-medium" : "text-gray-700"
                 }`}
               >
                 ID (Indonesia)
@@ -108,9 +108,7 @@ export default function CmsTopbar() {
               <button
                 onClick={() => selectLanguage("EN")}
                 className={`w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 transition-colors ${
-                  language === "EN"
-                    ? "text-primary font-medium"
-                    : "text-gray-700"
+                  code === "EN" ? "text-primary font-medium" : "text-gray-700"
                 }`}
               >
                 EN (English)

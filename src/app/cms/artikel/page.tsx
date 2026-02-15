@@ -10,6 +10,7 @@ import {
   useToggleContentPublishMutation,
   useDeleteContentMutation,
 } from "@/redux/api/sublimeApi";
+import { useI18n } from "@/i18n";
 
 const defaultImgSrc =
   "https://i.pinimg.com/564x/39/2a/26/392a261b73dbcd361a0dac2e93a05284.jpg";
@@ -27,6 +28,7 @@ const breadcrumbs = [
 
 export default function CmsArticlePage() {
   const router = useRouter();
+  const { t } = useI18n();
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [isPosted, setIsPosted] = useState(false);
@@ -114,10 +116,10 @@ export default function CmsArticlePage() {
         <div className="flex justify-between items-center gap-4">
           <div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-800 mb-1">Artikel</h1>
-              <p className="text-gray-600 text-base">
-                Kelola artikel dan konten edukasi
-              </p>
+              <h1 className="text-3xl font-bold text-gray-800 mb-1">
+                {t("list_title")}
+              </h1>
+              <p className="text-gray-600 text-base">{t("list_subtitle")}</p>
             </div>
           </div>
 
@@ -126,7 +128,7 @@ export default function CmsArticlePage() {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Cari artikel..."
+                placeholder={t("list_search_placeholder")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#1CA09A]/20 focus:border-[#1CA09A] outline-none w-[300px]"
@@ -163,7 +165,7 @@ export default function CmsArticlePage() {
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-              Tambah Artikel
+              {t("list_add_button")}
             </button>
           </div>
         </div>

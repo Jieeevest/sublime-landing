@@ -8,6 +8,7 @@ import {
 } from "@/redux/api/sublimeApi";
 import { toast } from "react-hot-toast";
 import RichTextEditor from "@/components/common/RichTextEditor";
+import { useI18n } from "@/i18n";
 
 type ArticleContent = {
   title?: string;
@@ -59,6 +60,7 @@ export default function ArticleForm({
   const router = useRouter();
   const [uploadThumbnail] = useUploadThumbnailMutation();
   const { data: categoriesData } = useGetContentCategoriesQuery(undefined);
+  const { t } = useI18n();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -184,10 +186,9 @@ export default function ArticleForm({
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Title */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">
-              Judul Artikel
+              {t("form_title_label")}
             </label>
             <input
               type="text"
@@ -196,14 +197,13 @@ export default function ArticleForm({
               onChange={handleChange}
               required
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-              placeholder="Judul Artikel..."
+              placeholder={t("form_title_label") + "..."}
             />
           </div>
 
-          {/* Category */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">
-              Kategori
+              {t("form_category_label")}
             </label>
             <select
               name="category"
@@ -211,7 +211,7 @@ export default function ArticleForm({
               onChange={handleChange}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
             >
-              <option value="">Pilih Kategori</option>
+              <option value="">{t("form_category_placeholder")}</option>
               <option value="General">General</option>
               <option value="Health">Health</option>
               <option value="Tips">Tips</option>
@@ -264,10 +264,9 @@ export default function ArticleForm({
           </div>
         </div>
 
-        {/* Excerpt */}
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-gray-700">
-            Excerpt (Ringkasan Singkat)
+            {t("form_excerpt_label")}
           </label>
           <textarea
             name="excerpt"
@@ -275,14 +274,14 @@ export default function ArticleForm({
             onChange={handleChange}
             rows={3}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none"
-            placeholder="Ringkasan singkat artikel..."
+            placeholder={t("form_excerpt_placeholder")}
           />
         </div>
 
         {/* Body */}
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-gray-700">
-            Konten Artikel (Body)
+            {t("form_body_label")}
           </label>
           <div className="border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary overflow-hidden">
             <RichTextEditor
@@ -290,7 +289,7 @@ export default function ArticleForm({
               onChange={(html) =>
                 setFormData((prev) => ({ ...prev, body: html }))
               }
-              placeholder="Tulis konten artikel di sini..."
+              placeholder={t("form_body_placeholder")}
               minHeight={320}
               className="bg-white"
             />
@@ -301,7 +300,7 @@ export default function ArticleForm({
         <div className="grid grid-cols-1 gap-6">
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">
-              Cover Image
+              {t("form_cover_label")}
             </label>
             <div className="border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition-colors">
               <input
@@ -314,7 +313,7 @@ export default function ArticleForm({
                 <div className="mt-2">
                   <img
                     src={formData.cover_image_url}
-                    alt="Current cover"
+                    alt="Cover"
                     className="h-32 w-auto object-cover rounded"
                   />
                 </div>
@@ -326,7 +325,7 @@ export default function ArticleForm({
         {/* Tags */}
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-gray-700">
-            Tags (Pisahkan dengan koma)
+            {t("form_tags_label")}
           </label>
           <input
             type="text"
@@ -334,19 +333,19 @@ export default function ArticleForm({
             value={formData.tags}
             onChange={handleChange}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-            placeholder="Contoh: kesehatan, mental, tips"
+            placeholder={t("form_tags_placeholder")}
           />
         </div>
 
         {/* SEO Section */}
         <div className="border-t border-gray-200 pt-6 mt-2">
           <h3 className="text-lg font-medium text-gray-800 mb-4">
-            Pengaturan SEO
+            {t("seo_settings_title")}
           </h3>
           <div className="grid grid-cols-1 gap-4">
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700">
-                SEO Title
+                {t("seo_title_label")}
               </label>
               <input
                 type="text"
@@ -354,12 +353,12 @@ export default function ArticleForm({
                 value={formData.seo_title}
                 onChange={handleChange}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-                placeholder="Judul untuk mesin pencari"
+                placeholder={t("seo_title_label")}
               />
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700">
-                SEO Description
+                {t("seo_desc_label")}
               </label>
               <textarea
                 name="seo_description"
@@ -367,7 +366,7 @@ export default function ArticleForm({
                 onChange={handleChange}
                 rows={2}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none"
-                placeholder="Deskripsi untuk meta tag..."
+                placeholder={t("seo_desc_label")}
               />
             </div>
           </div>
@@ -398,7 +397,7 @@ export default function ArticleForm({
               htmlFor="is_featured"
               className="text-sm font-medium text-gray-700 cursor-pointer"
             >
-              Featured Article
+              {t("form_featured_label")}
             </label>
           </div>
 
@@ -425,7 +424,7 @@ export default function ArticleForm({
               htmlFor="is_published"
               className="text-sm font-medium text-gray-700 cursor-pointer"
             >
-              Publish
+              {t("form_publish_label")}
             </label>
           </div>
         </div>
@@ -437,7 +436,7 @@ export default function ArticleForm({
             onClick={() => router.back()}
             className="px-6 py-2.5 border border-gray-300 rounded-full text-gray-700 font-medium hover:bg-gray-50 transition-colors"
           >
-            Batal
+            {t("form_cancel_button")}
           </button>
           <button
             type="submit"
@@ -466,7 +465,23 @@ export default function ArticleForm({
                 ></path>
               </svg>
             )}
-            Simpan Artikel
+            {!isLoading && !isUploading && (
+              <svg
+                className="h-5 w-5 text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 3v10" />
+                <path d="M8 9l4 4 4-4" />
+                <path d="M3 15v2a2 2 0 002 2h14a2 2 0 002-2v-2" />
+              </svg>
+            )}
+            {t("form_save_button")}
           </button>
         </div>
       </form>
