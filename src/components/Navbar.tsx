@@ -1,13 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useGetMeQuery } from "@/redux/api/sublimeApi";
+import UserDropdown from "@/components/shared/UserDropdown";
 import Link from "next/link";
 import NextImage from "next/image";
 
+const getInitials = (name: string) => {
+  if (!name) return "A";
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .substring(0, 2);
+};
+
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [language, setLanguage] = useState("ID");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const read = () => {
+      try {
+        const token = localStorage.getItem("token");
+        setIsAuthenticated(!!token);
+      } catch {
+        setIsAuthenticated(false);
+      }
+    };
+    read();
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "token") read();
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setHydrated(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  const {
+    data: me,
+    isLoading: isMeLoading,
+    isFetching: isMeFetching,
+  } = useGetMeQuery(undefined, { skip: !isAuthenticated });
+  const avatar = me?.data?.avatar || "/user-1.png";
+  const name = me?.data?.name || "Akun";
+  const isUserLoading = isAuthenticated && (isMeLoading || isMeFetching);
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem("token");
+    } catch {}
+    setIsAuthenticated(false);
+    setIsUserMenuOpen(false);
+    router.push("/login");
+  };
 
   const toggleLanguage = () => setIsLangOpen(!isLangOpen);
   const selectLanguage = (lang: string) => {
@@ -19,10 +75,10 @@ export default function Navbar() {
     <nav
       className="absolute flex flex-row justify-between items-center"
       style={{
-        padding: "12px 90px",
-        gap: "10px",
+        padding: "12px 56px",
+        gap: "8px",
         width: "100%",
-        height: "68px",
+        height: "64px",
         left: "0px",
         top: "0px",
         backdropFilter: "blur(20px)",
@@ -55,10 +111,10 @@ export default function Navbar() {
       <div
         className="flex flex-row justify-center items-center rounded-[99px]"
         style={{
-          padding: "0px 24px",
-          gap: "20px",
+          padding: "0px 20px",
+          gap: "16px",
           width: "498px",
-          height: "44px",
+          height: "42px",
           margin: "0 auto",
           background: "rgba(255, 255, 255, 0.14)",
           border: "1px solid rgba(255, 255, 255, 0.08)",
@@ -185,8 +241,8 @@ export default function Navbar() {
       <div
         className="flex flex-row justify-end items-center"
         style={{
-          gap: "20px",
-          width: "245px",
+          gap: "12px",
+          width: "auto",
           height: "44px",
           margin: "0 auto",
         }}
@@ -196,7 +252,7 @@ export default function Navbar() {
           className="relative flex flex-col items-start"
           style={{
             gap: "4px",
-            width: "103px",
+            width: "auto",
             height: "44px",
           }}
         >
@@ -205,8 +261,8 @@ export default function Navbar() {
             className="flex flex-row items-center cursor-pointer transition-colors"
             style={{
               padding: "8px 12px",
-              gap: "8px",
-              width: "97px",
+              gap: "6px",
+              width: "auto",
               height: "44px",
             }}
           >
@@ -227,7 +283,6 @@ export default function Navbar() {
             <span
               className="font-normal flex items-center"
               style={{
-                width: "20px",
                 fontFamily: "'PP Neue Montreal', sans-serif",
                 fontSize: "14px",
                 lineHeight: "24px",
@@ -287,42 +342,79 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Login Button */}
-        <Link
-          href="/login"
-          className="flex flex-col justify-center items-center rounded-[99px]"
-          style={{
-            padding: "8px 12px",
-            width: "122px",
-            minWidth: "120px",
-            height: "44px",
-            background: "#3197A5",
-            transition: "all 0.3s ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "scale(1.05)";
-            e.currentTarget.style.boxShadow =
-              "0 10px 15px -3px rgba(49, 151, 165, 0.3)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "scale(1)";
-            e.currentTarget.style.boxShadow = "none";
-          }}
-        >
-          <span
-            className="font-normal text-center"
+        {!hydrated ? (
+          <div
+            className="rounded-full bg-gray-200/80 animate-pulse"
+            style={{ width: "122px", height: "44px" }}
+            aria-busy="true"
+            aria-label="Loading user"
+          />
+        ) : !isAuthenticated ? (
+          <Link
+            href="/login"
+            className="flex flex-col justify-center items-center rounded-[99px]"
             style={{
-              width: "98px",
-              height: "24px",
-              fontFamily: "'PP Neue Montreal', sans-serif",
-              fontSize: "14px",
-              lineHeight: "24px",
-              color: "#FFFFFF",
+              padding: "8px 12px",
+              width: "122px",
+              minWidth: "120px",
+              height: "44px",
+              background: "#3197A5",
+              transition: "all 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.05)";
+              e.currentTarget.style.boxShadow =
+                "0 10px 15px -3px rgba(49, 151, 165, 0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
-            Masuk / Daftar
-          </span>
-        </Link>
+            <span
+              className="font-normal text-center"
+              style={{
+                width: "98px",
+                height: "24px",
+                fontFamily: "'PP Neue Montreal', sans-serif",
+                fontSize: "14px",
+                lineHeight: "24px",
+                color: "#FFFFFF",
+              }}
+            >
+              Masuk / Daftar
+            </span>
+          </Link>
+        ) : isUserLoading ? (
+          <div className="flex items-center rounded-lg p-1">
+            <div
+              className="w-10 h-10 rounded-full bg-gray-200 animate-pulse"
+              aria-busy="true"
+              aria-label="Loading avatar"
+            />
+          </div>
+        ) : (
+          <div className="relative">
+            <button
+              onClick={() => setIsUserMenuOpen((v) => !v)}
+              className="flex items-center rounded-lg transition-colors p-1"
+            >
+              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center overflow-hidden ring-2 ring-transparent hover:ring-primary/20 transition-all">
+                <span className="text-white text-sm font-semibold">
+                  {getInitials(name)}
+                </span>
+              </div>
+            </button>
+
+            {isUserMenuOpen && (
+              <UserDropdown
+                onClose={() => setIsUserMenuOpen(false)}
+                onLogout={handleLogout}
+                includeDashboardLinks
+              />
+            )}
+          </div>
+        )}
       </div>
     </nav>
   );

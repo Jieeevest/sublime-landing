@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetMeQuery } from "@/redux/api/sublimeApi";
+import UserDropdown from "@/components/shared/UserDropdown";
 
 export default function CmsTopbar() {
   const router = useRouter();
@@ -135,44 +136,11 @@ export default function CmsTopbar() {
             </div>
           </button>
 
-          {/* Profile Dropdown */}
           {isProfileOpen && (
-            <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden w-[240px] z-50 animate-in fade-in zoom-in-95 duration-100">
-              <div className="p-4 border-b border-gray-100 bg-gray-50/50">
-                <p className="text-sm font-semibold text-gray-900 truncate">
-                  {user?.data?.name || "Admin User"}
-                </p>
-                <p className="text-xs text-gray-500 truncate">
-                  {user?.data?.email || "admin@sublime.com"}
-                </p>
-                <div className="mt-1">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-800">
-                    {user?.data?.role || "Admin"}
-                  </span>
-                </div>
-              </div>
-              <div className="p-2 border-t border-gray-100">
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                    />
-                  </svg>
-                  Logout
-                </button>
-              </div>
-            </div>
+            <UserDropdown
+              onClose={() => setIsProfileOpen(false)}
+              onLogout={handleLogout}
+            />
           )}
         </div>
       </div>

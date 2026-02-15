@@ -3,9 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import UserDropdown from "@/components/shared/UserDropdown";
 
 export default function DashboardNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-40">
@@ -48,27 +50,34 @@ export default function DashboardNavbar() {
             </Link>
           </div>
 
-          {/* User Menu */}
           <div className="flex items-center gap-4">
-            <button className="hidden md:flex items-center gap-3 px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center text-white font-semibold">
-                U
-              </div>
-              <span className="text-sm font-medium text-secondary">User</span>
-              <svg
-                className="w-4 h-4 text-secondary/60"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            <div className="relative hidden md:block">
+              <button
+                onClick={() => setIsProfileOpen((v) => !v)}
+                className="flex items-center gap-3 px-4 py-2 rounded-full hover:bg-gray-100 transition-colors"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
+                <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center text-white font-semibold">
+                  U
+                </div>
+                <span className="text-sm font-medium text-secondary">User</span>
+                <svg
+                  className="w-4 h-4 text-secondary/60"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+              {isProfileOpen && (
+                <UserDropdown onClose={() => setIsProfileOpen(false)} />
+              )}
+            </div>
 
             {/* Mobile Menu Button */}
             <button
@@ -124,12 +133,17 @@ export default function DashboardNavbar() {
                 Favorites
               </Link>
               <div className="border-t border-gray-200 pt-4">
-                <Link
-                  href="/"
-                  className="text-sm text-secondary/60 hover:text-primary transition-colors"
+                <button
+                  onClick={() => {
+                    try {
+                      localStorage.removeItem("token");
+                    } catch {}
+                    window.location.href = "/login?redirect_reason=logout";
+                  }}
+                  className="text-left text-sm text-secondary/60 hover:text-primary transition-colors"
                 >
                   Logout
-                </Link>
+                </button>
               </div>
             </div>
           </div>
