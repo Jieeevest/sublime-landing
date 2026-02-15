@@ -2,6 +2,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useGetPublicContentsQuery } from "@/redux/api/sublimeApi";
 import styles from "./InsightsGuidance.module.css";
 import Image from "next/image";
@@ -17,12 +18,14 @@ interface Article {
 
 export default function InsightsGuidance() {
   const router = useRouter();
+  const [fallbacks, setFallbacks] = useState<Record<string, boolean>>({});
 
   const isOptimizable = (src: string) => {
     try {
       if (!src) return false;
       if (src.startsWith("/")) return true;
       const url = new URL(src);
+      if (url.hostname.endsWith("strovia.app")) return false;
       return ["localhost", "72.61.215.67"].includes(url.hostname);
     } catch {
       return true;
@@ -155,7 +158,9 @@ export default function InsightsGuidance() {
               <div className={styles.imageWrapper} aria-hidden="true">
                 <div className={styles.imageMedia}>
                   <Image
-                    src={article.image}
+                    src={
+                      fallbacks[article.id] ? "/image-cover.png" : article.image
+                    }
                     alt={article.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
@@ -165,6 +170,9 @@ export default function InsightsGuidance() {
                     fetchPriority={index === 0 ? "high" : "low"}
                     unoptimized={!isOptimizable(article.image)}
                     style={{ objectFit: "cover" }}
+                    onError={() =>
+                      setFallbacks((prev) => ({ ...prev, [article.id]: true }))
+                    }
                   />
                 </div>
                 <div className={styles.imageDim} />
