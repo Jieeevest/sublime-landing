@@ -748,6 +748,13 @@ export const sublimeApi = apiSlice.injectEndpoints({
       query: (id) => `/api/v1/ai/chats/${id}`,
       providesTags: (result, error, id) => [{ type: "AI", id }],
     }),
+    deleteChatSession: builder.mutation({
+      query: (id) => ({
+        url: `/api/v1/ai/chats/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => ["AI", { type: "AI", id }],
+    }),
 
     // =========================================================================
     // Affiliate Banks
@@ -933,6 +940,7 @@ export const {
   useChatMutation,
   useGetChatSessionsQuery,
   useGetChatSessionByIdQuery,
+  useDeleteChatSessionMutation,
 
   // Affiliate Banks
   useGetBanksQuery,
@@ -944,3 +952,8 @@ export const {
   // Files
   useGetFileQuery,
 } = sublimeApi;
+
+export const useGetChatHistoryQuery =
+  sublimeApi.endpoints.getChatSessions.useQuery;
+export const useGetChatBySessionIdQuery =
+  sublimeApi.endpoints.getChatSessionById.useQuery;
