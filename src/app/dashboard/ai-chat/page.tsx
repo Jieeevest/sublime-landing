@@ -3,21 +3,23 @@
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import Image from "next/image";
 import { useState } from "react";
+import { useI18n } from "@/i18n";
 
 export default function AIChatPage() {
+  const { t } = useI18n();
   const [searchQuery, setSearchQuery] = useState("");
 
   const dummyChats = [
-    "Lorem ipsum dolor sit amet consectetur. Eu ri...",
-    "Lorem ipsum dolor sit amet consectetur. Aug...",
-    "Apa yang harus saya lakukan saat merasa ce...",
-    "Lorem ipsum dolor sit amet consectetur. Con...",
-    "Lorem ipsum dolor sit amet consectetur. In vit...",
-    "Lorem ipsum dolor sit amet consectetur. Habi...",
+    t("ai_dummy_1"),
+    t("ai_dummy_2"),
+    t("ai_dummy_3"),
+    t("ai_dummy_4"),
+    t("ai_dummy_5"),
+    t("ai_dummy_6"),
   ];
 
   return (
-    <DashboardLayout activeItem="AI Chat">
+    <DashboardLayout activeItem={t("ud_menu_ai_chat")}>
       <div className="flex h-[calc(100vh-100px)] w-full max-w-[1347px] mx-auto border-t border-[#E1E1E1] box-border">
         {/* Chat Navigation Sidebar */}
         <div className="w-[320px] h-full flex flex-col items-center border-r border-[#E1E1E1] pb-[104px]">
@@ -63,9 +65,7 @@ export default function AIChatPage() {
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
               </svg>
-              <span className="font-sans font-normal text-base">
-                Obrolan Baru
-              </span>
+              <span className="font-sans font-normal text-base">{t("ai_new_chat")}</span>
             </button>
 
             {/* Search Bar */}
@@ -84,7 +84,7 @@ export default function AIChatPage() {
               </svg>
               <input
                 type="text"
-                placeholder="Cari Obrolan"
+                placeholder={t("ai_search_chats_placeholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full h-full outline-none text-[#1F1F1F] placeholder:text-[#8E8E8E] font-sans text-sm bg-transparent"
@@ -94,9 +94,7 @@ export default function AIChatPage() {
 
           {/* Chat List Header */}
           <div className="w-full flex justify-between items-center px-6 h-10 border-y border-dashed border-[#E1E1E1]">
-            <span className="text-[#8E8E8E] font-medium text-xs font-sans">
-              Obrolan Anda
-            </span>
+            <span className="text-[#8E8E8E] font-medium text-xs font-sans">{t("ai_sidebar_your_chats")}</span>
             <svg
               width="16"
               height="16"
@@ -138,9 +136,7 @@ export default function AIChatPage() {
                 <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
                 <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
               </svg>
-              <span className="font-sans font-normal text-base">
-                Hapus Obrolan
-              </span>
+              <span className="font-sans font-normal text-base">{t("ai_delete_chat")}</span>
             </button>
           </div>
         </div>
@@ -161,7 +157,7 @@ export default function AIChatPage() {
               <div className="w-[90px] h-[90px] bg-white rounded-2xl shadow-lg flex items-center justify-center">
                 <Image
                   src="/robot.png"
-                  alt="AI Robot"
+                  alt={t("ai_robot_alt")}
                   width={60}
                   height={60}
                   className="object-contain"
@@ -170,23 +166,17 @@ export default function AIChatPage() {
             </div>
 
             <h1 className="text-[40px] font-bold font-sans leading-tight bg-gradient-to-r from-[#3197A5] to-[#55BDC0] bg-clip-text text-transparent">
-              Hi, Kiara <br />
-              <span className="text-[#1F1F1F]">
-                Ada yang bisa saya bantu kah?
-              </span>
+              {t("ai_hero_hi")}, Kiara <br />
+              <span className="text-[#1F1F1F]">{t("ai_hero_question")}</span>
             </h1>
             <p className="text-[#1F1F1F] text-base font-sans">
-              Siap membantu kapanpun Anda butuh dukungan informasi dan diskusi.
+              {t("ai_hero_desc")}
             </p>
           </div>
 
           {/* Suggestions Grid */}
           <div className="z-10 grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-[947px] mb-10">
-            {[
-              "Rekomendasikan audio terapi yang cocok untuk kondisiku.",
-              "Apa yang harus saya lakukan saat merasa cemas atau tidak stabil?",
-              "Jelaskan manfaat subliminal message untuk pemulihan stroke.",
-            ].map((text, i) => (
+            {[t("ai_suggestion_1"), t("ai_suggestion_2"), t("ai_suggestion_3")].map((text, i) => (
               <div
                 key={i}
                 className="bg-[rgba(31,31,31,0.04)] border border-[rgba(31,31,31,0.08)] rounded-lg p-4 cursor-pointer hover:bg-[rgba(31,31,31,0.08)] transition-colors h-[74px] flex items-center justify-center"
@@ -218,7 +208,7 @@ export default function AIChatPage() {
               {/* Input Field */}
               <input
                 type="text"
-                placeholder="Tanya apapun..."
+                placeholder={t("ai_input_placeholder")}
                 className="flex-1 h-full outline-none text-[#1F1F1F] placeholder:text-[#8E8E8E] font-sans text-sm bg-transparent"
               />
 

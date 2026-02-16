@@ -7,12 +7,13 @@ import {
   useGetMySubscriptionQuery,
 } from "@/redux/api/sublimeApi";
 import UserDropdown from "@/components/shared/UserDropdown";
+import { useI18n } from "@/i18n";
 
 export default function DashboardTopbar() {
   const router = useRouter();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [language, setLanguage] = useState("ID");
+  const { code, setLang, t } = useI18n();
 
   const { data: user, isLoading } = useGetMeQuery(undefined);
   const { data: subscription } = useGetMySubscriptionQuery(undefined);
@@ -28,8 +29,8 @@ export default function DashboardTopbar() {
     setIsLangOpen(false);
   };
 
-  const selectLanguage = (lang: string) => {
-    setLanguage(lang);
+  const selectLanguage = (lang: "id" | "en") => {
+    setLang(lang);
     setIsLangOpen(false);
   };
 
@@ -71,7 +72,7 @@ export default function DashboardTopbar() {
           </svg>
           <input
             type="text"
-            placeholder="Cari"
+            placeholder={t("ud_search_placeholder")}
             className="w-full pl-11 pr-4 py-3.5 border border-[#E1E1E1] rounded-lg text-sm text-gray-500 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
           />
         </div>
@@ -99,7 +100,7 @@ export default function DashboardTopbar() {
                 d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            Mulai Berlangganan
+            {t("ud_subscribe_start")}
           </button>
         )}
 
@@ -122,7 +123,7 @@ export default function DashboardTopbar() {
                 d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
               />
             </svg>
-            <span className="text-base text-gray-500">{language}</span>
+            <span className="text-base text-gray-500">{code}</span>
             <svg
               className={`w-10 h-10 text-gray-500 transition-transform ${
                 isLangOpen ? "rotate-180" : ""
@@ -144,21 +145,17 @@ export default function DashboardTopbar() {
           {isLangOpen && (
             <div className="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden min-w-[140px] z-50 animate-in fade-in zoom-in-95 duration-100">
               <button
-                onClick={() => selectLanguage("ID")}
+                onClick={() => selectLanguage("id")}
                 className={`w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 transition-colors ${
-                  language === "ID"
-                    ? "text-primary font-medium"
-                    : "text-gray-700"
+                  code === "ID" ? "text-primary font-medium" : "text-gray-700"
                 }`}
               >
                 ID (Indonesia)
               </button>
               <button
-                onClick={() => selectLanguage("EN")}
+                onClick={() => selectLanguage("en")}
                 className={`w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 transition-colors ${
-                  language === "EN"
-                    ? "text-primary font-medium"
-                    : "text-gray-700"
+                  code === "EN" ? "text-primary font-medium" : "text-gray-700"
                 }`}
               >
                 EN (English)
@@ -203,7 +200,10 @@ export default function DashboardTopbar() {
           </button>
 
           {isProfileOpen && (
-            <UserDropdown onClose={() => setIsProfileOpen(false)} onLogout={handleLogout} />
+            <UserDropdown
+              onClose={() => setIsProfileOpen(false)}
+              onLogout={handleLogout}
+            />
           )}
         </div>
       </div>

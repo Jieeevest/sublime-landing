@@ -4,13 +4,24 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { articles as dummyArticles } from "@/data/articles";
 import Link from "next/link";
 import { useGetPublicContentsQuery } from "@/redux/api/sublimeApi";
+import { useI18n } from "@/i18n";
 
 export default function ArtikelPage() {
+  const { t } = useI18n();
   const { data, isLoading } = useGetPublicContentsQuery({ type: "article" });
   const articles = data?.data || [];
+  type PublicArticle = {
+    id: string | number;
+    slug: string;
+    title: string;
+    excerpt?: string;
+    subtitle?: string;
+    cover_image_url?: string;
+    created_at?: string;
+  };
 
   return (
-    <DashboardLayout activeItem="Artikel">
+    <DashboardLayout activeItem={t("ud_menu_articles")}>
       <div className="p-8 max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="space-y-2  mb-3 ">
@@ -22,7 +33,7 @@ export default function ArtikelPage() {
                 clipRule="evenodd"
               />
             </svg>
-            Artikel
+            {t("ud_articles_label")}
           </div>
           <h1 className="text-3xl font-bold text-primary">
             {articles[0]?.title}
@@ -31,7 +42,7 @@ export default function ArtikelPage() {
 
         {isLoading ? (
           <div className="py-20 text-center text-gray-500">
-            Loading articles...
+            {t("ud_articles_loading")}
           </div>
         ) : articles.length > 0 ? (
           <>
@@ -81,9 +92,9 @@ export default function ArtikelPage() {
                           d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                         />
                       </svg>
-                      {new Date(
-                        articles[0].created_at || Date.now(),
-                      ).toLocaleDateString()}
+                      {articles[0].created_at
+                        ? new Date(articles[0].created_at).toLocaleDateString()
+                        : "-"}
                     </div>
                     <h2 className="text-3xl font-bold mb-3 group-hover:text-primary-200 transition-colors">
                       {articles[0].title}
@@ -100,7 +111,7 @@ export default function ArtikelPage() {
             {/* Articles Grid (Rest) */}
             {articles.length > 1 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {articles.slice(1).map((article: any) => (
+                {articles.slice(1).map((article: PublicArticle) => (
                   <Link
                     key={article.id}
                     href={`/dashboard/artikel/${article.slug}`}
@@ -148,9 +159,9 @@ export default function ArtikelPage() {
                               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                             />
                           </svg>
-                          {new Date(
-                            article.created_at || Date.now(),
-                          ).toLocaleDateString()}
+                          {article.created_at
+                            ? new Date(article.created_at).toLocaleDateString()
+                            : "-"}
                         </div>
                         <h3 className="font-bold text-secondary text-lg line-clamp-2 group-hover:text-primary transition-colors">
                           {article.title}
@@ -181,11 +192,9 @@ export default function ArtikelPage() {
               />
             </svg>
             <h3 className="text-xl font-medium text-secondary mb-1">
-              Belum ada artikel
+              {t("ud_articles_empty_title")}
             </h3>
-            <p className="text-secondary/60">
-              Silakan kembali lagi nanti untuk membaca artikel terbaru kami.
-            </p>
+            <p className="text-secondary/60">{t("ud_articles_empty_desc")}</p>
           </div>
         )}
 
