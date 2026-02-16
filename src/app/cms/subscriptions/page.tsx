@@ -15,6 +15,13 @@ export default function CmsSubscriptionsPage() {
   // Subscriptions Data
   const { data: subsData, isLoading: isLoadingSubs } =
     useGetAdminSubscriptionsQuery({ limit: 50 });
+  type AdminSubscription = {
+    user?: { name?: string; email?: string };
+    plan?: { name?: string };
+    status?: string;
+    startDate?: string;
+    nextBillingDate?: string;
+  };
 
   // Plans Data
   const {
@@ -24,8 +31,16 @@ export default function CmsSubscriptionsPage() {
   } = useGetAdminPlansQuery(undefined);
   const [deletePlan] = useDeletePlanMutation();
 
-  const subscriptions = subsData?.data || [];
-  const plans = plansData?.data || [];
+  const subscriptions: AdminSubscription[] =
+    (subsData?.data as AdminSubscription[]) || [];
+  type AdminPlan = {
+    id: string;
+    name: string;
+    price?: number;
+    interval?: string;
+    description?: string;
+  };
+  const plans: AdminPlan[] = (plansData?.data as AdminPlan[]) || [];
 
   const handleDeletePlan = async (id: string) => {
     if (confirm(t("plans_confirm_delete"))) {
@@ -43,7 +58,9 @@ export default function CmsSubscriptionsPage() {
     <div className="p-10 space-y-8">
       <div className="flex justify-between items-center mb-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-1">{t("subscriptions_title")}</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-1">
+            {t("subscriptions_title")}
+          </h1>
           <p className="text-gray-600">{t("subscriptions_subtitle")}</p>
         </div>
       </div>
@@ -73,9 +90,15 @@ export default function CmsSubscriptionsPage() {
                 <tr>
                   <th className="px-6 py-4">{t("subscriptions_table_user")}</th>
                   <th className="px-6 py-4">{t("subscriptions_table_plan")}</th>
-                  <th className="px-6 py-4">{t("subscriptions_table_status")}</th>
-                  <th className="px-6 py-4">{t("subscriptions_table_start")}</th>
-                  <th className="px-6 py-4">{t("subscriptions_table_next_billing")}</th>
+                  <th className="px-6 py-4">
+                    {t("subscriptions_table_status")}
+                  </th>
+                  <th className="px-6 py-4">
+                    {t("subscriptions_table_start")}
+                  </th>
+                  <th className="px-6 py-4">
+                    {t("subscriptions_table_next_billing")}
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -86,10 +109,12 @@ export default function CmsSubscriptionsPage() {
                     </td>
                   </tr>
                 ) : subscriptions.length > 0 ? (
-                  subscriptions.map((sub, idx: number) => (
+                  subscriptions.map((sub: AdminSubscription, idx: number) => (
                     <tr key={idx} className="hover:bg-gray-50/50">
                       <td className="px-6 py-4 font-medium text-gray-800">
-                        {sub.user?.name || sub.user?.email || t("subscriptions_unknown_user")}
+                        {sub.user?.name ||
+                          sub.user?.email ||
+                          t("subscriptions_unknown_user")}
                         <div className="text-xs text-gray-400 font-normal">
                           {sub.user?.email}
                         </div>
@@ -145,7 +170,7 @@ export default function CmsSubscriptionsPage() {
             {isLoadingPlans ? (
               <div>{t("plans_loading")}</div>
             ) : (
-              plans.map((plan) => (
+              plans.map((plan: AdminPlan) => (
                 <div
                   key={plan.id}
                   className="bg-white p-6 rounded-2xl border border-gray-200 hover:border-[#3197A5] transition-colors group relative"
