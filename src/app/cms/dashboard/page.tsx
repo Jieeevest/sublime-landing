@@ -4,15 +4,20 @@ import {
   useGetDashboardStatsQuery,
   useGetTopAudiosQuery,
   useGetRecentUsersQuery,
-  useGetRevenueChartQuery,
 } from "@/redux/api/sublimeApi";
 import { format } from "date-fns";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function CmsDashboardPage() {
   const { data: statsData } = useGetDashboardStatsQuery(undefined);
-  const { data: revenueData } = useGetRevenueChartQuery({
-    period: "marketing",
-  }); // Example params
   const { data: topAudiosData } = useGetTopAudiosQuery({ limit: 5 });
   const { data: recentUsersData } = useGetRecentUsersQuery({ limit: 5 });
 
@@ -27,35 +32,103 @@ export default function CmsDashboardPage() {
           <h1 className="text-3xl font-bold text-gray-800 mb-1">
             Dashboard Admin
           </h1>
-          <p className="text-gray-600">Overview of platform performance</p>
+          <p className="text-gray-600">Ringkasan performa platform</p>
         </div>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h3 className="text-gray-500 text-sm font-medium">Total Users</h3>
+          <h3 className="text-gray-500 text-sm font-medium">Total Pengguna</h3>
           <p className="text-3xl font-bold text-gray-800 mt-2">
-            {stats?.totalUsers || 0}
+            {stats?.users?.total || 0}
           </p>
         </div>
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h3 className="text-gray-500 text-sm font-medium">Active Subs</h3>
+          <h3 className="text-gray-500 text-sm font-medium">Langganan Aktif</h3>
           <p className="text-3xl font-bold text-[#3197A5] mt-2">
-            {stats?.activeSubscriptions || 0}
+            {stats?.subscriptions?.active || 0}
           </p>
         </div>
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h3 className="text-gray-500 text-sm font-medium">Revenue (Total)</h3>
+          <h3 className="text-gray-500 text-sm font-medium">
+            Pendapatan (Total)
+          </h3>
           <p className="text-3xl font-bold text-gray-800 mt-2">
-            Rp {stats?.totalRevenue?.toLocaleString("id-ID") || 0}
+            Rp {(stats?.revenue?.this_month || 0).toLocaleString("id-ID")}
           </p>
         </div>
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h3 className="text-gray-500 text-sm font-medium">Total Audios</h3>
+          <h3 className="text-gray-500 text-sm font-medium">Total Audio</h3>
           <p className="text-3xl font-bold text-gray-800 mt-2">
-            {stats?.totalAudios || 0}
+            {stats?.content?.total_audios || 0}
           </p>
+        </div>
+      </div>
+
+      {/* Revenue Chart */}
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <h2 className="text-xl font-bold text-gray-800 mb-2">
+          Grafik Pendapatan
+        </h2>
+        <p className="text-sm text-gray-500 mb-6">
+          Rp {(stats?.revenue?.this_month || 0).toLocaleString("id-ID")}
+        </p>
+
+        <div className="h-[300px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart
+              data={stats?.revenue?.chart || []}
+              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+            >
+              <defs>
+                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3197A5" stopOpacity={0.1} />
+                  <stop offset="95%" stopColor="#3197A5" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false}
+                stroke="#F1F5F9"
+              />
+              <XAxis
+                dataKey="date"
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(str) => {
+                  const date = new Date(str);
+                  return format(date, "MMM dd");
+                }}
+                stroke="#94A3B8"
+                fontSize={12}
+                dy={10}
+              />
+              <YAxis hide />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#fff",
+                  borderRadius: "8px",
+                  border: "1px solid #E2E8F0",
+                  boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                }}
+                itemStyle={{ color: "#1E293B" }}
+                formatter={(value: any) => [
+                  `Rp ${Number(value).toLocaleString("id-ID")}`,
+                  "Pendapatan",
+                ]}
+                labelFormatter={(label) => format(new Date(label), "d MMMM yyyy")}
+              />
+              <Area
+                type="monotone"
+                dataKey="total"
+                stroke="#3197A5"
+                strokeWidth={2}
+                fillOpacity={1}
+                fill="url(#colorRevenue)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
@@ -95,7 +168,9 @@ export default function CmsDashboardPage() {
 
         {/* Recent Users */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h2 className="text-xl font-bold text-gray-800 mb-6">Recent Users</h2>
+          <h2 className="text-xl font-bold text-gray-800 mb-6">
+            Pengguna Terbaru
+          </h2>
           <div className="space-y-4">
             {recentUsers.map((user: any, idx: number) => (
               <div
@@ -116,8 +191,8 @@ export default function CmsDashboardPage() {
                   <p className="text-xs text-gray-500">{user.email}</p>
                 </div>
                 <div className="text-xs text-gray-400">
-                  {user.createdAt
-                    ? format(new Date(user.createdAt), "dd MMM yyyy")
+                  {user.created_at
+                    ? format(new Date(user.created_at), "dd MMM yyyy")
                     : "-"}
                 </div>
               </div>
