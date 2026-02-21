@@ -15,6 +15,32 @@ import { Share2, UserPlus, Gift, Copy } from "lucide-react";
 import ShareReferralModal from "./ShareReferralModal";
 import WithdrawalModal from "./WithdrawalModal";
 
+type ReferralUser = {
+  id?: string;
+  name?: string;
+  email?: string;
+  avatar_url?: string | null;
+};
+
+type ReferralItem = {
+  id: string;
+  request_date?: string;
+  status?: string;
+  commission_amount?: number;
+  reward_display?: number;
+  referred_user?: ReferralUser;
+  referredUser?: ReferralUser;
+  subscription_status_label?: string;
+};
+
+type WithdrawalItem = {
+  id: string;
+  amount: string | number;
+  status: string;
+  requested_at?: string;
+  created_at?: string;
+};
+
 export default function ReferralTab() {
   const { data: userData } = useGetMeQuery(undefined);
   const {
@@ -91,7 +117,7 @@ export default function ReferralTab() {
     }
   };
 
-  const handleUpdateBank = async (data: any) => {
+  const handleUpdateBank = async (data: unknown) => {
     try {
       await updatePaymentInfo(data).unwrap();
       toast.success("Informasi rekening berhasil disimpan");
@@ -354,34 +380,51 @@ export default function ReferralTab() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
-                  {referralsData.data.map((ref: any, idx: number) => (
-                    <tr key={idx}>
-                      <td className="py-4 px-4 font-medium text-[#1F1F1F]">
-                        {ref.referredUser?.name || "User"}
-                        <div className="text-xs text-gray-400 font-normal">
-                          {ref.referredUser?.email}
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-gray-500">
-                        {new Date(ref.created_at).toLocaleDateString("id-ID")}
-                      </td>
-                      <td className="py-4 px-4 text-[#3197A5] font-medium">
-                        Rp{" "}
-                        {(ref.commission_amount || 0).toLocaleString("id-ID")}
-                      </td>
-                      <td className="py-4 px-4">
-                        <span
-                          className={`px-2 py-1 rounded-full text-[10px] uppercase font-bold tracking-wide ${
-                            ref.status === "active" || ref.status === "paid"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-gray-100 text-gray-500"
-                          }`}
-                        >
-                          {ref.status || "Pending"}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
+                  {(referralsData.data as ReferralItem[]).map((ref, idx) => {
+                    const referredUser = ref.referred_user || ref.referredUser;
+                    const date = ref.request_date
+                      ? new Date(ref.request_date)
+                      : undefined;
+                    const isValidDate = date && !Number.isNaN(date.getTime());
+                    const rewardValue =
+                      typeof ref.reward_display === "number"
+                        ? ref.reward_display
+                        : ref.commission_amount || 0;
+                    const statusRaw: string = ref.status || "pending";
+                    const status = statusRaw.toLowerCase();
+                    const statusClass =
+                      status === "approved" || status === "paid"
+                        ? "bg-green-100 text-green-700"
+                        : status === "pending"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-gray-100 text-gray-500";
+
+                    return (
+                      <tr key={idx}>
+                        <td className="py-4 px-4 font-medium text-[#1F1F1F]">
+                          {referredUser?.name || "User"}
+                          <div className="text-xs text-gray-400 font-normal">
+                            {referredUser?.email}
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-gray-500">
+                          {isValidDate
+                            ? date?.toLocaleDateString("id-ID")
+                            : "-"}
+                        </td>
+                        <td className="py-4 px-4 text-[#3197A5] font-medium">
+                          Rp {rewardValue.toLocaleString("id-ID")}
+                        </td>
+                        <td className="py-4 px-4">
+                          <span
+                            className={`px-2 py-1 rounded-full text-[10px] uppercase font-bold tracking-wide ${statusClass}`}
+                          >
+                            {statusRaw.toUpperCase()}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -423,32 +466,40 @@ export default function ReferralTab() {
             </div>
           ) : (
             <div className="space-y-4 flex-1 overflow-y-auto">
-              {withdrawalsData.data.map((wd: any, idx: number) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between p-3 border border-gray-100 rounded-xl"
-                >
-                  <div>
-                    <p className="text-sm font-bold text-[#1F1F1F]">
-                      Rp {wd.amount.toLocaleString("id-ID")}
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      {new Date(wd.createdAt).toLocaleDateString("id-ID")}
-                    </p>
-                  </div>
-                  <span
-                    className={`text-[10px] px-2 py-1 rounded-full ${
-                      wd.status === "completed"
-                        ? "bg-green-100 text-green-700"
-                        : wd.status === "pending"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-red-100 text-red-700"
-                    }`}
+              {(withdrawalsData.data as WithdrawalItem[]).map((wd, idx) => {
+                const amountNumber = Number(wd.amount || 0);
+                const dateSource = wd.requested_at || wd.created_at;
+                const date = dateSource ? new Date(dateSource) : undefined;
+                const isValidDate = date && !Number.isNaN(date.getTime());
+                const statusLower = wd.status.toLowerCase();
+                const statusClass =
+                  statusLower === "completed"
+                    ? "bg-green-100 text-green-700"
+                    : statusLower === "pending"
+                      ? "bg-yellow-100 text-yellow-700"
+                      : "bg-red-100 text-red-700";
+
+                return (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-3 border border-gray-100 rounded-xl"
                   >
-                    {wd.status}
-                  </span>
-                </div>
-              ))}
+                    <div>
+                      <p className="text-sm font-bold text-[#1F1F1F]">
+                        Rp {amountNumber.toLocaleString("id-ID")}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {isValidDate ? date?.toLocaleDateString("id-ID") : "-"}
+                      </p>
+                    </div>
+                    <span
+                      className={`text-[10px] px-2 py-1 rounded-full ${statusClass}`}
+                    >
+                      {statusLower}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

@@ -1,31 +1,93 @@
 "use client";
 
 import { Download, Edit2, ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import useSWR from "swr";
 import EditBillingModal from "./EditBillingModal";
 
 import {
-  useGetInvoicesQuery,
   useGetMeQuery,
   useGetMySubscriptionQuery,
 } from "@/redux/api/sublimeApi";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
+
+type InvoiceItem = {
+  name?: string;
+  price?: string;
+  quantity?: number;
+};
+
+type Invoice = {
+  id: string;
+  invoice_number?: string;
+  paid_at?: string;
+  items?: InvoiceItem[];
+  total?: string;
+  status?: string;
+};
+
+type InvoicesApiResponse = {
+  data?:
+    | Invoice[]
+    | {
+        data?: Invoice[];
+      };
+};
+
+const fetchInvoices = async (url: string): Promise<InvoicesApiResponse> => {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+  }
+
+  const response = await fetch(`${API_BASE_URL}${url}`, { headers });
+  if (!response.ok) {
+    throw new Error("Failed to fetch invoices");
+  }
+
+  return response.json();
+};
+
+const useInvoiceList = () => {
+  const { data, error, isLoading, mutate } = useSWR<InvoicesApiResponse>(
+    "/api/v1/invoices/",
+    fetchInvoices,
+  );
+
+  const raw = data?.data;
+  const invoices: Invoice[] = Array.isArray(raw)
+    ? raw
+    : raw && Array.isArray((raw as { data?: Invoice[] }).data)
+      ? ((raw as { data?: Invoice[] }).data as Invoice[])
+      : [];
+
+  return {
+    invoices,
+    isLoading,
+    isError: Boolean(error),
+    mutate,
+  };
+};
 
 export default function SubscriptionTab() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   // API Hooks
   const { data: meData } = useGetMeQuery(undefined);
-  const { data: subData, isLoading: isLoadingSub } =
-    useGetMySubscriptionQuery(undefined);
-  const { data: invoicesData, isLoading: isLoadingInvoices } =
-    useGetInvoicesQuery({});
+  const { data: subData } = useGetMySubscriptionQuery(undefined);
+  const { invoices } = useInvoiceList();
 
   // Derived Data
   const user = meData?.data;
   const subscription = subData?.data;
-  const invoices = invoicesData?.data?.data || []; // Assuming paginated response structure
 
   const subscriptionInfo = {
     plan: subscription?.plan?.name || "Belum Berlangganan",
@@ -171,65 +233,74 @@ export default function SubscriptionTab() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {invoices.length > 0 ? (
-                invoices.map((inv: any, idx: number) => (
-                  <tr
-                    key={inv.id || idx}
-                    className="hover:bg-gray-50/50 transition-colors"
-                  >
-                    <td className="py-4 px-6 text-[#1F1F1F]">
-                      <Link
-                        href={`/dashboard/invoices/${inv.id}`}
-                        className="hover:text-[#3197A5] underline decoration-dotted underline-offset-4"
-                      >
-                        {inv.invoiceNumber || inv.id}
-                      </Link>
-                    </td>
-                    <td className="py-4 px-6 text-[#1F1F1F]">
-                      {inv.createdAt
-                        ? new Date(inv.createdAt).toLocaleDateString("id-ID", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                        : "-"}
-                    </td>
-                    <td className="py-4 px-6 text-[#1F1F1F]">
-                      {inv.items?.[0]?.name || "Langganan"}
-                    </td>
-                    <td className="py-4 px-6 text-[#1F1F1F] font-bold">
-                      {inv.total
-                        ? `Rp ${inv.total.toLocaleString("id-ID")}`
-                        : "-"}
-                    </td>
-                    <td className="py-4 px-6">
-                      <span
-                        className={`px-2 py-1 rounded-sm text-[10px] font-bold ${
-                          inv.status === "PENDING"
-                            ? "bg-[#FFF4E5] text-[#FF9500]"
-                            : inv.status === "PAID"
-                              ? "bg-[#E0F2F4] text-[#3197A5]"
-                              : "bg-[#FFE5E5] text-[#FF3B30]"
-                        }`}
-                      >
-                        {inv.status}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6 text-right">
-                      {inv.status === "PENDING" ? (
-                        <button className="bg-[#3197A5] hover:bg-[#288a96] text-white text-[10px] font-bold px-3 py-1.5 rounded-full transition-colors">
-                          Bayar Sekarang
-                        </button>
-                      ) : (
-                        <button className="flex items-center gap-2 text-xs font-medium text-[#1F1F1F] hover:text-gray-600 transition-colors ml-auto">
-                          <Download size={14} />
-                          Download
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))
+                invoices.map((inv, idx) => {
+                  const status = (inv.status || "").toUpperCase();
+                  const paidAtDate = inv.paid_at ? new Date(inv.paid_at) : null;
+                  const totalNumber = inv.total ? Number(inv.total) : null;
+                  const formattedTotal =
+                    typeof totalNumber === "number" &&
+                    !Number.isNaN(totalNumber)
+                      ? `Rp ${totalNumber.toLocaleString("id-ID")}`
+                      : "-";
+
+                  return (
+                    <tr
+                      key={inv.id || idx}
+                      className="hover:bg-gray-50/50 transition-colors"
+                    >
+                      <td className="py-4 px-6 text-[#1F1F1F]">
+                        <Link
+                          href={`/dashboard/invoices/${inv.id}`}
+                          className="hover:text-[#3197A5] underline decoration-dotted underline-offset-4"
+                        >
+                          {inv.invoice_number || inv.id}
+                        </Link>
+                      </td>
+                      <td className="py-4 px-6 text-[#1F1F1F]">
+                        {paidAtDate
+                          ? paidAtDate.toLocaleDateString("id-ID", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : "-"}
+                      </td>
+                      <td className="py-4 px-6 text-[#1F1F1F]">
+                        {inv.items?.[0]?.name || "Langganan"}
+                      </td>
+                      <td className="py-4 px-6 text-[#1F1F1F] font-bold">
+                        {formattedTotal}
+                      </td>
+                      <td className="py-4 px-6">
+                        <span
+                          className={`px-2 py-1 rounded-sm text-[10px] font-bold ${
+                            status === "PENDING"
+                              ? "bg-[#FFF4E5] text-[#FF9500]"
+                              : status === "PAID"
+                                ? "bg-[#E0F2F4] text-[#3197A5]"
+                                : "bg-[#FFE5E5] text-[#FF3B30]"
+                          }`}
+                        >
+                          {status || "-"}
+                        </span>
+                      </td>
+                      <td className="py-4 px-6 text-right">
+                        {status === "PENDING" ? (
+                          <button className="bg-[#3197A5] hover:bg-[#288a96] text-white text-[10px] font-bold px-3 py-1.5 rounded-full transition-colors">
+                            Bayar Sekarang
+                          </button>
+                        ) : (
+                          <button className="flex items-center gap-2 text-xs font-medium text-[#1F1F1F] hover:text-gray-600 transition-colors ml-auto">
+                            <Download size={14} />
+                            Download
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
                   <td colSpan={6} className="py-8 text-center text-gray-400">
