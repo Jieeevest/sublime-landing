@@ -57,8 +57,8 @@ export default function SecurityTab() {
 
     try {
       await changePassword({
-        currentPassword: formData.oldPassword,
-        newPassword: formData.newPassword,
+        current_password: formData.oldPassword,
+        new_password: formData.newPassword,
       }).unwrap();
 
       toast.success("Kata sandi berhasil diperbarui!");
@@ -69,11 +69,11 @@ export default function SecurityTab() {
         newPassword: "",
         confirmPassword: "",
       });
-    } catch (error: any) {
-      console.error("Failed to change password", error);
+    } catch (err) {
+      const e = err as { data?: { description?: string; message?: string } };
       const errorMessage =
-        error?.data?.description ||
-        error?.data?.message ||
+        e?.data?.description ||
+        e?.data?.message ||
         "Gagal mengubah kata sandi.";
       toast.error(errorMessage);
     }

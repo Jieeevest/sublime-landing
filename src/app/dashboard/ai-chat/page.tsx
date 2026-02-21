@@ -2,7 +2,7 @@
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useI18n } from "@/i18n";
 import {
@@ -12,10 +12,14 @@ import {
 } from "@/redux/api/sublimeApi";
 import { skipToken } from "@reduxjs/toolkit/query";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
+
 export default function AIChatPage() {
   const { t } = useI18n();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [isStreaming, setIsStreaming] = useState<boolean>(false);
 
   type ChatSession = {
     id: string | number;
@@ -29,8 +33,19 @@ export default function AIChatPage() {
     created_at?: string;
   };
 
-  const { data: historyData, isLoading: historyLoading } =
-    useGetChatHistoryQuery(undefined);
+  type AiStreamChunk = {
+    sessionId?: string;
+    content?: string;
+  };
+
+  const hasAutoSelectedRef = useRef(false);
+  const [pendingChunks, setPendingChunks] = useState<string[]>([]);
+
+  const {
+    data: historyData,
+    isLoading: historyLoading,
+    refetch: refetchHistory,
+  } = useGetChatHistoryQuery(undefined);
   const filteredSessions = useMemo(() => {
     const list = (historyData?.data as ChatSession[]) || [];
     return [...list].sort((a, b) => {
@@ -40,21 +55,193 @@ export default function AIChatPage() {
     });
   }, [historyData]);
 
-  const { data: detailData, isFetching: detailLoading } =
-    useGetChatBySessionIdQuery(selectedId ?? skipToken);
+  useEffect(() => {
+    if (hasAutoSelectedRef.current) return;
+    if (!selectedId && filteredSessions.length > 0) {
+      const first = filteredSessions[0];
+      setSelectedId(String(first.id));
+      hasAutoSelectedRef.current = true;
+    }
+  }, [selectedId, filteredSessions]);
+
+  const {
+    data: detailData,
+    isFetching: detailLoading,
+    refetch: refetchDetail,
+  } = useGetChatBySessionIdQuery(selectedId ?? skipToken);
   const detail =
     (detailData?.data as { title?: string; messages?: ChatMessage[] }) || {};
   const messages = detail.messages || [];
   const [deleteChat, { isLoading: deleting }] = useDeleteChatSessionMutation();
-  const handleDelete = async () => {
-    if (!selectedId) return;
-    const ok = window.confirm("Hapus obrolan ini?");
-    if (!ok) return;
-    try {
-      await deleteChat(selectedId).unwrap();
-      setSelectedId(null);
-    } catch {}
+  const [confirmId, setConfirmId] = useState<string | null>(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [currentMessages, setCurrentMessages] = useState<ChatMessage[]>([]);
+
+  const displayedMessages =
+    currentMessages.length > 0 ? currentMessages : messages;
+
+  const openConfirm = (id: string | number) => {
+    setConfirmId(String(id));
+    setIsConfirmOpen(true);
   };
+
+  const closeConfirm = () => {
+    setIsConfirmOpen(false);
+    setConfirmId(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!confirmId) return;
+    try {
+      await deleteChat(confirmId).unwrap();
+      if (selectedId === confirmId) setSelectedId(null);
+    } catch {}
+    closeConfirm();
+  };
+
+  const handleSelectSession = (id: string | number) => {
+    setSelectedId(String(id));
+    setCurrentMessages([]);
+  };
+
+  const handleNewChat = () => {
+    setSelectedId(null);
+    setCurrentMessages([]);
+    setPendingChunks([]);
+  };
+
+  const handleSend = async () => {
+    const trimmed = inputValue.trim();
+    if (!trimmed || isStreaming) return;
+
+    setInputValue("");
+    setIsStreaming(true);
+    setPendingChunks([]);
+
+    setCurrentMessages((prev) => {
+      const base = prev.length > 0 ? prev : messages || [];
+
+      const userMessage: ChatMessage = {
+        role: "user",
+        content: trimmed,
+      };
+
+      const assistantMessage: ChatMessage = {
+        role: "assistant",
+        content: "",
+      };
+
+      return [...base, userMessage, assistantMessage];
+    });
+
+    let nextSessionId: string | null = selectedId;
+
+    const body: {
+      sessionId?: string | null;
+      messages: { role: string; content: string }[];
+    } = {
+      messages: [{ role: "user", content: trimmed }],
+    };
+
+    if (selectedId) {
+      body.sessionId = selectedId;
+    }
+
+    try {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem("token");
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/v1/ai/chat`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok || !response.body) {
+        throw new Error("Failed to start AI chat");
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let buffer = "";
+
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const parts = buffer.split("\n\n");
+        buffer = parts.pop() ?? "";
+
+        for (const part of parts) {
+          const lines = part.split("\n");
+          for (const line of lines) {
+            if (!line.startsWith("data:")) continue;
+            const dataStr = line.slice(5).trim();
+            if (!dataStr || dataStr === "[DONE]") continue;
+
+            try {
+              const parsed = JSON.parse(dataStr) as AiStreamChunk;
+
+              if (parsed.sessionId && !nextSessionId) {
+                nextSessionId = parsed.sessionId;
+                setSelectedId(parsed.sessionId);
+              }
+
+              if (parsed.content && parsed.content.length > 0) {
+                setPendingChunks((prev) => [...prev, parsed.content as string]);
+              }
+            } catch {
+              continue;
+            }
+          }
+        }
+      }
+
+      if (nextSessionId) {
+        refetchDetail();
+      }
+      refetchHistory();
+    } catch {
+    } finally {
+      setIsStreaming(false);
+    }
+  };
+
+  useEffect(() => {
+    if (pendingChunks.length === 0) return;
+
+    const timer = setTimeout(() => {
+      const [next, ...rest] = pendingChunks;
+      setPendingChunks(rest);
+
+      setCurrentMessages((prev) => {
+        if (prev.length === 0) return prev;
+        const updated = [...prev];
+        for (let i = updated.length - 1; i >= 0; i -= 1) {
+          if (updated[i].role === "assistant") {
+            updated[i] = {
+              ...updated[i],
+              content: (updated[i].content || "") + next,
+            };
+            break;
+          }
+        }
+        return updated;
+      });
+    }, 25);
+
+    return () => clearTimeout(timer);
+  }, [pendingChunks]);
 
   return (
     <DashboardLayout activeItem={t("ud_menu_ai_chat")}>
@@ -102,7 +289,11 @@ export default function AIChatPage() {
             className={`w-full flex flex-col items-center px-6 py-3 gap-3 ${isCollapsed ? "hidden" : ""}`}
           >
             {/* New Chat Button */}
-            <button className="w-[272px] h-11 bg-[#3197A5] rounded-full flex items-center justify-center gap-2 text-white hover:bg-[#288a96] transition-colors">
+            <button
+              type="button"
+              onClick={handleNewChat}
+              className="w-[272px] h-11 bg-[#3197A5] rounded-full flex items-center justify-center gap-2 text-white hover:bg-[#288a96] transition-colors"
+            >
               <svg
                 width="20"
                 height="20"
@@ -162,23 +353,56 @@ export default function AIChatPage() {
                     })
                   : "";
                 return (
-                  <button
+                  <div
                     key={String(s.id)}
-                    onClick={() => setSelectedId(String(s.id))}
-                    className={`w-full h-11 rounded-full flex items-center px-4 hover:bg-gray-50 transition-colors ${
-                      active ? "bg-gray-100" : ""
+                    className={`w-full h-11 rounded-full grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 px-4 border transition-colors ${
+                      active
+                        ? "bg-[#E6F5F7] border-[#3197A5]/60 shadow-sm hover:bg-[#D9EFF2]"
+                        : "border-transparent hover:bg-gray-50"
                     }`}
-                    aria-pressed={active}
                   >
-                    <span className="text-[#1F1F1F] text-sm font-sans truncate text-left">
-                      {label}
-                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleSelectSession(s.id)}
+                      className="min-w-0 text-left"
+                      aria-pressed={active}
+                    >
+                      <span
+                        className={`block max-w-full truncate text-sm font-sans ${
+                          active ? "text-[#155B63]" : "text-[#1F1F1F]"
+                        }`}
+                      >
+                        {label}
+                      </span>
+                    </button>
                     {dateStr ? (
-                      <span className="ml-auto text-[11px] text-[#8E8E8E] font-sans">
+                      <span className="text-[11px] text-[#8E8E8E] font-sans text-right">
                         {dateStr}
                       </span>
-                    ) : null}
-                  </button>
+                    ) : (
+                      <span />
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => openConfirm(s.id)}
+                      disabled={deleting}
+                      aria-label="Hapus obrolan ini"
+                      className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 text-[#F64C4C] disabled:opacity-50 justify-self-end"
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                      >
+                        <path d="M3 6h18" />
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                      </svg>
+                    </button>
+                  </div>
                 );
               })
             )}
@@ -195,8 +419,8 @@ export default function AIChatPage() {
 
           {/* Hero or Conversation */}
           {!selectedId ? (
-            <>
-              <div className="z-10 flex flex-col items-center gap-4 mb-10 text-center">
+            <div className="z-10 flex-1 flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center gap-4 mb-6 text-center">
                 <div className="relative mb-4">
                   {/* Robot/Avatar Icon */}
                   {/* Fallback if no robot image */}
@@ -211,18 +435,18 @@ export default function AIChatPage() {
                   </div>
                 </div>
 
-                <h1 className="text-[40px] font-bold font-sans leading-tight bg-gradient-to-r from-[#3197A5] to-[#55BDC0] bg-clip-text text-transparent">
+                <h1 className="text-[32px] md:text-[40px] font-bold font-sans leading-tight bg-gradient-to-r from-[#3197A5] to-[#55BDC0] bg-clip-text text-transparent">
                   {t("ai_hero_hi")}, Kiara <br />
                   <span className="text-[#1F1F1F]">
                     {t("ai_hero_question")}
                   </span>
                 </h1>
-                <p className="text-[#1F1F1F] text-base font-sans">
+                <p className="text-[#1F1F1F] text-base font-sans max-w-[620px]">
                   {t("ai_hero_desc")}
                 </p>
               </div>
               {/* Suggestions Grid */}
-              <div className="z-10 grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-[947px] mb-10">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-[947px]">
                 {[
                   t("ai_suggestion_1"),
                   t("ai_suggestion_2"),
@@ -238,93 +462,104 @@ export default function AIChatPage() {
                   </div>
                 ))}
               </div>
-            </>
+            </div>
           ) : (
-            <div className="z-10 w-full max-w-[947px] flex flex-col gap-3 h-full">
+            <div className="z-10 w-full max-w-[947px] flex flex-col gap-2 h-full">
               <div className="flex items-center justify-between mt-1">
                 <h2 className="text-xl font-semibold text-[#1F1F1F]">
                   {detail.title || t("ud_menu_ai_chat")}
                 </h2>
-                <button
-                  type="button"
-                  onClick={handleDelete}
-                  disabled={!selectedId || deleting}
-                  aria-label="Hapus obrolan ini"
-                  className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-50 text-[#F64C4C] disabled:opacity-50"
-                >
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                  >
-                    <path d="M3 6h18" />
-                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                  </svg>
-                </button>
+                <div />
               </div>
               <div className="flex-1 min-h-0 w-full overflow-y-auto space-y-3 flex flex-col justify-end">
                 {detailLoading ? (
                   <div className="text-sm text-gray-500">
                     {t("common_loading")}
                   </div>
-                ) : messages.length === 0 ? (
+                ) : displayedMessages.length === 0 ? (
                   <div className="text-sm text-gray-500">
                     {t("dashboard_empty_data")}
                   </div>
                 ) : (
-                  messages.map((m, i) => (
-                    <div
-                      key={i}
-                      className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
-                    >
+                  displayedMessages.map((m, i) => {
+                    const isTypingIndicator =
+                      m.role === "assistant" &&
+                      isStreaming &&
+                      i === displayedMessages.length - 1 &&
+                      (!m.content || m.content.length === 0) &&
+                      pendingChunks.length === 0;
+
+                    return (
                       <div
-                        className={`max-w-[80%] px-4 py-2 rounded-2xl text-sm leading-relaxed ${
-                          m.role === "user"
-                            ? "bg-[#3197A5] text-white rounded-br-sm"
-                            : "bg-white border border-gray-300 text-[#1F1F1F] rounded-bl-sm"
-                        }`}
-                        aria-label={`${m.role}`}
+                        key={i}
+                        className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
                       >
-                        <ReactMarkdown
-                          components={{
-                            p: (props) => (
-                              <p
-                                className="whitespace-pre-wrap mb-2"
-                                {...props}
-                              />
-                            ),
-                            ul: (props) => (
-                              <ul className="list-disc pl-5 mb-2" {...props} />
-                            ),
-                            ol: (props) => (
-                              <ol
-                                className="list-decimal pl-5 mb-2"
-                                {...props}
-                              />
-                            ),
-                            li: (props) => <li className="mb-1" {...props} />,
-                            strong: (props) => (
-                              <strong className="font-semibold" {...props} />
-                            ),
-                            em: (props) => <em className="italic" {...props} />,
-                          }}
+                        <div
+                          className={`max-w-[80%] px-4 py-2 rounded-2xl text-sm leading-relaxed ${
+                            m.role === "user"
+                              ? "bg-[#3197A5] text-white rounded-br-sm"
+                              : "bg-white border border-gray-300 text-[#1F1F1F] rounded-bl-sm"
+                          }`}
+                          aria-label={`${m.role}`}
                         >
-                          {m.content}
-                        </ReactMarkdown>
+                          {isTypingIndicator ? (
+                            <span className="inline-flex gap-1 text-base tracking-widest">
+                              <span className="w-1 h-1 rounded-full bg-[#1F1F1F] animate-pulse" />
+                              <span className="w-1 h-1 rounded-full bg-[#1F1F1F] animate-pulse" />
+                              <span className="w-1 h-1 rounded-full bg-[#1F1F1F] animate-pulse" />
+                            </span>
+                          ) : (
+                            <ReactMarkdown
+                              components={{
+                                p: (props) => (
+                                  <p
+                                    className="whitespace-pre-wrap mb-2"
+                                    {...props}
+                                  />
+                                ),
+                                ul: (props) => (
+                                  <ul
+                                    className="list-disc pl-5 mb-2"
+                                    {...props}
+                                  />
+                                ),
+                                ol: (props) => (
+                                  <ol
+                                    className="list-decimal pl-5 mb-2"
+                                    {...props}
+                                  />
+                                ),
+                                li: (props) => (
+                                  <li className="mb-1" {...props} />
+                                ),
+                                strong: (props) => (
+                                  <strong
+                                    className="font-semibold"
+                                    {...props}
+                                  />
+                                ),
+                                em: (props) => (
+                                  <em className="italic" {...props} />
+                                ),
+                              }}
+                            >
+                              {m.content}
+                            </ReactMarkdown>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
               </div>
               {/* Chat Input */}
-              <div className="z-10 w-full max-w-[947px] mt-2">
+              <div className="z-10 w-full max-w-[947px]">
                 <div className="w-full h-[54px] bg-white border border-[#E1E1E1] rounded-full flex items-center px-4 shadow-sm focus-within:border-[#3197A5] transition-colors">
                   {/* Plus Button */}
-                  <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F] mr-2">
+                  <button
+                    type="button"
+                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F] mr-2"
+                  >
                     <svg
                       width="20"
                       height="20"
@@ -342,11 +577,22 @@ export default function AIChatPage() {
                     type="text"
                     placeholder={t("ai_input_placeholder")}
                     className="flex-1 h-full outline-none text-[#1F1F1F] placeholder:text-[#8E8E8E] font-sans text-sm bg-transparent"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleSend();
+                      }
+                    }}
                   />
 
                   {/* Right Actions */}
                   <div className="flex items-center gap-2 ml-2">
-                    <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F]">
+                    <button
+                      type="button"
+                      className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F]"
+                    >
                       <svg
                         width="20"
                         height="20"
@@ -361,7 +607,12 @@ export default function AIChatPage() {
                         <line x1="8" y1="23" x2="16" y2="23" />
                       </svg>
                     </button>
-                    <button className="w-10 h-10 flex items-center justify-center rounded-full bg-[#3197A5] text-white hover:bg-[#288a96] transition-colors shadow-md">
+                    <button
+                      type="button"
+                      onClick={handleSend}
+                      disabled={isStreaming || inputValue.trim().length === 0}
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-[#3197A5] text-white hover:bg-[#288a96] transition-colors shadow-md disabled:opacity-60"
+                    >
                       <svg
                         width="20"
                         height="20"
@@ -381,6 +632,60 @@ export default function AIChatPage() {
           )}
         </div>
       </div>
+      {isConfirmOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl">
+            <div className="flex items-center justify-between p-5 border-b border-gray-100">
+              <h3 className="text-lg font-semibold text-[#1F1F1F]">
+                Hapus Obrolan
+              </h3>
+              <button
+                onClick={closeConfirm}
+                className="p-2 -mr-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
+                aria-label="Tutup modal"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-5 space-y-4">
+              <p className="text-sm text-[#1F1F1F]">
+                Obrolan akan dihapus permanen. Anda yakin ingin melanjutkan?
+              </p>
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={closeConfirm}
+                  className="px-4 py-2 rounded-full border border-gray-300 text-[#1F1F1F] hover:bg-gray-50"
+                >
+                  Batal
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmDelete}
+                  disabled={deleting}
+                  className="px-4 py-2 rounded-full bg-[#F64C4C] text-white hover:bg-[#e04343] disabled:opacity-50"
+                >
+                  Hapus
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </DashboardLayout>
   );
 }

@@ -99,10 +99,13 @@ export default function ArtikelPage() {
                     <h2 className="text-3xl font-bold mb-3 group-hover:text-primary-200 transition-colors">
                       {articles[0].title}
                     </h2>
-                    <p className="text-white/90 text-lg max-w-2xl">
-                      {/* Excerpt logic: Use excerpt field if available, or truncate content/subtitle */}
-                      {articles[0].excerpt || articles[0].subtitle || ""}
-                    </p>
+                    <div
+                      className="text-white/90 text-lg max-w-2xl"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          articles[0].excerpt || articles[0].subtitle || "",
+                      }}
+                    />
                   </div>
                 </div>
               </Link>
@@ -166,9 +169,12 @@ export default function ArtikelPage() {
                         <h3 className="font-bold text-secondary text-lg line-clamp-2 group-hover:text-primary transition-colors">
                           {article.title}
                         </h3>
-                        <p className="text-sm text-secondary/60 line-clamp-2">
-                          {article.excerpt || article.subtitle || ""}
-                        </p>
+                        <div
+                          className="text-sm text-secondary/60 line-clamp-2"
+                          dangerouslySetInnerHTML={{
+                            __html: article.excerpt || article.subtitle || "",
+                          }}
+                        />
                       </div>
                     </div>
                   </Link>

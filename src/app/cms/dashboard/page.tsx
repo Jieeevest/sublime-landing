@@ -9,6 +9,7 @@ import {
 import { format } from "date-fns";
 import { useI18n } from "@/i18n";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function CmsDashboardPage() {
   const { t } = useI18n();
@@ -18,7 +19,12 @@ export default function CmsDashboardPage() {
   const { data: revenueResp, isLoading: revenueLoading } =
     useGetRevenueChartQuery(undefined);
 
-  type TopAudio = { thumbnail_url?: string; title: string; play_count: number };
+  type TopAudio = {
+    id: string;
+    thumbnail_url?: string;
+    title: string;
+    play_count: number;
+  };
   type RecentUser = {
     avatar?: string;
     name: string;
@@ -59,6 +65,8 @@ export default function CmsDashboardPage() {
     return { x, y };
   });
   const latestRevenue = points.length ? points[points.length - 1].y : 0;
+
+  const [activeAudioId, setActiveAudioId] = useState<string | null>(null);
 
   return (
     <div className="p-10 space-y-8">
@@ -141,25 +149,47 @@ export default function CmsDashboardPage() {
             {topAudios.map((audio: TopAudio, idx: number) => (
               <div
                 key={idx}
-                className="flex items-center gap-4 border-b border-gray-50 pb-4 last:border-0 last:pb-0"
+                className="border-b border-gray-50 pb-4 last:border-0 last:pb-0"
               >
-                <div className="w-12 h-12 bg-gray-100 rounded-lg flex-shrink-0 overflow-hidden">
-                  <Image
-                    src={audio.thumbnail_url || "https://placehold.co/100"}
-                    alt={audio.title}
-                    width={48}
-                    height={48}
-                    className="h-12 w-12 object-cover"
-                  />
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gray-100 rounded-lg flex-shrink-0 overflow-hidden">
+                    <Image
+                      src={audio.thumbnail_url || "https://placehold.co/100"}
+                      alt={audio.title}
+                      width={48}
+                      height={48}
+                      className="h-12 w-12 object-cover"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-sm font-bold text-gray-800">
+                      {audio.title}
+                    </h4>
+                    <p className="text-xs text-gray-500">
+                      {audio.play_count} {t("dashboard_plays_suffix")}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() =>
+                      setActiveAudioId(
+                        activeAudioId === audio.id ? null : audio.id,
+                      )
+                    }
+                    className="px-3 py-1.5 rounded-md bg-teal-600 text-white text-xs font-medium hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-400"
+                    aria-label="Putar audio"
+                  >
+                    {activeAudioId === audio.id ? "Tutup" : "Putar"}
+                  </button>
                 </div>
-                <div className="flex-1">
-                  <h4 className="text-sm font-bold text-gray-800">
-                    {audio.title}
-                  </h4>
-                  <p className="text-xs text-gray-500">
-                    {audio.play_count} {t("dashboard_plays_suffix")}
-                  </p>
-                </div>
+                {activeAudioId === audio.id && (
+                  <div className="mt-3">
+                    <audio
+                      controls
+                      className="w-full"
+                      src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/audios/stream/${audio.id}`}
+                    />
+                  </div>
+                )}
               </div>
             ))}
             {topAudios.length === 0 && (

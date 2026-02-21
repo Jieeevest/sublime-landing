@@ -10,6 +10,14 @@ import {
   useGetPublicContentsQuery,
 } from "@/redux/api/sublimeApi";
 
+type RelArticle = {
+  id: string | number;
+  slug: string;
+  title: string;
+  created_at: string;
+  cover_image_url?: string;
+};
+
 export default function ArticleDetailPage({
   params,
 }: {
@@ -30,8 +38,10 @@ export default function ArticleDetailPage({
     type: "article",
     limit: 4,
   });
-  const relatedArticles = (relatedData?.data || [])
-    .filter((a: any) => a.id !== article?.id)
+  const relatedArticles: RelArticle[] = (
+    (relatedData?.data || []) as RelArticle[]
+  )
+    .filter((a: RelArticle) => a.id !== article?.id)
     .slice(0, 3);
 
   if (isLoadingArticle) {
@@ -161,52 +171,67 @@ export default function ArticleDetailPage({
             </div>
           </div>
 
-          {/* Article Content */}
           <div className="prose prose-lg max-w-none">
-            <ReactMarkdown
-              components={{
-                h1: ({ children }: { children?: ReactNode }) => (
-                  <h1 className="text-3xl font-bold text-secondary mb-4 mt-8">
-                    {children}
-                  </h1>
-                ),
-                h2: ({ children }: { children?: ReactNode }) => (
-                  <h2 className="text-2xl font-bold text-secondary mb-3 mt-6">
-                    {children}
-                  </h2>
-                ),
-                h3: ({ children }: { children?: ReactNode }) => (
-                  <h3 className="text-xl font-semibold text-secondary mb-2 mt-4">
-                    {children}
-                  </h3>
-                ),
-                p: ({ children }: { children?: ReactNode }) => (
-                  <p className="text-secondary/80 mb-4 leading-relaxed text-justify">
-                    {children}
-                  </p>
-                ),
-                ul: ({ children }: { children?: ReactNode }) => (
-                  <ul className="list-disc list-inside space-y-2 mb-4 text-secondary/80">
-                    {children}
-                  </ul>
-                ),
-                ol: ({ children }: { children?: ReactNode }) => (
-                  <ol className="list-decimal list-inside space-y-2 mb-4 text-secondary/80">
-                    {children}
-                  </ol>
-                ),
-                li: ({ children }: { children?: ReactNode }) => (
-                  <li className="ml-4">{children}</li>
-                ),
-                strong: ({ children }: { children?: ReactNode }) => (
-                  <strong className="font-semibold text-secondary">
-                    {children}
-                  </strong>
-                ),
-              }}
-            >
-              {article.body || article.content || ""}
-            </ReactMarkdown>
+            {(() => {
+              const body: string = (article.body ||
+                article.content ||
+                "") as string;
+              const isHTML = /<\/?[a-z][\s\S]*>/i.test(body);
+              if (isHTML) {
+                return (
+                  <div
+                    dangerouslySetInnerHTML={{ __html: body }}
+                    className="text-secondary/80"
+                  />
+                );
+              }
+              return (
+                <ReactMarkdown
+                  components={{
+                    h1: ({ children }: { children?: ReactNode }) => (
+                      <h1 className="text-3xl font-bold text-secondary mb-4 mt-8">
+                        {children}
+                      </h1>
+                    ),
+                    h2: ({ children }: { children?: ReactNode }) => (
+                      <h2 className="text-2xl font-bold text-secondary mb-3 mt-6">
+                        {children}
+                      </h2>
+                    ),
+                    h3: ({ children }: { children?: ReactNode }) => (
+                      <h3 className="text-xl font-semibold text-secondary mb-2 mt-4">
+                        {children}
+                      </h3>
+                    ),
+                    p: ({ children }: { children?: ReactNode }) => (
+                      <p className="text-secondary/80 mb-4 leading-relaxed text-justify">
+                        {children}
+                      </p>
+                    ),
+                    ul: ({ children }: { children?: ReactNode }) => (
+                      <ul className="list-disc list-inside space-y-2 mb-4 text-secondary/80">
+                        {children}
+                      </ul>
+                    ),
+                    ol: ({ children }: { children?: ReactNode }) => (
+                      <ol className="list-decimal list-inside space-y-2 mb-4 text-secondary/80">
+                        {children}
+                      </ol>
+                    ),
+                    li: ({ children }: { children?: ReactNode }) => (
+                      <li className="ml-4">{children}</li>
+                    ),
+                    strong: ({ children }: { children?: ReactNode }) => (
+                      <strong className="font-semibold text-secondary">
+                        {children}
+                      </strong>
+                    ),
+                  }}
+                >
+                  {body}
+                </ReactMarkdown>
+              );
+            })()}
           </div>
 
           {/* Tags */}
@@ -235,7 +260,7 @@ export default function ArticleDetailPage({
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {relatedArticles.map((relatedArticle: any) => (
+                {relatedArticles.map((relatedArticle: RelArticle) => (
                   <Link
                     key={relatedArticle.id}
                     href={`/dashboard/artikel/${relatedArticle.slug}`}
