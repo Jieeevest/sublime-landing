@@ -145,7 +145,7 @@ export default function PaymentPage() {
               </div>
             </div>
 
-            <div className="space-y-1">
+            {/* <div className="space-y-1">
               <p className="text-[14px] text-[#8E8E8E]">
                 • Penagihan bulanan mulai hari ini.
               </p>
@@ -155,7 +155,7 @@ export default function PaymentPage() {
                   Syarat dan ketentuan berlaku.
                 </span>
               </p>
-            </div>
+            </div> */}
           </div>
 
           {/* PAYMENT METHODS CARD */}

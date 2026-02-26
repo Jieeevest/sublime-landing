@@ -78,17 +78,16 @@ export default function SubscriptionsPage() {
               <span className="text-[#023347] text-5xl ml-2">Rp,138,000,-</span>
             </h2>
             <h2 className="text-[#3197A5] font-bold text-4xl leading-tight mb-8">
-              Dengerin{" "}
+              Untuk mengakses{" "}
               <span className="text-white bg-[#3197A5] px-2 py-1 rounded">
-                Audio Therapy
-              </span>{" "}
-              di Berlangganan.
+                Audio Strovia
+              </span>
             </h2>
 
             {/* Footer Text */}
             <p className="text-[#023347] text-sm max-w-[600px] opacity-80">
               Tanpa perpanjangan otomatis. Tidak ada autodebet. Kamu tetap
-              sepenuhnya mengontrol langgananmu.
+              sepenuhnya mengontrol proses berlanggananmu.
             </p>
           </div>
 
@@ -101,12 +100,11 @@ export default function SubscriptionsPage() {
         {/* Header Section */}
         <div className="text-center max-w-[800px] mb-12 space-y-4">
           <h1 className="text-4xl md:text-5xl font-bold text-[#3197A5] leading-tight">
-            Ayo mulai perjalanan proses pemulihan stroke Anda bersama Strovia
+            Ayo mulai perjalanan proses pemulihan mandiri stroke Anda bersama
+            Strovia
           </h1>
           <p className="text-gray-600 text-lg md:text-xl font-light">
-            Pilih paket Premium dan dengarkan musik audio therapy yang Anda
-            inginkan, kapan pun Anda mau. Bayar dengan berbagai cara. Batalkan
-            kapan saja.
+            Bayar dengan berbagai cara. Batalkan kapan saja.
           </p>
 
           {/* Payment Methods */}

@@ -136,14 +136,13 @@ export default function DashboardPromoCards() {
                 >
                   Rp.138,000,-
                 </span>
-                Dengerin{" "}
+                Untuk mengakses{" "}
                 <span
                   className="bg-[#3197A5] text-white px-2 py-1 mx-1"
                   style={{ borderRadius: "4px" }}
                 >
-                  Audio Therapy
-                </span>{" "}
-                di Berlangganan.
+                  Audio Strovia
+                </span>
               </h2>
             </div>
           </div>
@@ -170,7 +169,7 @@ export default function DashboardPromoCards() {
               }}
             >
               Tanpa perpanjangan otomatis. Tidak ada autodebet. Kamu tetap
-              sepenuhnya mengontrol langgananmu.
+              sepenuhnya mengontrol proses berlanggananmu.
             </p>
             {/* Button */}
             <button

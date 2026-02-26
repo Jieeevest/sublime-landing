@@ -241,7 +241,7 @@ export default function ShareReferralModal({
             Bagikan Kode Referral
           </h2>
           <p className="text-gray-500 mb-8 max-w-sm">
-            Ajak temanmu bergabung dan dapatkan Rp25.000 setiap bulan selama
+            Ajak temanmu bergabung dan dapatkan royalti 20% setiap bulan selama
             mereka berlangganan.
           </p>
 

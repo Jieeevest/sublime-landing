@@ -162,19 +162,19 @@ const dict: Dict = {
     ud_subscribe_start: "Mulai Berlangganan",
     // Dashboard Hero
     dash_hero_badge: "Pilihan Bahasa Audio",
-    dash_hero_title: "Program Audio Dukungan Mental Pasca Stroke",
+    dash_hero_title: "Program Audio Yang Memicu Pemulihan Mandiri Pasca Stroke",
     dash_hero_desc:
-      "Strovia menghadirkan audio afirmasi terpandu dan relaksasi berbasis frekuensi 528Hz untuk membantu menjaga ketenangan, memperkuat fokus, dan membangun semangat selama proses pemulihan.",
+      "Strovia menghadirkan audio afirmasi subliminal yang berbasis frekuensi 528Hz yang memicu pemulihan mandiri.",
     dash_hero_stats: "Digunakan oleh 1,809 Pengguna | Update Februari 2026",
     // End Dashboard Hero
     // Dashboard Audio List
-    dash_audio_title: "Audio Pilihan untuk Anda",
+    dash_audio_title: "Audio Strovia untuk Anda",
     dash_audio_sub_msg: "Silakan berlangganan untuk menikmati audio",
     dash_audio_sub_btn: "Berlangganan Sekarang",
     dash_audio_empty_title: "Belum ada audio saat ini",
     dash_audio_empty_desc: "Nantikan audio pilihan menarik untuk Anda segera.",
     // Dashboard Articles
-    dash_articles_title: "Artikel untuk Pemulihan Anda",
+    dash_articles_title: "Artikel terkait",
     dash_articles_view_all: "Lihat Semua",
     dash_articles_loading: "Memuat artikel...",
     dash_articles_empty_title: "Belum ada artikel saat ini",

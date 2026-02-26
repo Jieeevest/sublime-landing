@@ -172,8 +172,8 @@ export default function ReferralTab() {
               Program Referral Strovia
             </h3>
             <p className="text-gray-500 text-sm mb-8">
-              Undang teman dan dapatkan Rp25.000 untuk setiap pengguna yang
-              mendaftar dan berlangganan melalui kode kamu.
+              Undang teman untuk mendapatkan komisi sebesar 20% setiap pengguna
+              yang mendaftar dan berlangganan melalui kode referralmu.
             </p>
           </div>
 
@@ -226,12 +226,12 @@ export default function ReferralTab() {
             </div>
 
             {/* Step 2 */}
-            <div className="flex flex-col items-center text-center max-w-[160px] z-10">
+            <div className="flex flex-col items-center text-center max-w-[200px] z-10">
               <div className="w-16 h-16 bg-[#E0F2F4] rounded-full flex items-center justify-center mb-4 text-[#3197A5]">
                 <UserPlus size={24} strokeWidth={2.5} />
               </div>
               <h4 className="text-xs font-bold text-[#1F1F1F] mb-1">
-                Teman Melakukan Pendaftaran
+                Teman Melakukan Pendaftaran dan Pembayaran
               </h4>
               <p className="text-[10px] text-gray-400">
                 Temanmu membuat akun melalui link/kode kamu.
@@ -277,10 +277,10 @@ export default function ReferralTab() {
                 <Gift size={24} strokeWidth={2.5} />
               </div>
               <h4 className="text-xs font-bold text-[#1F1F1F] mb-1">
-                Dapatkan Rp25.000
+                Dapatkan Royalti 20%
               </h4>
               <p className="text-[10px] text-gray-400">
-                Dapatkan Rp25.000 setiap bulan selama temanmu tetap
+                Selama setiap teman yang menggunakan kode referralmu aktif
                 berlangganan.
               </p>
             </div>
@@ -357,7 +357,7 @@ export default function ReferralTab() {
                 Kamu belum memiliki peserta referral
               </h5>
               <p className="text-xs text-gray-400 max-w-xs mb-6">
-                Ajak teman pertama kamu dan dapatkan Rp25.000 setiap bulan*.
+                Ajak teman pertama kamu dan dapatkan royalti 20% setiap bulan*.
               </p>
               <button
                 onClick={handleShare}
