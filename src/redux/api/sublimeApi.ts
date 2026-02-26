@@ -594,13 +594,7 @@ export const sublimeApi = apiSlice.injectEndpoints({
       query: () => "/api/v1/dashboard/stats",
       providesTags: ["Dashboard"],
     }),
-    getRevenueChart: builder.query({
-      query: (params) => ({
-        url: "/api/v1/dashboard/revenue",
-        params,
-      }),
-      providesTags: ["Dashboard"],
-    }),
+
     getTopAudios: builder.query({
       query: (params) => ({
         url: "/api/v1/dashboard/top-audios",
@@ -908,7 +902,7 @@ export const {
 
   // Dashboard
   useGetDashboardStatsQuery,
-  useGetRevenueChartQuery,
+
   useGetTopAudiosQuery,
   useGetRecentUsersQuery,
   useGetSubscriptionStatsQuery,
