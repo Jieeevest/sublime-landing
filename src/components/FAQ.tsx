@@ -8,44 +8,40 @@ export default function FAQ() {
 
   const faqs = [
     {
-      question: "Apa itu Strovia?",
+      question: "Apa itu Strovia ?",
       answer:
-        "Strovia adalah platform terapi audio digital yang dirancang khusus untuk membantu proses pemulihan pasien stroke melalui stimulasi gelombang otak dan afirmasi positif.",
+        "Strovia adalah produk audio subliminal berbasis frekuensi khusus yang bertujuan untuk membangkitkan kemampuan pemulihan mandiri (self healing) dalam diri penderita stroke",
     },
     {
-      question: "Untuk siapa Strovia dibuat?",
+      question: "Untuk Siapa Strovia dibuat ?",
       answer:
-        "Saat ini, Strovia difokuskan untuk mendukung pemulihan pasien stroke. Ke depannya, Strovia juga akan menghadirkan kategori lain seperti motivasi, kesehatan umum, keseimbangan emosi, dan pemulihan fisik.",
+        "Strovia dibuat khusus bagi Anda yang mengalami serangan Stroke dan bertekad untuk pulih dari kondisi tersebut lewat kemampuan yang dimiliki oleh tubuh Anda untuk memulihkan dirinya sendiri.",
     },
     {
-      question: "Berapa biaya menggunakan Strovia?",
+      question: "Berapa biaya untuk menggunakan Strovia ?",
       answer:
-        "Strovia menawarkan paket berlangganan yang terjangkau. Silakan cek halaman harga atau aplikasi kami untuk informasi terbaru mengenai paket yang tersedia.",
+        "Biaya paket berlangganan akses Strovia dapat Anda peroleh dengan jelas di halaman berlangganan dan paket tersebut tidak menggukan perpanjangan otomatis, sehingga Anda bisa menetukan kapan saja ingin berlangganan Strovia sesuai kebutuhan dan situasi Anda.",
     },
     {
-      question: "Kapan waktu terbaik untuk mendengarkan Strovia?",
+      question:
+        "Apakah saya bisa mendengarkan audio Strovia lebih dari sekali dalam sehari?",
       answer:
-        "Waktu terbaik adalah saat Anda merasa rileks, seperti di pagi hari setelah bangun tidur atau di malam hari sebelum tidur. Namun, Anda dapat mendengarkannya kapan saja sesuai kenyamanan Anda.",
+        "Tidak ada batasan untuk berapa kali Anda dapat mendengarkan audio Strovia. Anda dapat mengatur sendiri berapa kali Anda ingin mendengarkan audio Strovia di saat yang memang kondusif bagi situasi Anda.",
     },
     {
-      question: "Apakah saya bisa mendengarkan lebih dari sekali sehari?",
+      question: "Apakah Strovia dapat membantu kondisi stroke?",
       answer:
-        "Ya, Anda boleh mendengarkan sesi lebih dari satu kali sehari. Namun, kami sarankan untuk memberi jeda dan tidak memaksakan diri agar otak dapat memproses stimulasi dengan optimal.",
+        "Afirmasi dalam audio Strovua dirancang sedemikian rupa untuk dapat memicu pemulihan mandiri dari berbagai macam kondisi stroke yang Anda alami.",
     },
     {
-      question: "Apakah Strovia bisa membantu semua kondisi stroke?",
+      question: "Bagaimana cara kerja terapi subliminal ?",
       answer:
-        "Strovia dirancang sebagai pendamping pemulihan untuk mendukung aspek neurologis dan emosional. Konsultasikan dengan dokter Anda untuk memastikan kesesuaian dengan kondisi medis spesifik Anda.",
+        "Dalam audio Strovia juga disematkan afirmasi (pesan) yang bersifat subliminal (tersembunyi), dimana pesan tersebut tidak terdengar pada frekuensi pendengaran norma manusia sehingga tidak tertangkap oleh pikiran sadar tapi dapat tertangkap oleh pikiran bawah sadar. Hal tersebut untuk menghindari resistansi (penolakan) oleh pikiran sadar tapi pesan tersebut dapat ditangkap sepenuhnya oleh pikiran bawah sadar, yaitu bagian dari pikiran (otak) yang 95% mengontrol aktifitas fisik bahkan kehidupan kita sehari hari.",
     },
     {
-      question: "Bagaimana cara kerja terapi subliminal?",
+      question: "Apakah saya memerlukan alat khusus ?",
       answer:
-        "Terapi subliminal bekerja dengan menyampaikan pesan positif di bawah ambang kesadaran, yang dapat diterima langsung oleh alam bawah sadar untuk membantu membentuk pola pikir positif dan mendukung neuroplastisitas.",
-    },
-    {
-      question: "Apakah saya memerlukan alat khusus?",
-      answer:
-        "Tidak, Anda hanya memerlukan smartphone dan earphone atau headphone stereo yang nyaman untuk mendapatkan pengalaman audio binaural yang optimal.",
+        "Anda dapat menggunakan alat pemutar/ penyetel audio apapun, akan lebih baik bila Anda dapat menggunakan earphoene, earbud, headset dll. Tapi Media apapun tidak akan mengurangi fungsi dari Audio Strovia, selama audio dapat Anda dengarkan dengan nyaman dan jelas, itu sudah cukup efektif.",
     },
   ];
 

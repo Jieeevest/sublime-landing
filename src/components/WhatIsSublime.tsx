@@ -67,13 +67,9 @@ export default function WhatIsSublime() {
 
         {/* Description */}
         <p className={`${styles.description} font-normal text-center`}>
-          {/* Strovia adalah terapi audio modern yang menggunakan frekuensi 528 Hz,
-          afirmasi lembut, dan pendamping AI untuk membantu menghadirkan
-          ketenangan, kejernihan, dan dukungan dalam proses pemulihan setiap
-          hari. */}
-          Strovia adalah audio subliminal berbasis frekuensi khusus yang
-          tujuannya membangkitkan kemampuan pemulihan mandiri dalam diri
-          penderita stroke.
+          Strovia adalah produk audio subliminal berbasis frekuensi khusus yang
+          bertujuan untuk membangkitkan kemampuan pemulihan mandiri (self
+          healing) dalam diri penderita stroke.
         </p>
       </div>
 
@@ -111,12 +107,9 @@ export default function WhatIsSublime() {
                 Audio Strovia 528 Hz
               </h3>
               <p className={`${styles.cardDescription} font-normal`}>
-                {/* Setiap audio dirancang menggunakan frekuensi 528 Hz untuk
-                membantu tubuh dan pikiran kembali ke ritme yang lebih tenang
-                dan seimbang. */}
-                Frekuensi 528Hz adalah frekuensi yang dapat mempengaruhi
-                gelombang otak agar tubuh dapat mengalami relaksasi yang sangat
-                mendalam.
+                Produk audio Strovia di set pada frekuensi khusus 528Hz,
+                frejuensi yangmempengaruhi gelombang otak agar tubuh dapat
+                mengalami relaksasi mendalam.
               </p>
             </div>
 
@@ -235,10 +228,10 @@ export default function WhatIsSublime() {
                 Afirmasi Subliminal
               </h3>
               <p className={`${styles.cardDescription} font-normal`}>
-                {/* Pesan afirmasi disematkan secara halus untuk mendukung fokus,
-                suasana hati, dan kestabilan emosi. */}
-                Pesan positif yang disampaikan secara tersembunyi ke pikiran
-                bawah sadar sehingga pesan dapat bekerja secara efektif.
+                Afirmasi positif yang "disembunyikan" dalam gelombang audio
+                sehingga dapat menembus pikiran sadar kemudia langsung diterima
+                olaeh pikiran bawah sadar agar afirmasi tersebut dapat bekerja
+                dengan efektif.
               </p>
             </div>
 
@@ -362,8 +355,8 @@ export default function WhatIsSublime() {
               Pendamping AI Personal
             </h3>
             <p className={`${styles.cardDescription} font-normal`}>
-              AI pendamping yang siap membantu memberikan segala informasi yang
-              Anda butuhkan.
+              Layanan informasi berbasis AI yang siap memberikan segala
+              informasi yang Anda butuhkan.
             </p>
           </div>
 
@@ -463,8 +456,7 @@ export default function WhatIsSublime() {
                 className={`${styles.aiCardText} font-normal text-center flex items-center`}
                 style={{ alignSelf: "stretch" }}
               >
-                Siap mendampingi kapan pun kamu butuh ketenangan, jawaban, atau
-                panduan.
+                Siap mendampingi, kapanpun kamu butuh informasi dan panduan.
               </p>
             </div>
 

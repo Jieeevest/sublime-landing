@@ -110,7 +110,7 @@ export default function InsightsGuidance() {
 
         {/* Heading */}
         <h2 className={`${styles.heading} font-bold text-center`}>
-          Panduan untuk membantu Anda tetap tenang dan seimbang
+          Artikel Dan Informasi
         </h2>
       </div>
 

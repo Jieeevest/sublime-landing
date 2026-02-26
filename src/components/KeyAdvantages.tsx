@@ -7,27 +7,27 @@ export default function KeyAdvantages() {
   const advantages = [
     {
       icon: "/icons/icon-manfaat-1.svg",
-      title: "Menenangkan Stres & Pikiran",
+      title: "Membuat otak (pikiran) & tubuh relaks",
       description:
-        "Frekuensi 528 Hz membantu menghadirkan rasa tenang dan keseimbangan pada pikiran dan sistem saraf.",
+        "Produk audio Strovia yang di set pada frekuensi 528Hz akan mempengaruhi otak dan tubuh untuk masuk dalam kondisi relaksasi yang mendalam sehingga kdeuanya dapat mencapai kesimbangan.",
     },
     {
       icon: "/icons/icon-manfaat-2.svg",
-      title: "Mendukung Pemulihan Saraf",
+      title: "Memicu Pemulihan Mandiri",
       description:
-        "Afirmasi subliminal membantu membangun pola pikir yang lebih positif dan stabil selama proses pemulihan.",
+        "Afirmasi (pesan) subliminal audio strovia akan memicu kemampuan tubuh kita untuk dapat memulihkan semua kerusakan akibat serangan stroke, baik secara neurologis, kemampuan motorik dll.",
     },
     {
       icon: "/icons/icon-manfaat-3.svg",
-      title: "Dukungan Emosional dari AI",
+      title: "Dukungan Informasi",
       description:
-        "Pendamping AI siap menemani, mendengarkan, dan memberikan panduan lembut kapan pun dibutuhkan.",
+        "Layanan informasi apapun yang berbasis teknologi AI terbaru akan selalu melayani kebutuhan Anda akan berbagai macam informasi yang Anda perlukan.",
     },
     {
       icon: "/icons/icon-manfaat-4.svg",
-      title: "Terjangkau & Mudah Digunakan",
+      title: "Biaya Yang Terjangkau & Penggunaan Yang sangat Mudah",
       description:
-        "Satu paket 30 hari, tanpa perpanjangan otomatis, tanpa biaya tersembunyi — dirancang agar mudah digunakan oleh semua usia.",
+        "Satu paket dalam 30 hari, tanpa perpanjangan otomatis, sehingga Anda dapat mengatur proses berlangganan sesuai kebutuhan Anda. Juga aplikasi yang di rancang sedemikian rupa sehingga mudah digunakan oleh semua usia & khususnya penderita stroke.",
     },
   ];
 
@@ -123,7 +123,7 @@ export default function KeyAdvantages() {
             </h2>
 
             {/* Description */}
-            <p
+            {/* <p
               className={`${styles.benefitsDescription} font-normal`}
               style={{
                 color: "#E1E1E1",
@@ -133,7 +133,7 @@ export default function KeyAdvantages() {
               Strovia menggabungkan audio terapi 528 Hz, afirmasi lembut, dan
               pendamping AI untuk membantu menciptakan ketenangan, fokus, dan
               dukungan dalam pemulihan sehari-hari.
-            </p>
+            </p> */}
           </div>
 
           {/* Advantage Cards */}

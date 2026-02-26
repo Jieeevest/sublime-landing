@@ -33,7 +33,8 @@ export default function Hero() {
             <h1 className={styles.heading}>
               {/* Panduan Penyembuhan untuk Perjalanan Pemulihan Stroke yang Lebih
               Tenang */}
-              Audio Subliminal yang memicu pemulihan mandiri penderita stroke
+              Audio subliminal yang di set pada frekuensi 528HZ yang memicu
+              pemulihan mandiri bagi penderita stroke.
             </h1>
 
             {/* Description */}

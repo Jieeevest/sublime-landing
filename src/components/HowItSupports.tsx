@@ -40,15 +40,15 @@ export default function HowItSupports() {
 
         {/* Main Heading */}
         <h2 className={`${styles.heading} font-bold text-center`}>
-          Bagaimana Strovia Mendukung Proses Pemulihan Anda
+          Bagaimana Strovia Membantu Proses Pemulihan Anda
         </h2>
 
         {/* Description */}
-        <p className={`${styles.description} font-normal text-center`}>
+        {/* <p className={`${styles.description} font-normal text-center`}>
           Strovia menggunakan pendekatan audio yang lembut untuk membantu
           menciptakan kondisi pikiran dan emosi yang lebih tenang, sehingga
           tubuh dapat menjalani proses pemulihan secara alami.
-        </p>
+        </p> */}
       </div>
 
       {/* Content Cards */}
@@ -70,18 +70,25 @@ export default function HowItSupports() {
               Frekuensi 528 Hz
             </h3>
             <div className={`${styles.cardDescription} font-normal`}>
-              <p style={{ marginBottom: "16px" }}>
-                Setiap audio Strovia dirancang menggunakan frekuensi 528 Hz,
-                yang sering dikaitkan dengan ketenangan, keseimbangan, dan
-                relaksasi mendalam. Beberapa penelitian ilmiah menunjukkan bahwa
-                stimulasi suara non-invasif dapat membantu:
+              <p
+                style={{
+                  marginBottom: "16px",
+                  textAlign: "justify",
+                }}
+              >
+                Produk audio Strovia dirancang pada frekuensi 528Hz, dalam
+                penelitian ilmiah (science) dan penelitian medis frekuensi ini
+                telah dibuktikan dapat mempengaruhi gelombang otak untuk
+                mengalami relaksasi yang mendalam yang otomatis dapat
+                menenangkan sistem syaraf, menurunkan stres, menciptakan
+                ketenangan dan kesimbangan dalam tubuh.
               </p>
-              <ul style={{ marginLeft: "24px", marginBottom: "16px" }}>
+              {/* <ul style={{ marginLeft: "24px", marginBottom: "16px" }}>
                 <li>Menurunkan tingkat stres</li>
                 <li>Menenangkan sistem saraf</li>
                 <li>Mendorong kondisi relaksasi otak</li>
-              </ul>
-              <p>
+              </ul> */}
+              <p style={{ textAlign: "justify" }}>
                 Studi yang dipublikasikan di jurnal ilmiah dan dirujuk oleh{" "}
                 <strong>National Institutes of Health (NIH)</strong> menunjukkan
                 bahwa stimulasi audio dapat memengaruhi aktivitas otak dan
@@ -110,17 +117,28 @@ export default function HowItSupports() {
             </h3>
             <p
               className={`${styles.cardDescription} font-normal`}
-              style={{ alignSelf: "stretch" }}
+              style={{
+                alignSelf: "stretch",
+                marginBottom: "16px",
+                textAlign: "justify",
+              }}
             >
-              Strovia juga menyematkan afirmasi positif subliminal secara halus
-              di dalam audio. Afirmasi ini tidak terdengar secara sadar, namun
-              tetap dapat diterima oleh alam bawah sadar. Penelitian di jurnal{" "}
-              <em>Frontiers in Human Neuroscience</em> menunjukkan bahwa
-              rangsangan subliminal dapat mengaktifkan area otak yang
-              berhubungan dengan emosi dan motivasi. Sementara itu, publikasi
-              dari <strong>Harvard Medical School</strong> menjelaskan bahwa
-              pola pikir dan ekspektasi positif dapat memperkuat respons alami
-              tubuh terhadap pemulihan.
+              Dalam audio Strovia juga disematkan afirmasi (pesan) yang bersifat
+              subliminal (tersembunyi), dimana pesan tersebut tidak terdengar
+              pada frekuensi pendengaran norma manusia sehingga tidak tertangkap
+              oleh pikiran sadar tapi dapat tertangkap oleh pikiran bawah sadar.
+              Hal tersebut untuk menghindari resistansi (penolakan) oleh pikiran
+              sadar tapi pesan tersebut dapat ditangkap sepenuhnya oleh pikiran
+              bawah sadar, yaitu bagian dari pikiran (otak) yang 95% mengontrol
+              aktifitas fisik bahkan kehidupan kita sehari hari.{" "}
+            </p>
+            <p style={{ textAlign: "justify" }}>
+              Penelitian di jurnal <em>Frontiers in Human Neuroscience</em>{" "}
+              menunjukkan bahwa rangsangan subliminal dapat mengaktifkan area
+              otak yang berhubungan dengan emosi dan motivasi. Sementara itu,
+              publikasi dari <strong>Harvard Medical School</strong> menjelaskan
+              bahwa pola pikir dan ekspektasi positif dapat memperkuat respons
+              alami tubuh terhadap pemulihan.
             </p>
           </div>
         </div>
