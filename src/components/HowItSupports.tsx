@@ -1,8 +1,10 @@
 "use client";
 
 import styles from "./HowItSupports.module.css";
+import { useI18n } from "@/i18n";
 
 export default function HowItSupports() {
+  const { t } = useI18n();
   return (
     <section
       id="cara-kerja"
@@ -35,12 +37,12 @@ export default function HowItSupports() {
             />
           </svg>
 
-          <span className={styles.badgeText}>Cara Kerja</span>
+          <span className={styles.badgeText}>{t("how_badge")}</span>
         </div>
 
         {/* Main Heading */}
         <h2 className={`${styles.heading} font-bold text-center`}>
-          Bagaimana Strovia Membantu Proses Pemulihan Anda
+          {t("how_heading")}
         </h2>
 
         {/* Description */}
@@ -67,7 +69,7 @@ export default function HowItSupports() {
             }}
           >
             <h3 className={`${styles.cardTitle} font-semibold`}>
-              Frekuensi 528 Hz
+              {t("how_card1_title")}
             </h3>
             <div className={`${styles.cardDescription} font-normal`}>
               <p
@@ -76,24 +78,11 @@ export default function HowItSupports() {
                   textAlign: "justify",
                 }}
               >
-                Produk audio Strovia dirancang pada frekuensi 528Hz, dalam
-                penelitian ilmiah (science) dan penelitian medis frekuensi ini
-                telah dibuktikan dapat mempengaruhi gelombang otak untuk
-                mengalami relaksasi yang mendalam yang otomatis dapat
-                menenangkan sistem syaraf, menurunkan stres, menciptakan
-                ketenangan dan kesimbangan dalam tubuh.
+                {t("how_card1_body1")}
               </p>
-              {/* <ul style={{ marginLeft: "24px", marginBottom: "16px" }}>
-                <li>Menurunkan tingkat stres</li>
-                <li>Menenangkan sistem saraf</li>
-                <li>Mendorong kondisi relaksasi otak</li>
-              </ul> */}
               <p style={{ textAlign: "justify" }}>
                 Studi yang dipublikasikan di jurnal ilmiah dan dirujuk oleh{" "}
-                <strong>National Institutes of Health (NIH)</strong> menunjukkan
-                bahwa stimulasi audio dapat memengaruhi aktivitas otak dan
-                membantu regulasi stres — faktor penting dalam pemulihan
-                neurologis.
+                <strong>{t("how_card1_nih")}</strong> {t("how_card1_body2")}
               </p>
             </div>
           </div>
@@ -113,7 +102,7 @@ export default function HowItSupports() {
             }}
           >
             <h3 className={`${styles.cardTitle} font-semibold`}>
-              Afirmasi Subliminal
+              {t("how_card2_title")}
             </h3>
             <p
               className={`${styles.cardDescription} font-normal`}
@@ -123,22 +112,11 @@ export default function HowItSupports() {
                 textAlign: "justify",
               }}
             >
-              Dalam audio Strovia juga disematkan afirmasi (pesan) yang bersifat
-              subliminal (tersembunyi), dimana pesan tersebut tidak terdengar
-              pada frekuensi pendengaran norma manusia sehingga tidak tertangkap
-              oleh pikiran sadar tapi dapat tertangkap oleh pikiran bawah sadar.
-              Hal tersebut untuk menghindari resistansi (penolakan) oleh pikiran
-              sadar tapi pesan tersebut dapat ditangkap sepenuhnya oleh pikiran
-              bawah sadar, yaitu bagian dari pikiran (otak) yang 95% mengontrol
-              aktifitas fisik bahkan kehidupan kita sehari hari.{" "}
+              {t("how_card2_body1")}
             </p>
             <p style={{ textAlign: "justify" }}>
-              Penelitian di jurnal <em>Frontiers in Human Neuroscience</em>{" "}
-              menunjukkan bahwa rangsangan subliminal dapat mengaktifkan area
-              otak yang berhubungan dengan emosi dan motivasi. Sementara itu,
-              publikasi dari <strong>Harvard Medical School</strong> menjelaskan
-              bahwa pola pikir dan ekspektasi positif dapat memperkuat respons
-              alami tubuh terhadap pemulihan.
+              Penelitian di jurnal <em>{t("how_card2_journal")}</em>{" "}
+              {t("how_card2_body2")}
             </p>
           </div>
         </div>

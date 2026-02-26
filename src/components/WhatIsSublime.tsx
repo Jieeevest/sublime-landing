@@ -2,8 +2,10 @@
 
 import NextImage from "next/image";
 import styles from "./WhatIsSublime.module.css";
+import { useI18n } from "@/i18n";
 
 export default function WhatIsSublime() {
+  const { t } = useI18n();
   return (
     <section
       id="tentang-kami"
@@ -56,20 +58,18 @@ export default function WhatIsSublime() {
               color: "#3197A5",
             }}
           >
-            Tentang Kami
+            {t("about_badge")}
           </span>
         </div>
 
         {/* Heading */}
         <h2 className={`${styles.heading} font-bold text-center`}>
-          Apa itu Strovia?
+          {t("about_heading")}
         </h2>
 
         {/* Description */}
         <p className={`${styles.description} font-normal text-center`}>
-          Strovia adalah produk audio subliminal berbasis frekuensi khusus yang
-          bertujuan untuk membangkitkan kemampuan pemulihan mandiri (self
-          healing) dalam diri penderita stroke.
+          {t("about_desc")}
         </p>
       </div>
 
@@ -104,12 +104,10 @@ export default function WhatIsSublime() {
               }}
             >
               <h3 className={`${styles.cardTitle} font-semibold`}>
-                Audio Strovia 528 Hz
+                {t("about_card1_title")}
               </h3>
               <p className={`${styles.cardDescription} font-normal`}>
-                Produk audio Strovia di set pada frekuensi khusus 528Hz,
-                frejuensi yangmempengaruhi gelombang otak agar tubuh dapat
-                mengalami relaksasi mendalam.
+                {t("about_card1_desc")}
               </p>
             </div>
 
@@ -168,6 +166,7 @@ export default function WhatIsSublime() {
                     >
                       {/* Stroke Recovery Calm Indonesian Version */}
                       Audio Strovia Versi Bahasa Indonesia
+                      {t("about_card1_audio_title")}
                     </p>
                     <p
                       className="font-normal"
@@ -225,13 +224,10 @@ export default function WhatIsSublime() {
               }}
             >
               <h3 className={`${styles.cardTitle} font-semibold`}>
-                Afirmasi Subliminal
+                {t("about_card2_title")}
               </h3>
               <p className={`${styles.cardDescription} font-normal`}>
-                Afirmasi positif yang "disembunyikan" dalam gelombang audio
-                sehingga dapat menembus pikiran sadar kemudia langsung diterima
-                olaeh pikiran bawah sadar agar afirmasi tersebut dapat bekerja
-                dengan efektif.
+                {t("about_card2_desc")}
               </p>
             </div>
 
@@ -352,11 +348,10 @@ export default function WhatIsSublime() {
             }}
           >
             <h3 className={`${styles.cardTitle} font-semibold`}>
-              Pendamping AI Personal
+              {t("about_card3_title")}
             </h3>
             <p className={`${styles.cardDescription} font-normal`}>
-              Layanan informasi berbasis AI yang siap memberikan segala
-              informasi yang Anda butuhkan.
+              {t("about_card3_desc")}
             </p>
           </div>
 
@@ -433,7 +428,7 @@ export default function WhatIsSublime() {
                       display: "inline-block",
                     }}
                   >
-                    Hi, Kiara
+                    {t("about_ai_greeting")}
                   </span>
 
                   <NextImage
@@ -449,14 +444,14 @@ export default function WhatIsSublime() {
 
                 {/* Line 2 */}
                 <span style={{ color: "#1F1F1F" }}>
-                  Ada yang bisa aku bantu hari ini?
+                  {t("about_ai_question")}
                 </span>
               </h3>
               <p
                 className={`${styles.aiCardText} font-normal text-center flex items-center`}
                 style={{ alignSelf: "stretch" }}
               >
-                Siap mendampingi, kapanpun kamu butuh informasi dan panduan.
+                {t("about_ai_ready")}
               </p>
             </div>
 
@@ -512,7 +507,7 @@ export default function WhatIsSublime() {
                 >
                   <input
                     type="text"
-                    placeholder="Tanya apapun..."
+                    placeholder={t("about_ai_placeholder")}
                     className={`${styles.aiCardText} flex-1 bg-transparent border-none outline-none`}
                     style={{
                       color: "#8E8E8E",

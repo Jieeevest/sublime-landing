@@ -2,47 +2,20 @@
 
 import { useState } from "react";
 import styles from "./FAQ.module.css";
+import { useI18n } from "@/i18n";
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(1); // Default open second item as per screenshot
+  const [openIndex, setOpenIndex] = useState<number | null>(1);
+  const { t } = useI18n();
 
-  const faqs = [
-    {
-      question: "Apa itu Strovia ?",
-      answer:
-        "Strovia adalah produk audio subliminal berbasis frekuensi khusus yang bertujuan untuk membangkitkan kemampuan pemulihan mandiri (self healing) dalam diri penderita stroke",
-    },
-    {
-      question: "Untuk Siapa Strovia dibuat ?",
-      answer:
-        "Strovia dibuat khusus bagi Anda yang mengalami serangan Stroke dan bertekad untuk pulih dari kondisi tersebut lewat kemampuan yang dimiliki oleh tubuh Anda untuk memulihkan dirinya sendiri.",
-    },
-    {
-      question: "Berapa biaya untuk menggunakan Strovia ?",
-      answer:
-        "Biaya paket berlangganan akses Strovia dapat Anda peroleh dengan jelas di halaman berlangganan dan paket tersebut tidak menggukan perpanjangan otomatis, sehingga Anda bisa menetukan kapan saja ingin berlangganan Strovia sesuai kebutuhan dan situasi Anda.",
-    },
-    {
-      question:
-        "Apakah saya bisa mendengarkan audio Strovia lebih dari sekali dalam sehari?",
-      answer:
-        "Tidak ada batasan untuk berapa kali Anda dapat mendengarkan audio Strovia. Anda dapat mengatur sendiri berapa kali Anda ingin mendengarkan audio Strovia di saat yang memang kondusif bagi situasi Anda.",
-    },
-    {
-      question: "Apakah Strovia dapat membantu kondisi stroke?",
-      answer:
-        "Afirmasi dalam audio Strovua dirancang sedemikian rupa untuk dapat memicu pemulihan mandiri dari berbagai macam kondisi stroke yang Anda alami.",
-    },
-    {
-      question: "Bagaimana cara kerja terapi subliminal ?",
-      answer:
-        "Dalam audio Strovia juga disematkan afirmasi (pesan) yang bersifat subliminal (tersembunyi), dimana pesan tersebut tidak terdengar pada frekuensi pendengaran norma manusia sehingga tidak tertangkap oleh pikiran sadar tapi dapat tertangkap oleh pikiran bawah sadar. Hal tersebut untuk menghindari resistansi (penolakan) oleh pikiran sadar tapi pesan tersebut dapat ditangkap sepenuhnya oleh pikiran bawah sadar, yaitu bagian dari pikiran (otak) yang 95% mengontrol aktifitas fisik bahkan kehidupan kita sehari hari.",
-    },
-    {
-      question: "Apakah saya memerlukan alat khusus ?",
-      answer:
-        "Anda dapat menggunakan alat pemutar/ penyetel audio apapun, akan lebih baik bila Anda dapat menggunakan earphoene, earbud, headset dll. Tapi Media apapun tidak akan mengurangi fungsi dari Audio Strovia, selama audio dapat Anda dengarkan dengan nyaman dan jelas, itu sudah cukup efektif.",
-    },
+  const faqKeys = [
+    { q: "faq_q1", a: "faq_a1" },
+    { q: "faq_q2", a: "faq_a2" },
+    { q: "faq_q3", a: "faq_a3" },
+    { q: "faq_q4", a: "faq_a4" },
+    { q: "faq_q5", a: "faq_a5" },
+    { q: "faq_q6", a: "faq_a6" },
+    { q: "faq_q7", a: "faq_a7" },
   ];
 
   const toggleFAQ = (index: number) => {
@@ -88,18 +61,18 @@ export default function FAQ() {
 
           {/* Heading */}
           <h2 className={`${styles.heading} font-bold text-center`}>
-            Pertanyaan Umum tentang Strovia
+            {t("faq_heading")}
           </h2>
         </div>
 
         {/* FAQ List */}
         <div className={`${styles.faqList} flex flex-col items-start`}>
-          {faqs.map((faq, index) => {
+          {faqKeys.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
                 key={index}
-                className={`${styles.faqItem} flex flex-col justify-center items-center`}
+                className={`${styles.faqItem} flex flex-col justify-center items-center w-full`}
               >
                 {/* Question Header - Clickable */}
                 <button
@@ -115,7 +88,7 @@ export default function FAQ() {
                   }}
                 >
                   <h3 className={`${styles.faqQuestion} font-medium flex-grow`}>
-                    {faq.question}
+                    {t(faq.q)}
                   </h3>
 
                   {/* Toggle Icon Button */}
@@ -181,7 +154,7 @@ export default function FAQ() {
                   <div
                     className={`flex flex-col justify-center items-start w-full ${isOpen ? styles.faqAnswerBorder : ""}`}
                   >
-                    <p className={styles.faqAnswer}>{faq.answer}</p>
+                    <p className={styles.faqAnswer}>{t(faq.a)}</p>
                   </div>
                 </div>
               </div>

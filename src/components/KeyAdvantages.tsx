@@ -2,33 +2,23 @@
 
 import NextImage from "next/image";
 import styles from "./KeyAdvantages.module.css";
+import { useI18n } from "@/i18n";
 
 export default function KeyAdvantages() {
-  const advantages = [
-    {
-      icon: "/icons/icon-manfaat-1.svg",
-      title: "Membuat otak (pikiran) & tubuh relaks",
-      description:
-        "Produk audio Strovia yang di set pada frekuensi 528Hz akan mempengaruhi otak dan tubuh untuk masuk dalam kondisi relaksasi yang mendalam sehingga kdeuanya dapat mencapai kesimbangan.",
-    },
-    {
-      icon: "/icons/icon-manfaat-2.svg",
-      title: "Memicu Pemulihan Mandiri",
-      description:
-        "Afirmasi (pesan) subliminal audio strovia akan memicu kemampuan tubuh kita untuk dapat memulihkan semua kerusakan akibat serangan stroke, baik secara neurologis, kemampuan motorik dll.",
-    },
-    {
-      icon: "/icons/icon-manfaat-3.svg",
-      title: "Dukungan Informasi",
-      description:
-        "Layanan informasi apapun yang berbasis teknologi AI terbaru akan selalu melayani kebutuhan Anda akan berbagai macam informasi yang Anda perlukan.",
-    },
-    {
-      icon: "/icons/icon-manfaat-4.svg",
-      title: "Biaya Yang Terjangkau & Penggunaan Yang sangat Mudah",
-      description:
-        "Satu paket dalam 30 hari, tanpa perpanjangan otomatis, sehingga Anda dapat mengatur proses berlangganan sesuai kebutuhan Anda. Juga aplikasi yang di rancang sedemikian rupa sehingga mudah digunakan oleh semua usia & khususnya penderita stroke.",
-    },
+  const { t } = useI18n();
+
+  const icons = [
+    "/icons/icon-manfaat-1.svg",
+    "/icons/icon-manfaat-2.svg",
+    "/icons/icon-manfaat-3.svg",
+    "/icons/icon-manfaat-4.svg",
+  ];
+
+  const advantageKeys = [
+    { title: "adv_1_title", desc: "adv_1_desc" },
+    { title: "adv_2_title", desc: "adv_2_desc" },
+    { title: "adv_3_title", desc: "adv_3_desc" },
+    { title: "adv_4_title", desc: "adv_4_desc" },
   ];
 
   return (
@@ -104,7 +94,7 @@ export default function KeyAdvantages() {
                   color: "#FFFFFF",
                 }}
               >
-                Manfaat
+                {t("adv_badge")}
               </span>
             </div>
 
@@ -119,7 +109,7 @@ export default function KeyAdvantages() {
                 alignSelf: "stretch",
               }}
             >
-              Keunggulan Utama Strovia
+              {t("adv_heading")}
             </h2>
 
             {/* Description */}
@@ -145,7 +135,7 @@ export default function KeyAdvantages() {
               alignSelf: "stretch",
             }}
           >
-            {advantages.map((advantage, index) => (
+            {advantageKeys.map((key, index) => (
               <div
                 key={index}
                 className={`${styles.benefitsCard} flex flex-row items-center rounded-lg`}
@@ -177,8 +167,8 @@ export default function KeyAdvantages() {
                   }}
                 >
                   <NextImage
-                    src={advantage.icon}
-                    alt={advantage.title}
+                    src={icons[index]}
+                    alt={t(key.title)}
                     width={40}
                     height={40}
                     className="object-contain"
@@ -200,7 +190,7 @@ export default function KeyAdvantages() {
                       alignSelf: "stretch",
                     }}
                   >
-                    {advantage.title}
+                    {t(key.title)}
                   </h3>
                   <p
                     className={`${styles.benefitsCardDescription} font-normal`}
@@ -209,7 +199,7 @@ export default function KeyAdvantages() {
                       alignSelf: "stretch",
                     }}
                   >
-                    {advantage.description}
+                    {t(key.desc)}
                   </p>
                 </div>
               </div>

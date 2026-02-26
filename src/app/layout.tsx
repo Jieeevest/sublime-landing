@@ -4,11 +4,12 @@ import "./globals.css";
 
 import { AudioProvider } from "@/contexts/AudioContext";
 import { ReduxProvider } from "@/redux/provider";
+import { I18nProvider } from "@/i18n";
 
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
-  title: "Sublime - Guided Audio Therapy",
+  title: "Strovia - Guided Audio Therapy",
   description:
     "Guided healing for a smoother recovery journey with 432 Hz audio therapy.",
   icons: {
@@ -25,10 +26,12 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <ReduxProvider>
-          <AudioProvider>
-            {children}
-            <Toaster position="bottom-right" />
-          </AudioProvider>
+          <I18nProvider>
+            <AudioProvider>
+              {children}
+              <Toaster position="bottom-right" />
+            </AudioProvider>
+          </I18nProvider>
         </ReduxProvider>
       </body>
     </html>

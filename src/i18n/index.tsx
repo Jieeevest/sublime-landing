@@ -188,6 +188,122 @@ const dict: Dict = {
     ai_dummy_4: "Lorem ipsum dolor sit amet consectetur. Con...",
     ai_dummy_5: "Lorem ipsum dolor sit amet consectetur. In vit...",
     ai_dummy_6: "Lorem ipsum dolor sit amet consectetur. Habi...",
+
+    // ─── Landing page ──────────────────────────────────────────────
+    // Navbar
+    nav_tentang: "Tentang Kami",
+    nav_cara_kerja: "Cara Kerja",
+    nav_manfaat: "Manfaat",
+    nav_artikel: "Artikel",
+    nav_faq: "FAQ",
+    nav_login: "Masuk / Daftar",
+    nav_logout: "Keluar",
+    // Hero
+    hero_heading:
+      "Audio subliminal yang di set pada frekuensi 528HZ yang memicu pemulihan mandiri bagi penderita stroke.",
+    hero_cta_primary: "Mulai Perjalanan Anda",
+    hero_cta_secondary: "Unduh Aplikasi",
+    hero_audio_label: "Audio Pilihan untuk Anda",
+    hero_audio_see_all: "Lihat Semua",
+    hero_audio_title: "Audio Strovia Versi Bahasa Indonesia",
+    hero_audio_desc:
+      "Pikiranku mulai pulih. Tubuhku ingat cara memulihkan diri.",
+    hero_affirmation_title: "Audio Subliminal Strovia",
+    hero_affirm_1: "Pikiranku mulai pulih.",
+    hero_affirm_2: "Tubuhku ingat cara memulihkan diri.",
+    hero_affirm_3: "Aku semakin kuat setiap hari.",
+    // WhatIsSublime
+    about_badge: "Tentang Kami",
+    about_heading: "Apa itu Strovia?",
+    about_desc:
+      "Strovia adalah produk audio subliminal berbasis frekuensi khusus yang bertujuan untuk membangkitkan kemampuan pemulihan mandiri (self healing) dalam diri penderita stroke.",
+    about_card1_title: "Audio Strovia 528 Hz",
+    about_card1_desc:
+      "Produk audio Strovia di set pada frekuensi khusus 528Hz, frejuensi yangmempengaruhi gelombang otak agar tubuh dapat mengalami relaksasi mendalam.",
+    about_card1_audio_title: "Audio Strovia Versi Bahasa Indonesia",
+    about_card1_audio_desc:
+      "Pikiranku mulai pulih. Tubuhku ingat cara memulihkan diri.",
+    about_card2_title: "Afirmasi Subliminal",
+    about_card2_desc:
+      'Afirmasi positif yang "disembunyikan" dalam gelombang audio sehingga dapat menembus pikiran sadar kemudia langsung diterima olaeh pikiran bawah sadar agar afirmasi tersebut dapat bekerja dengan efektif.',
+    about_card3_title: "Pendamping AI Personal",
+    about_card3_desc:
+      "Layanan informasi berbasis AI yang siap memberikan segala informasi yang Anda butuhkan.",
+    about_ai_greeting: "Hi, Kiara",
+    about_ai_question: "Ada yang bisa aku bantu hari ini?",
+    about_ai_ready:
+      "Siap mendampingi, kapanpun kamu butuh informasi dan panduan.",
+    about_ai_suggestion:
+      "Rekomendasikan audio terapi yang cocok untuk kondisiku.",
+    about_ai_placeholder: "Tanya apapun...",
+    // HowItSupports
+    how_badge: "Cara Kerja",
+    how_heading: "Bagaimana Strovia Membantu Proses Pemulihan Anda",
+    how_card1_title: "Frekuensi 528 Hz",
+    how_card1_body1:
+      "Produk audio Strovia dirancang pada frekuensi 528Hz, dalam penelitian ilmiah (science) dan penelitian medis frekuensi ini telah dibuktikan dapat mempengaruhi gelombang otak untuk mengalami relaksasi yang mendalam yang otomatis dapat menenangkan sistem syaraf, menurunkan stres, menciptakan ketenangan dan kesimbangan dalam tubuh.",
+    how_card1_body2:
+      "Studi yang dipublikasikan di jurnal ilmiah dan dirujuk oleh National Institutes of Health (NIH) menunjukkan bahwa stimulasi audio dapat memengaruhi aktivitas otak dan membantu regulasi stres — faktor penting dalam pemulihan neurologis.",
+    how_card1_nih: "National Institutes of Health (NIH)",
+    how_card2_title: "Afirmasi Subliminal",
+    how_card2_body1:
+      "Dalam audio Strovia juga disematkan afirmasi (pesan) yang bersifat subliminal (tersembunyi), dimana pesan tersebut tidak terdengar pada frekuensi pendengaran norma manusia sehingga tidak tertangkap oleh pikiran sadar tapi dapat tertangkap oleh pikiran bawah sadar. Hal tersebut untuk menghindari resistansi (penolakan) oleh pikiran sadar tapi pesan tersebut dapat ditangkap sepenuhnya oleh pikiran bawah sadar, yaitu bagian dari pikiran (otak) yang 95% mengontrol aktifitas fisik bahkan kehidupan kita sehari hari.",
+    how_card2_journal: "Frontiers in Human Neuroscience",
+    how_card2_body2:
+      "Penelitian di jurnal menunjukkan bahwa rangsangan subliminal dapat mengaktifkan area otak yang berhubungan dengan emosi dan motivasi. Sementara itu, publikasi dari Harvard Medical School menjelaskan bahwa pola pikir dan ekspektasi positif dapat memperkuat respons alami tubuh terhadap pemulihan.",
+    how_card2_harvard: "Harvard Medical School",
+    // KeyAdvantages
+    adv_badge: "Manfaat",
+    adv_heading: "Keunggulan Utama Strovia",
+    adv_1_title: "Membuat otak (pikiran) & tubuh relaks",
+    adv_1_desc:
+      "Produk audio Strovia yang di set pada frekuensi 528Hz akan mempengaruhi otak dan tubuh untuk masuk dalam kondisi relaksasi yang mendalam sehingga kdeuanya dapat mencapai kesimbangan.",
+    adv_2_title: "Memicu Pemulihan Mandiri",
+    adv_2_desc:
+      "Afirmasi (pesan) subliminal audio strovia akan memicu kemampuan tubuh kita untuk dapat memulihkan semua kerusakan akibat serangan stroke, baik secara neurologis, kemampuan motorik dll.",
+    adv_3_title: "Dukungan Informasi",
+    adv_3_desc:
+      "Layanan informasi apapun yang berbasis teknologi AI terbaru akan selalu melayani kebutuhan Anda akan berbagai macam informasi yang Anda perlukan.",
+    adv_4_title: "Biaya Yang Terjangkau & Penggunaan Yang sangat Mudah",
+    adv_4_desc:
+      "Satu paket dalam 30 hari, tanpa perpanjangan otomatis, sehingga Anda dapat mengatur proses berlangganan sesuai kebutuhan Anda. Juga aplikasi yang di rancang sedemikian rupa sehingga mudah digunakan oleh semua usia & khususnya penderita stroke.",
+    // InsightsGuidance
+    ig_badge: "Artikel",
+    ig_heading: "Artikel Dan Informasi",
+    ig_view_all: "Lihat Semua",
+    ig_loading: "Memuat artikel...",
+    ig_error: "Gagal memuat artikel. Silakan coba lagi nanti.",
+    ig_empty: "Belum ada artikel yang tersedia.",
+    // FAQ
+    faq_badge: "FAQ",
+    faq_heading: "Pertanyaan Umum tentang Strovia",
+    faq_q1: "Apa itu Strovia ?",
+    faq_a1:
+      "Strovia adalah produk audio subliminal berbasis frekuensi khusus yang bertujuan untuk membangkitkan kemampuan pemulihan mandiri (self healing) dalam diri penderita stroke",
+    faq_q2: "Untuk Siapa Strovia dibuat ?",
+    faq_a2:
+      "Strovia dibuat khusus bagi Anda yang mengalami serangan Stroke dan bertekad untuk pulih dari kondisi tersebut lewat kemampuan yang dimiliki oleh tubuh Anda untuk memulihkan dirinya sendiri.",
+    faq_q3: "Berapa biaya untuk menggunakan Strovia ?",
+    faq_a3:
+      "Biaya paket berlangganan akses Strovia dapat Anda peroleh dengan jelas di halaman berlangganan dan paket tersebut tidak menggukan perpanjangan otomatis, sehingga Anda bisa menetukan kapan saja ingin berlangganan Strovia sesuai kebutuhan dan situasi Anda.",
+    faq_q4:
+      "Apakah saya bisa mendengarkan audio Strovia lebih dari sekali dalam sehari?",
+    faq_a4:
+      "Tidak ada batasan untuk berapa kali Anda dapat mendengarkan audio Strovia. Anda dapat mengatur sendiri berapa kali Anda ingin mendengarkan audio Strovia di saat yang memang kondusif bagi situasi Anda.",
+    faq_q5: "Apakah Strovia dapat membantu kondisi stroke?",
+    faq_a5:
+      "Afirmasi dalam audio Strovua dirancang sedemikian rupa untuk dapat memicu pemulihan mandiri dari berbagai macam kondisi stroke yang Anda alami.",
+    faq_q6: "Bagaimana cara kerja terapi subliminal ?",
+    faq_a6:
+      "Dalam audio Strovia juga disematkan afirmasi (pesan) yang bersifat subliminal (tersembunyi), dimana pesan tersebut tidak terdengar pada frekuensi pendengaran norma manusia sehingga tidak tertangkap oleh pikiran sadar tapi dapat tertangkap oleh pikiran bawah sadar. Hal tersebut untuk menghindari resistansi (penolakan) oleh pikiran sadar tapi pesan tersebut dapat ditangkap sepenuhnya oleh pikiran bawah sadar, yaitu bagian dari pikiran (otak) yang 95% mengontrol aktifitas fisik bahkan kehidupan kita sehari hari.",
+    faq_q7: "Apakah saya memerlukan alat khusus ?",
+    faq_a7:
+      "Anda dapat menggunakan alat pemutar/ penyetel audio apapun, akan lebih baik bila Anda dapat menggunakan earphoene, earbud, headset dll. Tapi Media apapun tidak akan mengurangi fungsi dari Audio Strovia, selama audio dapat Anda dengarkan dengan nyaman dan jelas, itu sudah cukup efektif.",
+    // CTASection
+    cta_heading:
+      "Selamat memulai perjalanan pemulihan mandiri Anda bersama Strovia",
+    cta_primary: "Mulai Perjalanan Anda",
+    cta_secondary: "Unduh Aplikasi",
   },
   en: {
     cmsTitle: "CMS Admin",
@@ -367,6 +483,119 @@ const dict: Dict = {
     ai_dummy_4: "Sample chat four...",
     ai_dummy_5: "Sample chat five...",
     ai_dummy_6: "Sample chat six...",
+
+    // ─── Landing page ──────────────────────────────────────────────
+    // Navbar
+    nav_tentang: "About Us",
+    nav_cara_kerja: "How It Works",
+    nav_manfaat: "Benefits",
+    nav_artikel: "Articles",
+    nav_faq: "FAQ",
+    nav_login: "Sign In / Register",
+    nav_logout: "Sign Out",
+    // Hero
+    hero_heading:
+      "A subliminal audio set at 528 Hz frequency that triggers self-recovery for stroke patients.",
+    hero_cta_primary: "Start Your Journey",
+    hero_cta_secondary: "Download App",
+    hero_audio_label: "Recommended Audio for You",
+    hero_audio_see_all: "See All",
+    hero_audio_title: "Strovia Audio — English Version",
+    hero_audio_desc:
+      "My mind is beginning to heal. My body remembers how to recover.",
+    hero_affirmation_title: "Strovia Subliminal Audio",
+    hero_affirm_1: "My mind is beginning to heal.",
+    hero_affirm_2: "My body remembers how to recover.",
+    hero_affirm_3: "I grow stronger every day.",
+    // WhatIsSublime
+    about_badge: "About Us",
+    about_heading: "What is Strovia?",
+    about_desc:
+      "Strovia is a subliminal audio product based on a special frequency designed to awaken the self-healing ability within stroke patients.",
+    about_card1_title: "Strovia Audio 528 Hz",
+    about_card1_desc:
+      "Strovia audio is set at the special 528 Hz frequency, which influences brainwaves to bring the body into a state of deep relaxation.",
+    about_card1_audio_title: "Strovia Audio — English Version",
+    about_card1_audio_desc:
+      "My mind is beginning to heal. My body remembers how to recover.",
+    about_card2_title: "Subliminal Affirmations",
+    about_card2_desc:
+      'Positive affirmations "hidden" within the audio waves so they can bypass conscious thought and be received directly by the subconscious mind, allowing them to work effectively.',
+    about_card3_title: "Personal AI Companion",
+    about_card3_desc:
+      "An AI-powered information service ready to provide any information you need.",
+    about_ai_greeting: "Hi, Kiara",
+    about_ai_question: "How can I help you today?",
+    about_ai_ready:
+      "Here to assist you whenever you need information and guidance.",
+    about_ai_suggestion: "Recommend therapy audio suitable for my condition.",
+    about_ai_placeholder: "Ask anything...",
+    // HowItSupports
+    how_badge: "How It Works",
+    how_heading: "How Strovia Supports Your Recovery Process",
+    how_card1_title: "528 Hz Frequency",
+    how_card1_body1:
+      "Strovia audio is designed at the 528 Hz frequency. Scientific and medical research has proven that this frequency can influence brainwaves to achieve deep relaxation, automatically calming the nervous system, reducing stress, and creating peace and balance in the body.",
+    how_card1_body2:
+      "Studies published in scientific journals and referenced by the National Institutes of Health (NIH) show that audio stimulation can influence brain activity and help regulate stress — a critical factor in neurological recovery.",
+    how_card1_nih: "National Institutes of Health (NIH)",
+    how_card2_title: "Subliminal Affirmations",
+    how_card2_body1:
+      "Strovia audio also embeds subliminal affirmations (hidden messages) that are inaudible at normal human hearing frequencies. These messages bypass conscious awareness and are received directly by the subconscious mind — the part of the brain that controls 95% of our physical activities and daily life — avoiding resistance while maximizing effectiveness.",
+    how_card2_journal: "Frontiers in Human Neuroscience",
+    how_card2_body2:
+      "Research in the journal shows subliminal stimulation can activate brain areas related to emotion and motivation. A publication from Harvard Medical School explains that positive mindsets and expectations can strengthen the body's natural healing response.",
+    how_card2_harvard: "Harvard Medical School",
+    // KeyAdvantages
+    adv_badge: "Benefits",
+    adv_heading: "Key Advantages of Strovia",
+    adv_1_title: "Relaxes the Mind & Body",
+    adv_1_desc:
+      "Strovia audio set at 528 Hz influences the brain and body to enter a state of deep relaxation, allowing both to achieve balance.",
+    adv_2_title: "Triggers Self-Recovery",
+    adv_2_desc:
+      "Strovia's subliminal audio affirmations trigger the body's ability to recover from all damage caused by stroke — neurologically, motor function, and more.",
+    adv_3_title: "Information Support",
+    adv_3_desc:
+      "AI-powered information services are always ready to serve all your informational needs, whenever you need them.",
+    adv_4_title: "Affordable & Very Easy to Use",
+    adv_4_desc:
+      "One package for 30 days, no auto-renewal, so you can manage your subscription as needed. The app is also designed to be easy to use for all ages — especially stroke patients.",
+    // InsightsGuidance
+    ig_badge: "Articles",
+    ig_heading: "Articles & Information",
+    ig_view_all: "See All",
+    ig_loading: "Loading articles...",
+    ig_error: "Failed to load articles. Please try again later.",
+    ig_empty: "No articles available yet.",
+    // FAQ
+    faq_badge: "FAQ",
+    faq_heading: "Frequently Asked Questions about Strovia",
+    faq_q1: "What is Strovia?",
+    faq_a1:
+      "Strovia is a subliminal audio product based on a special frequency designed to awaken the self-healing ability within stroke patients.",
+    faq_q2: "Who is Strovia made for?",
+    faq_a2:
+      "Strovia is made for those who have experienced a stroke and are determined to recover through their body's own healing ability.",
+    faq_q3: "How much does Strovia cost?",
+    faq_a3:
+      "Subscription pricing is clearly listed on the subscription page, and there is no auto-renewal, so you can choose when to subscribe based on your needs and situation.",
+    faq_q4: "Can I listen to Strovia audio more than once a day?",
+    faq_a4:
+      "There is no limit to how many times you can listen to Strovia audio. You can decide how often you want to listen at times that are most conducive to your situation.",
+    faq_q5: "Can Strovia help with stroke recovery?",
+    faq_a5:
+      "The affirmations in Strovia audio are specifically designed to trigger self-recovery from various stroke conditions.",
+    faq_q6: "How does subliminal therapy work?",
+    faq_a6:
+      "Strovia audio embeds subliminal affirmations (hidden messages) inaudible at normal human hearing frequencies, so they bypass conscious awareness and are received fully by the subconscious mind — the part that controls 95% of our physical activities and daily life.",
+    faq_q7: "Do I need any special equipment?",
+    faq_a7:
+      "You can use any audio playback device. Using earphones, earbuds, or headsets is recommended, but any medium is fine — as long as the audio can be heard comfortably and clearly, it will be effective.",
+    // CTASection
+    cta_heading: "Begin your self-recovery journey with Strovia today",
+    cta_primary: "Start Your Journey",
+    cta_secondary: "Download App",
   },
 };
 

@@ -3,8 +3,10 @@
 import NextImage from "next/image";
 import Navbar from "./Navbar";
 import styles from "./Hero.module.css";
+import { useI18n } from "@/i18n";
 
 export default function Hero() {
+  const { t } = useI18n();
   return (
     <section id="beranda" className={`${styles.heroSection} relative isolate`}>
       {/* Navbar */}
@@ -30,12 +32,7 @@ export default function Hero() {
           {/* Content */}
           <div className={`${styles.contentWrapper} flex flex-col items-start`}>
             {/* Heading */}
-            <h1 className={styles.heading}>
-              {/* Panduan Penyembuhan untuk Perjalanan Pemulihan Stroke yang Lebih
-              Tenang */}
-              Audio subliminal yang di set pada frekuensi 528HZ yang memicu
-              pemulihan mandiri bagi penderita stroke.
-            </h1>
+            <h1 className={styles.heading}>{t("hero_heading")}</h1>
 
             {/* Description */}
             {/* <p className={`${styles.description} flex items-center`}> */}
@@ -55,7 +52,7 @@ export default function Hero() {
               className={`${styles.primaryButton} flex flex-row justify-center items-center`}
             >
               <span className={`${styles.buttonText} text-white`}>
-                Mulai Perjalanan Anda
+                {t("hero_cta_primary")}
               </span>
             </button>
 
@@ -63,7 +60,7 @@ export default function Hero() {
               className={`${styles.outlineButton} flex flex-row justify-center items-center`}
             >
               <span className={`${styles.buttonText} text-gray-900`}>
-                Unduh Aplikasi
+                {t("hero_cta_secondary")}
               </span>
             </button>
           </div>
@@ -80,7 +77,7 @@ export default function Hero() {
               <p
                 className={`${styles.audioCardHeaderText} flex items-center flex-1`}
               >
-                Audio Pilihan untuk Anda
+                {t("hero_audio_label")}
               </p>
               <button
                 className="flex flex-row justify-center items-center"
@@ -93,7 +90,7 @@ export default function Hero() {
                   color: "#3197A5",
                 }}
               >
-                Lihat Semua
+                {t("hero_audio_see_all")}
               </button>
             </div>
 
@@ -153,7 +150,7 @@ export default function Hero() {
                         }}
                       >
                         {/* Stroke Recovery Calm Indonesian Version */}
-                        Audio Strovia Versi Bahasa Indonesia
+                        {t("hero_audio_title")}
                       </p>
                       <p
                         className="font-normal"
@@ -164,8 +161,7 @@ export default function Hero() {
                           color: "#E1E1E1",
                         }}
                       >
-                        Pikiranku mulai pulih. Tubuhku ingat cara memulihkan
-                        diri.
+                        {t("hero_audio_desc")}
                       </p>
                     </div>
 
@@ -196,8 +192,7 @@ export default function Hero() {
 
           {/* Affirmation Header */}
           <h3 className={`${styles.affirmationTitle} font-bold text-center`}>
-            {/* Audio terapi dan afirmasi penuh kesadaran, dalam satu tempat. */}
-            Audio Subliminal Strovia
+            {t("hero_affirmation_title")}
           </h3>
 
           {/* Affirmation Card with Glassmorphism */}
@@ -250,13 +245,11 @@ export default function Hero() {
               }}
             >
               <p className={`${styles.affirmationText} opacity-20`}>
-                Pikiranku mulai pulih.
+                {t("hero_affirm_1")}
               </p>
-              <p className={styles.affirmationText}>
-                Tubuhku ingat cara memulihkan diri.
-              </p>
+              <p className={styles.affirmationText}>{t("hero_affirm_2")}</p>
               <p className={`${styles.affirmationText} opacity-50`}>
-                Aku semakin kuat setiap hari.
+                {t("hero_affirm_3")}
               </p>
             </div>
           </div>

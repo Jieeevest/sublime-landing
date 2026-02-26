@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useGetPublicContentsQuery } from "@/redux/api/sublimeApi";
 import styles from "./InsightsGuidance.module.css";
 import Image from "next/image";
+import { useI18n } from "@/i18n";
 
 // Type for article data
 interface Article {
@@ -18,6 +19,7 @@ interface Article {
 
 export default function InsightsGuidance() {
   const router = useRouter();
+  const { t } = useI18n();
   const [fallbacks, setFallbacks] = useState<Record<string, boolean>>({});
 
   const isOptimizable = (src: string) => {
@@ -105,12 +107,12 @@ export default function InsightsGuidance() {
             />
           </svg>
 
-          <span className={styles.badgeText}>Artikel</span>
+          <span className={styles.badgeText}>{t("ig_badge")}</span>
         </div>
 
         {/* Heading */}
         <h2 className={`${styles.heading} font-bold text-center`}>
-          Artikel Dan Informasi
+          {t("ig_heading")}
         </h2>
       </div>
 
@@ -133,7 +135,7 @@ export default function InsightsGuidance() {
               color: "#999",
             }}
           >
-            <p>Gagal memuat artikel. Silakan coba lagi nanti.</p>
+            <p>{t("ig_error")}</p>
           </div>
         ) : articles.length === 0 ? (
           // Empty state
@@ -145,7 +147,7 @@ export default function InsightsGuidance() {
               color: "#999",
             }}
           >
-            <p>Belum ada artikel yang tersedia.</p>
+            <p>{t("ig_empty")}</p>
           </div>
         ) : (
           articles.map((article, index) => (
@@ -261,7 +263,7 @@ export default function InsightsGuidance() {
         className={`${styles.ctaButton} flex flex-row justify-center items-center`}
         onClick={handleViewAllClick}
       >
-        <span className={styles.ctaButtonText}>Lihat Semua</span>
+        <span className={styles.ctaButtonText}>{t("ig_view_all")}</span>
 
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
           <path

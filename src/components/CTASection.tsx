@@ -1,8 +1,10 @@
 "use client";
 
 import NextImage from "next/image";
+import { useI18n } from "@/i18n";
 
 export default function CTASection() {
+  const { t } = useI18n();
   return (
     <section
       className="relative flex flex-col justify-center items-center overflow-hidden"
@@ -78,7 +80,7 @@ export default function CTASection() {
               alignSelf: "stretch",
             }}
           >
-            Selamat memulai perjalanan pemulihan mandiri Anda bersama Strovia
+            {t("cta_heading")}
           </h2>
 
           {/* Subtitle */}
@@ -136,7 +138,7 @@ export default function CTASection() {
                 color: "#FFFFFF",
               }}
             >
-              Mulai Perjalanan Anda
+              {t("cta_primary")}
             </span>
           </button>
 
@@ -217,7 +219,7 @@ export default function CTASection() {
                 color: "#1F1F1F",
               }}
             >
-              Unduh Aplikasi
+              {t("cta_secondary")}
             </span>
           </button>
         </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetMeQuery } from "@/redux/api/sublimeApi";
+import { useI18n } from "@/i18n";
 import UserDropdown from "@/components/shared/UserDropdown";
 import Link from "next/link";
 import NextImage from "next/image";
@@ -18,11 +19,12 @@ const getInitials = (name: string) => {
 };
 
 export default function Navbar() {
+  const { lang, setLang, t, code } = useI18n();
   const [isLangOpen, setIsLangOpen] = useState(false);
-  const [language, setLanguage] = useState("ID");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -66,8 +68,8 @@ export default function Navbar() {
   };
 
   const toggleLanguage = () => setIsLangOpen(!isLangOpen);
-  const selectLanguage = (lang: string) => {
-    setLanguage(lang);
+  const selectLanguage = (l: string) => {
+    setLang(l === "EN" ? "en" : "id");
     setIsLangOpen(false);
   };
 
@@ -289,7 +291,7 @@ export default function Navbar() {
                 color: "#1F1F1F",
               }}
             >
-              {language}
+              {code}
             </span>
 
             {/* Chevron Down Icon */}
@@ -325,7 +327,7 @@ export default function Navbar() {
               <button
                 onClick={() => selectLanguage("ID")}
                 className={`px-4 py-3 text-left hover:bg-gray-50 text-sm font-medium transition-colors whitespace-nowrap ${
-                  language === "ID" ? "text-[#3197A5]" : "text-[#1F1F1F]"
+                  code === "ID" ? "text-[#3197A5]" : "text-[#1F1F1F]"
                 }`}
               >
                 ID (Indonesia)
@@ -333,7 +335,7 @@ export default function Navbar() {
               <button
                 onClick={() => selectLanguage("EN")}
                 className={`px-4 py-3 text-left hover:bg-gray-50 text-sm font-medium transition-colors whitespace-nowrap ${
-                  language === "EN" ? "text-[#3197A5]" : "text-[#1F1F1F]"
+                  code === "EN" ? "text-[#3197A5]" : "text-[#1F1F1F]"
                 }`}
               >
                 EN (English)
