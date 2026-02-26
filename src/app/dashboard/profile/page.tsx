@@ -9,8 +9,9 @@ import ReferralTab from "@/components/dashboard/profile/ReferralTab";
 import SubscriptionTab from "@/components/dashboard/profile/SubscriptionTab";
 import SecurityTab from "@/components/dashboard/profile/SecurityTab";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { Suspense } from "react";
 
-export default function ProfilePage() {
+function ProfileContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -191,5 +192,21 @@ export default function ProfilePage() {
         </div>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense
+      fallback={
+        <DashboardLayout activeItem="Profile">
+          <div className="flex items-center justify-center h-screen">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#3197A5]"></div>
+          </div>
+        </DashboardLayout>
+      }
+    >
+      <ProfileContent />
+    </Suspense>
   );
 }
