@@ -2,12 +2,15 @@
 
 import { useAudio } from "@/contexts/AudioContext";
 import Image from "next/image";
+import { useI18n } from "@/i18n";
 
 /**
  * DashboardHero component displays the main featured audio session.
  * Static component with no props, using specific CSS layout and SVG image.
  */
 export default function DashboardHero() {
+  const { t } = useI18n();
+
   const handlePlay = () => {
     console.log("Play clicked (Static)");
   };
@@ -79,7 +82,7 @@ export default function DashboardHero() {
               color: "#FFFFFF",
             }}
           >
-            Pilihan Bahasa Audio
+            {t("dash_hero_badge")}
           </span>
         </div>
 
@@ -98,7 +101,7 @@ export default function DashboardHero() {
             width: "100%",
           }}
         >
-          Audio Pemulihan Stroke Dalam Bahasa Indonesia
+          {t("dash_hero_title")}
         </h1>
 
         {/* Description */}
@@ -113,9 +116,7 @@ export default function DashboardHero() {
             maxWidth: "712px",
           }}
         >
-          Strovia memicu kemampuan diri untuk memulihkan diri dari pengalaman
-          stroke dengan menggunakan subliminal message audio yang di set pada
-          frekuensi 528Hz.
+          {t("dash_hero_desc")}
         </p>
 
         {/* Listeners Stat */}
@@ -151,7 +152,7 @@ export default function DashboardHero() {
               color: "#FFFFFF",
             }}
           >
-            1,809 Pendengar/Februari 2026
+            {t("dash_hero_stats")}
           </span>
         </div>
       </div>

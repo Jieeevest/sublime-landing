@@ -5,6 +5,7 @@ import { AudioSession } from "@/data/audioSessions";
 import { useGetMySubscriptionQuery } from "@/redux/api/sublimeApi";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useI18n } from "@/i18n";
 
 interface AudioTrackListProps {
   sessions: AudioSession[];
@@ -13,8 +14,9 @@ interface AudioTrackListProps {
 
 export default function AudioTrackList({
   sessions,
-  title = "Audio Pilihan untuk Anda",
+  title,
 }: AudioTrackListProps) {
+  const { t } = useI18n();
   const router = useRouter();
   const { playTrack, currentTrack } = useAudio();
   const { data: subscriptionData } = useGetMySubscriptionQuery(undefined);
@@ -32,7 +34,7 @@ export default function AudioTrackList({
             lineHeight: "32px",
           }}
         >
-          {title}
+          {title || t("dash_audio_title")}
         </h2>
       </div>
 
@@ -198,7 +200,7 @@ export default function AudioTrackList({
                         className="text-white text-sm font-medium tracking-wide"
                         style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
                       >
-                        Silahkan berlangganan untuk menikmati audio
+                        {t("dash_audio_sub_msg")}
                       </p>
                     </div>
                     <button
@@ -209,7 +211,7 @@ export default function AudioTrackList({
                       className="px-5 py-2 bg-white text-[#1F1F1F] rounded-full text-xs font-semibold hover:bg-gray-100 transition-transform hover:scale-105 shadow-lg"
                       style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
                     >
-                      Berlangganan Sekarang
+                      {t("dash_audio_sub_btn")}
                     </button>
                   </div>
                 )}
@@ -231,10 +233,8 @@ export default function AudioTrackList({
                 d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
               />
             </svg>
-            <p className="text-lg font-medium">Belum ada audio saat ini</p>
-            <p className="text-sm mt-1">
-              Nantikan audio pilihan menarik untuk Anda segera.
-            </p>
+            <p className="text-lg font-medium">{t("dash_audio_empty_title")}</p>
+            <p className="text-sm mt-1">{t("dash_audio_empty_desc")}</p>
           </div>
         )}
       </div>

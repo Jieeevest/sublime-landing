@@ -160,6 +160,27 @@ const dict: Dict = {
     dashboard_empty_data: "Tidak ada data",
     ud_search_placeholder: "Cari",
     ud_subscribe_start: "Mulai Berlangganan",
+    // Dashboard Hero
+    dash_hero_badge: "Pilihan Bahasa Audio",
+    dash_hero_title: "Program Audio Dukungan Mental Pasca Stroke",
+    dash_hero_desc:
+      "Strovia menghadirkan audio afirmasi terpandu dan relaksasi berbasis frekuensi 528Hz untuk membantu menjaga ketenangan, memperkuat fokus, dan membangun semangat selama proses pemulihan.",
+    dash_hero_stats: "Digunakan oleh 1,809 Pengguna | Update Februari 2026",
+    // End Dashboard Hero
+    // Dashboard Audio List
+    dash_audio_title: "Audio Pilihan untuk Anda",
+    dash_audio_sub_msg: "Silakan berlangganan untuk menikmati audio",
+    dash_audio_sub_btn: "Berlangganan Sekarang",
+    dash_audio_empty_title: "Belum ada audio saat ini",
+    dash_audio_empty_desc: "Nantikan audio pilihan menarik untuk Anda segera.",
+    // Dashboard Articles
+    dash_articles_title: "Artikel untuk Pemulihan Anda",
+    dash_articles_view_all: "Lihat Semua",
+    dash_articles_loading: "Memuat artikel...",
+    dash_articles_empty_title: "Belum ada artikel saat ini",
+    dash_articles_empty_desc:
+      "Nantikan artikel menarik seputar kesehatan dan audio therapy segera.",
+    // End Dashboard Items
     ud_menu_articles: "Artikel",
     ud_articles_label: "Artikel",
     ud_articles_loading: "Memuat artikel...",
@@ -457,6 +478,27 @@ const dict: Dict = {
     dashboard_empty_data: "No data available",
     ud_search_placeholder: "Search",
     ud_subscribe_start: "Start Subscription",
+    // Dashboard Hero
+    dash_hero_badge: "Audio Language Selection",
+    dash_hero_title: "Post-Stroke Mental Support Audio Program",
+    dash_hero_desc:
+      "Strovia presents guided affirmation and relaxation audio based on a 528Hz frequency to help maintain calmness, strengthen focus, and build spirit during the recovery process.",
+    dash_hero_stats: "Used by 1,809 Users | Updated February 2026",
+    // End Dashboard Hero
+    // Dashboard Audio List
+    dash_audio_title: "Selected Audio for You",
+    dash_audio_sub_msg: "Please subscribe to enjoy the audio",
+    dash_audio_sub_btn: "Subscribe Now",
+    dash_audio_empty_title: "No audio available currently",
+    dash_audio_empty_desc: "Stay tuned for exciting curated audio coming soon.",
+    // Dashboard Articles
+    dash_articles_title: "Articles for Your Recovery",
+    dash_articles_view_all: "View All",
+    dash_articles_loading: "Loading articles...",
+    dash_articles_empty_title: "No articles available currently",
+    dash_articles_empty_desc:
+      "Stay tuned for interesting articles on health and audio therapy soon.",
+    // End Dashboard Items
     ud_menu_articles: "Articles",
     ud_articles_label: "Articles",
     ud_articles_loading: "Loading articles...",

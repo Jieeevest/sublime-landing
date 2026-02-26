@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useI18n } from "@/i18n";
 
 /**
  * Props for the DashboardArticles component.
@@ -22,18 +23,19 @@ export default function DashboardArticles({
   isLoading,
 }: DashboardArticlesProps) {
   const router = useRouter();
+  const { t } = useI18n();
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-medium text-[#1F1F1F]">
-          Artikel untuk Pemulihan Anda
+          {t("dash_articles_title")}
         </h2>
         <Link
           href="/dashboard/artikel"
           className="text-primary text-base font-normal hover:text-primary-600 transition-colors flex items-center gap-1"
         >
-          Lihat Semua
+          {t("dash_articles_view_all")}
           <svg
             className="w-5 h-5"
             fill="none"
@@ -52,7 +54,9 @@ export default function DashboardArticles({
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
         {isLoading ? (
-          <div className="col-span-3 text-center">Loading articles...</div>
+          <div className="col-span-3 text-center">
+            {t("dash_articles_loading")}
+          </div>
         ) : articles.length > 0 ? (
           articles.map((article: any, index: number) => (
             <div
@@ -128,11 +132,10 @@ export default function DashboardArticles({
                 d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
               />
             </svg>
-            <p className="text-lg font-medium">Belum ada artikel saat ini</p>
-            <p className="text-sm mt-1">
-              Nantikan artikel menarik seputar kesehatan dan audio therapy
-              segera.
+            <p className="text-lg font-medium">
+              {t("dash_articles_empty_title")}
             </p>
+            <p className="text-sm mt-1">{t("dash_articles_empty_desc")}</p>
           </div>
         )}
       </div>
