@@ -101,8 +101,18 @@ export default function AudioForm({
     }
   };
 
+  const [audioError, setAudioError] = useState<string | null>(null);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Guard: audio_url is required — either from an uploaded file or existing URL
+    if (!audioFile && !formData.audio_url) {
+      setAudioError("File audio wajib diisi / Audio file is required");
+      return;
+    }
+
+    setAudioError(null);
     setIsUploading(true);
 
     try {
@@ -114,7 +124,16 @@ export default function AudioForm({
         const audioFormData = new FormData();
         audioFormData.append("file", audioFile);
         const audioRes = await uploadAudio(audioFormData).unwrap();
-        currentAudioUrl = audioRes.data.url;
+        currentAudioUrl = audioRes.data.audio_url;
+        // Auto-populate duration from upload response if not already set
+        if (audioRes.data.duration_seconds && !formData.duration) {
+          const mins = Math.floor(audioRes.data.duration_seconds / 60);
+          const secs = String(audioRes.data.duration_seconds % 60).padStart(
+            2,
+            "0",
+          );
+          setFormData((prev) => ({ ...prev, duration: `${mins}:${secs}` }));
+        }
       }
 
       // Upload Thumbnail if changed
@@ -122,14 +141,24 @@ export default function AudioForm({
         const thumbFormData = new FormData();
         thumbFormData.append("file", thumbnailFile);
         const thumbRes = await uploadThumbnail(thumbFormData).unwrap();
-        currentThumbnailUrl = thumbRes.data.url;
+        currentThumbnailUrl = thumbRes.data.thumbnail_url;
       }
 
-      const payload: FormState = {
+      const payload = {
         ...formData,
         audio_url: currentAudioUrl,
         thumbnail_url: currentThumbnailUrl,
+        is_published: true,
       };
+
+      console.log("[AudioForm] Submitting payload:", payload);
+
+      if (!payload.audio_url) {
+        toast.error(
+          "audio_url kosong. Pastikan file audio sudah dipilih dan terupload.",
+        );
+        return;
+      }
 
       await onSubmit(payload);
     } catch (error) {
@@ -193,11 +222,13 @@ export default function AudioForm({
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
             >
               <option value="">{t("audio_form_select_category")}</option>
-              {categoriesData?.data?.map((cat: { id: string; name: string }) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
+              {categoriesData?.data?.map(
+                (cat: { id: string; name: string }) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ),
+              )}
             </select>
           </div>
 
@@ -219,7 +250,9 @@ export default function AudioForm({
 
         {/* Description */}
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-gray-700">{t("audio_form_label_description")}</label>
+          <label className="text-sm font-medium text-gray-700">
+            {t("audio_form_label_description")}
+          </label>
           <textarea
             name="description"
             value={formData.description}
@@ -246,6 +279,11 @@ export default function AudioForm({
               {formData.audio_url && !audioFile && (
                 <p className="text-xs text-gray-500 mt-2 truncate">
                   {t("audio_form_current")}: {formData.audio_url}
+                </p>
+              )}
+              {audioError && (
+                <p className="text-xs text-red-500 mt-2 font-medium">
+                  {audioError}
                 </p>
               )}
             </div>
@@ -279,7 +317,9 @@ export default function AudioForm({
         <div className="grid grid-cols-1 Md:grid-cols-2 gap-6">
           {/* Duration */}
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-gray-700">{t("audio_form_label_duration")}</label>
+            <label className="text-sm font-medium text-gray-700">
+              {t("audio_form_label_duration")}
+            </label>
             <input
               type="text"
               name="duration"
