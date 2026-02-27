@@ -210,6 +210,20 @@ const dict: Dict = {
     ai_dummy_5: "Lorem ipsum dolor sit amet consectetur. In vit...",
     ai_dummy_6: "Lorem ipsum dolor sit amet consectetur. Habi...",
 
+    // Promo Cards
+    promo_berlangganan: "Berlangganan",
+    promo_nikmati: "Nikmati 30 hari hanya",
+    promo_price: "Rp.138,000,-",
+    promo_akses: "Untuk mengakses",
+    promo_audio_strovia: "Audio Strovia",
+    promo_desc:
+      "Tanpa perpanjangan otomatis. Tidak ada autodebet. Kamu tetap sepenuhnya mengontrol proses berlanggananmu.",
+    promo_btn: "Mulai Berlangganan",
+    promo_chat_title:
+      "Butuh bimbingan dan dukungan informasi sepanjang proses pemulihan diri anda?",
+    promo_chat_desc: "Diskusi dengan Dokter Via kapan saja.",
+    promo_chat_btn: "Chat Sekarang",
+
     // ─── Landing page ──────────────────────────────────────────────
     // Navbar
     nav_tentang: "Tentang Kami",
@@ -525,6 +539,20 @@ const dict: Dict = {
     ai_dummy_4: "Sample chat four...",
     ai_dummy_5: "Sample chat five...",
     ai_dummy_6: "Sample chat six...",
+
+    // Promo Cards
+    promo_berlangganan: "Subscribe",
+    promo_nikmati: "Enjoy 30 days for only",
+    promo_price: "Rp.138,000",
+    promo_akses: "To access",
+    promo_audio_strovia: "Audio Strovia",
+    promo_desc:
+      "No automatic renewal. No auto-debit. You stay fully in control of your subscription process.",
+    promo_btn: "Start Subscription",
+    promo_chat_title:
+      "Need guidance and information support throughout your recovery process?",
+    promo_chat_desc: "Discuss with Doctor Via anytime.",
+    promo_chat_btn: "Chat Now",
 
     // ─── Landing page ──────────────────────────────────────────────
     // Navbar

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useI18n } from "@/i18n";
 
 /**
  * DashboardPromoCards component.
@@ -9,6 +10,7 @@ import { useRouter } from "next/navigation";
  */
 export default function DashboardPromoCards() {
   const router = useRouter();
+  const { t } = useI18n();
   return (
     <div className="flex flex-col xl:flex-row gap-[40px] w-full max-w-[1267px] mx-auto">
       {/* ==============================================
@@ -112,7 +114,7 @@ export default function DashboardPromoCards() {
                     color: "#3197A5",
                   }}
                 >
-                  Berlangganan
+                  {t("promo_berlangganan")}
                 </span>
               </div>
 
@@ -125,7 +127,7 @@ export default function DashboardPromoCards() {
                   fontSize: "36px",
                 }}
               >
-                Nikmati 30 hari hanya <br />
+                {t("promo_nikmati")} <br />
                 <span
                   style={{
                     fontSize: "56px",
@@ -134,14 +136,14 @@ export default function DashboardPromoCards() {
                     margin: "8px 0",
                   }}
                 >
-                  Rp.138,000,-
+                  {t("promo_price")}
                 </span>
-                Untuk mengakses{" "}
+                {t("promo_akses")}{" "}
                 <span
                   className="bg-[#3197A5] text-white px-2 py-1 mx-1"
                   style={{ borderRadius: "4px" }}
                 >
-                  Audio Strovia
+                  {t("promo_audio_strovia")}
                 </span>
               </h2>
             </div>
@@ -168,8 +170,7 @@ export default function DashboardPromoCards() {
                 lineHeight: "21px",
               }}
             >
-              Tanpa perpanjangan otomatis. Tidak ada autodebet. Kamu tetap
-              sepenuhnya mengontrol proses berlanggananmu.
+              {t("promo_desc")}
             </p>
             {/* Button */}
             <button
@@ -177,7 +178,7 @@ export default function DashboardPromoCards() {
               className="flex items-center justify-center px-[20px] py-[10px] bg-[#3197A5] hover:bg-[#288a96] rounded-full text-white transition-colors"
             >
               <span style={{ fontSize: "16px", fontWeight: 500 }}>
-                Mulai Berlangganan
+                {t("promo_btn")}
               </span>
             </button>
           </div>
@@ -218,8 +219,7 @@ export default function DashboardPromoCards() {
               lineHeight: "29px",
             }}
           >
-            Butuh bimbingan dan dukungan informasi sepanjang proses pemulihan
-            diri anda?
+            {t("promo_chat_title")}
           </h3>
 
           <p
@@ -231,7 +231,7 @@ export default function DashboardPromoCards() {
               lineHeight: "21px",
             }}
           >
-            Diskusi dengan Dokter Via kapan saja.
+            {t("promo_chat_desc")}
           </p>
 
           <button
@@ -239,7 +239,7 @@ export default function DashboardPromoCards() {
             className="flex items-center justify-center px-[20px] py-[8px] bg-white text-[#1F1F1F] rounded-full w-fit mt-2 hover:scale-105 transition-transform"
           >
             <span style={{ fontSize: "16px", fontWeight: 500 }}>
-              Chat Sekarang
+              {t("promo_chat_btn")}
             </span>
           </button>
         </div>
