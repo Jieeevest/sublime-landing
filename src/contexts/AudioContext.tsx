@@ -22,6 +22,8 @@ interface AudioContextType {
   seek: (time: number) => void;
   setVolume: (volume: number) => void;
   closePlayer: () => void;
+  isRepeat: boolean;
+  toggleRepeat: () => void;
 }
 
 const AudioContext = createContext<AudioContextType | undefined>(undefined);
@@ -33,12 +35,48 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolumeState] = useState(80);
+  const [isRepeat, setIsRepeat] = useState(false);
+  const currentTrackRef = useRef<AudioSession | null>(null);
+
+  // Sync ref with state so event listeners can access current track
+  useEffect(() => {
+    currentTrackRef.current = currentTrack;
+  }, [currentTrack]);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Initialize audio element
   useEffect(() => {
     audioRef.current = new Audio();
+    audioRef.current.crossOrigin = "anonymous"; // Needed for CORS streaming
+
+    // Register Service Worker for audio intercept
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/audio-sw.js")
+        .then((reg) => {
+          const token = localStorage.getItem("token");
+          if (token && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+              type: "SET_TOKEN",
+              token,
+            });
+          }
+        })
+        .catch((err) => {
+          console.error("Audio SW registration failed:", err);
+        });
+
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        const token = localStorage.getItem("token");
+        if (token && navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage({
+            type: "SET_TOKEN",
+            token,
+          });
+        }
+      });
+    }
 
     const audio = audioRef.current;
 
@@ -48,10 +86,20 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     };
 
     const handleLoadedMetadata = () => {
-      setDuration(audio.duration);
+      // streaming might report Infinity
+      if (
+        audio.duration &&
+        audio.duration !== Infinity &&
+        !isNaN(audio.duration)
+      ) {
+        setDuration(audio.duration);
+      } else if (currentTrackRef.current?.durationSeconds) {
+        setDuration(currentTrackRef.current.durationSeconds);
+      }
     };
 
     const handleEnded = () => {
+      if (audio.loop) return; // handled natively
       setIsPlaying(false);
       setProgress(0);
     };
@@ -103,37 +151,30 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       // Load new track
       setCurrentTrack(track);
 
+      // Proactively set known duration to avoid 0s or Infinity bugs
+      if (track.durationSeconds) {
+        setDuration(track.durationSeconds);
+      } else {
+        setDuration(0);
+      }
+
       // Check if URL requires Auth (api endpoints)
       const token =
         typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-      // If it's an API URL and we have a token, fetch with headers
-      if (track.audioUrl.includes("/api/") && token) {
-        try {
-          const response = await fetch(track.audioUrl, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          if (!response.ok) {
-            throw new Error(`Failed to fetch audio: ${response.statusText}`);
-          }
-
-          const blob = await response.blob();
-          const blobUrl = URL.createObjectURL(blob);
-          currentBlobUrlRef.current = blobUrl;
-
-          audioRef.current.src = blobUrl;
-        } catch (error) {
-          console.error("Error loading protected audio:", error);
-          // Fallback or simple error handling - maybe try direct URL just in case
-          audioRef.current.src = track.audioUrl;
-        }
-      } else {
-        // Standard public URL
-        audioRef.current.src = track.audioUrl;
+      if (
+        token &&
+        "serviceWorker" in navigator &&
+        navigator.serviceWorker.controller
+      ) {
+        navigator.serviceWorker.controller.postMessage({
+          type: "SET_TOKEN",
+          token,
+        });
       }
+
+      // We just assign it to src. The SW intercepts API URLs and adds the token header.
+      audioRef.current.src = track.audioUrl;
 
       // Play
       // We use a small timeout or wait for the src to be set?
@@ -176,6 +217,16 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     setVolumeState(newVolume);
   };
 
+  const toggleRepeat = () => {
+    setIsRepeat((prev) => {
+      const next = !prev;
+      if (audioRef.current) {
+        audioRef.current.loop = next;
+      }
+      return next;
+    });
+  };
+
   const closePlayer = () => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -202,6 +253,8 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         seek,
         setVolume,
         closePlayer,
+        isRepeat,
+        toggleRepeat,
       }}
     >
       {children}

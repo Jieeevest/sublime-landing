@@ -16,13 +16,31 @@ export default function AudioPlayer() {
     seek,
     setVolume,
     closePlayer,
+    isRepeat,
+    toggleRepeat,
   } = useAudio();
 
   const [isLyricsOpen, setIsLyricsOpen] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
 
-  if (!isPlayerVisible || !currentTrack) {
+  // If the context says it's not visible and we aren't currently playing the exit animation
+  if (!isPlayerVisible && !isExiting) {
     return null;
   }
+
+  // If there's no track at all (and we aren't just animating out)
+  if (!currentTrack && !isExiting) {
+    return null;
+  }
+
+  const handleClose = () => {
+    setIsExiting(true);
+    // Wait for the slide-down animation (300ms) to finish before actually unmounting
+    setTimeout(() => {
+      closePlayer();
+      setIsExiting(false);
+    }, 300);
+  };
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -41,14 +59,18 @@ export default function AudioPlayer() {
   return (
     <>
       {/* Lyrics Overlay */}
-      {isLyricsOpen && (
+      {isLyricsOpen && currentTrack && (
         <LyricsOverlay
           track={currentTrack}
           onClose={() => setIsLyricsOpen(false)}
         />
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-0 animate-slide-up pointer-events-none">
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-0 pointer-events-none ${
+          isExiting ? "animate-slide-down" : "animate-slide-up"
+        }`}
+      >
         <div className="relative w-full max-w-[1440px] pointer-events-auto h-[104px]">
           {/* Glassmorphism Background */}
           <div
@@ -74,10 +96,10 @@ export default function AudioPlayer() {
             <div className="flex items-center gap-[12px] min-w-[300px]">
               {/* Thumbnail */}
               <div className="w-[44px] h-[44px] relative rounded-[8px] overflow-hidden bg-gray-700 flex-shrink-0">
-                {currentTrack.imageUrl ? (
+                {currentTrack?.imageUrl ? (
                   <Image
                     src={"/audio-fallback.svg"}
-                    alt={currentTrack.title}
+                    alt={currentTrack.title || "Audio track"}
                     fill
                     className="object-cover"
                   />
@@ -97,7 +119,7 @@ export default function AudioPlayer() {
                     lineHeight: "22px",
                   }}
                 >
-                  {currentTrack.title}
+                  {currentTrack?.title}
                 </h3>
                 <p
                   className="text-[#E1E1E1] truncate max-w-[250px]"
@@ -108,7 +130,7 @@ export default function AudioPlayer() {
                     lineHeight: "18px",
                   }}
                 >
-                  {currentTrack.subtitle || currentTrack.description}
+                  {currentTrack?.subtitle || currentTrack?.description}
                 </p>
               </div>
             </div>
@@ -117,8 +139,8 @@ export default function AudioPlayer() {
             <div className="flex flex-col items-center gap-[4px] flex-1 max-w-[629px]">
               {/* Playback Controls */}
               <div className="flex items-center justify-center gap-[24px]">
-                {/* Shuffle (Mock) */}
-                <button className="text-white/70 hover:text-white transition-colors">
+                {/* Shuffle (Mock) - Hidden remotely as requested */}
+                <button className="hidden text-white/70 hover:text-white transition-colors">
                   <svg
                     width="20"
                     height="20"
@@ -188,8 +210,11 @@ export default function AudioPlayer() {
                   </svg>
                 </button>
 
-                {/* Repeat (Mock) */}
-                <button className="text-white/70 hover:text-white transition-colors">
+                {/* Repeat */}
+                <button
+                  onClick={toggleRepeat}
+                  className={`transition-colors ${isRepeat ? "text-primary-300" : "text-white/70 hover:text-white"}`}
+                >
                   <svg
                     width="20"
                     height="20"
@@ -306,7 +331,7 @@ export default function AudioPlayer() {
 
               {/* Simple Close/Menu */}
               <button
-                onClick={closePlayer}
+                onClick={handleClose}
                 className="p-2 text-white/50 hover:text-white"
               >
                 <svg

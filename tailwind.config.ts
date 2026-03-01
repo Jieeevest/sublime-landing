@@ -100,11 +100,29 @@ const config: Config = {
             transform: "translateY(0)",
           },
         },
+        slideDown: {
+          from: {
+            transform: "translateY(0)",
+          },
+          to: {
+            transform: "translateY(100%)",
+          },
+        },
+        fadeOut: {
+          from: {
+            opacity: "1",
+          },
+          to: {
+            opacity: "0",
+          },
+        },
       },
       animation: {
         "fade-in-up": "fadeInUp 0.6s ease-out forwards",
         "fade-in": "fadeIn 0.8s ease-out forwards",
+        "fade-out": "fadeOut 0.3s ease-out forwards",
         "slide-up": "slideUp 0.3s ease-out forwards",
+        "slide-down": "slideDown 0.3s ease-out forwards",
       },
     },
   },
