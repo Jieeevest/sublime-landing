@@ -5,12 +5,15 @@ import { useRouter } from "next/navigation";
 import {
   useGetMeQuery,
   useGetMySubscriptionQuery,
+  sublimeApi,
 } from "@/redux/api/sublimeApi";
+import { useDispatch } from "react-redux";
 import UserDropdown from "@/components/shared/UserDropdown";
 import { useI18n } from "@/i18n";
 
 export default function DashboardTopbar() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { code, setLang, t } = useI18n();
@@ -37,6 +40,8 @@ export default function DashboardTopbar() {
   const handleLogout = () => {
     // Remove token from localStorage
     localStorage.removeItem("token");
+    // Clear RTK Query Cache
+    dispatch(sublimeApi.util.resetApiState());
     // Redirect to login
     router.push("/login?redirect_reason=logout");
   };
@@ -147,9 +152,7 @@ export default function DashboardTopbar() {
               <button
                 onClick={() => selectLanguage("id")}
                 className={`w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 transition-colors ${
-                  code === "ID"
-                    ? "text-primary font-medium"
-                    : "text-gray-700"
+                  code === "ID" ? "text-primary font-medium" : "text-gray-700"
                 }`}
               >
                 ID (Indonesia)
@@ -157,9 +160,7 @@ export default function DashboardTopbar() {
               <button
                 onClick={() => selectLanguage("en")}
                 className={`w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 transition-colors ${
-                  code === "EN"
-                    ? "text-primary font-medium"
-                    : "text-gray-700"
+                  code === "EN" ? "text-primary font-medium" : "text-gray-700"
                 }`}
               >
                 EN (English)
@@ -204,7 +205,10 @@ export default function DashboardTopbar() {
           </button>
 
           {isProfileOpen && (
-            <UserDropdown onClose={() => setIsProfileOpen(false)} onLogout={handleLogout} />
+            <UserDropdown
+              onClose={() => setIsProfileOpen(false)}
+              onLogout={handleLogout}
+            />
           )}
         </div>
       </div>

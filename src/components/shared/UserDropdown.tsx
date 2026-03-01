@@ -31,13 +31,16 @@ export default function UserDropdown({
   };
 
   const handleLogout = () => {
+    try {
+      localStorage.removeItem("token");
+    } catch {}
+
+    // Attempt default onLogout provided by parent (which should dispatch reset)
     if (onLogout) {
       onLogout();
       return;
     }
-    try {
-      localStorage.removeItem("token");
-    } catch {}
+
     router.push("/login?redirect_reason=logout");
     onClose?.();
   };

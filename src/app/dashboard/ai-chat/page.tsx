@@ -9,17 +9,27 @@ import {
   useGetChatHistoryQuery,
   useGetChatBySessionIdQuery,
   useDeleteChatSessionMutation,
+  useGetMySubscriptionQuery,
 } from "@/redux/api/sublimeApi";
 import { skipToken } from "@reduxjs/toolkit/query";
+import { useRouter } from "next/navigation";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
 export default function AIChatPage() {
   const { t } = useI18n();
+  const router = useRouter();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Fetch subscription status
+  const { data: subscriptionData, isFetching: isSubFetching } =
+    useGetMySubscriptionQuery(undefined);
+  const isSubscribed = subscriptionData?.is_subscribed ?? false;
 
   type ChatSession = {
     id: string | number;
@@ -126,11 +136,13 @@ export default function AIChatPage() {
   const handleSend = async (overrideText?: string) => {
     const raw = typeof overrideText === "string" ? overrideText : inputValue;
     const trimmed = raw.trim();
-    if (!trimmed || isStreaming) return;
+    if ((!trimmed && !audioFile) || isStreaming) return;
 
     setInputValue("");
     setIsStreaming(true);
     setPendingChunks([]);
+
+    const audioToSend = audioFile;
 
     setCurrentMessages((prev) => {
       const shouldUseMessages = !isNewChat && selectedId && prev.length === 0;
@@ -138,7 +150,9 @@ export default function AIChatPage() {
 
       const userMessage: ChatMessage = {
         role: "user",
-        content: trimmed,
+        content: audioToSend
+          ? `[File: ${audioToSend.name}]\n${trimmed}`.trim()
+          : trimmed,
       };
 
       const assistantMessage: ChatMessage = {
@@ -151,34 +165,59 @@ export default function AIChatPage() {
 
     let nextSessionId: string | null = selectedId;
 
-    const body: {
-      sessionId?: string | null;
-      messages: { role: string; content: string }[];
-    } = {
-      messages: [{ role: "user", content: trimmed }],
-    };
-
-    if (selectedId) {
-      body.sessionId = selectedId;
-    }
-
     try {
-      const headers: Record<string, string> = {
-        "Content-Type": "application/json",
-      };
-
-      if (typeof window !== "undefined") {
-        const token = localStorage.getItem("token");
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
+      let response;
+      if (audioToSend) {
+        const formData = new FormData();
+        formData.append("audio", audioToSend);
+        if (selectedId) {
+          formData.append("sessionId", selectedId);
         }
-      }
 
-      const response = await fetch(`${API_BASE_URL}/api/v1/ai/chat`, {
-        method: "POST",
-        headers,
-        body: JSON.stringify(body),
-      });
+        const headers: Record<string, string> = {};
+        if (typeof window !== "undefined") {
+          const token = localStorage.getItem("token");
+          if (token) {
+            headers.Authorization = `Bearer ${token}`;
+          }
+        }
+
+        response = await fetch(`${API_BASE_URL}/api/v1/ai/chat/audio`, {
+          method: "POST",
+          headers,
+          body: formData,
+        });
+
+        setAudioFile(null);
+      } else {
+        const body: {
+          sessionId?: string | null;
+          messages: { role: string; content: string }[];
+        } = {
+          messages: [{ role: "user", content: trimmed }],
+        };
+
+        if (selectedId) {
+          body.sessionId = selectedId;
+        }
+
+        const headers: Record<string, string> = {
+          "Content-Type": "application/json",
+        };
+
+        if (typeof window !== "undefined") {
+          const token = localStorage.getItem("token");
+          if (token) {
+            headers.Authorization = `Bearer ${token}`;
+          }
+        }
+
+        response = await fetch(`${API_BASE_URL}/api/v1/ai/chat`, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(body),
+        });
+      }
 
       if (!response.ok || !response.body) {
         throw new Error("Failed to start AI chat");
@@ -308,7 +347,8 @@ export default function AIChatPage() {
             <button
               type="button"
               onClick={handleNewChat}
-              className="w-[272px] h-11 bg-[#3197A5] rounded-full flex items-center justify-center gap-2 text-white hover:bg-[#288a96] transition-colors"
+              disabled={!isSubFetching && !isSubscribed}
+              className={`w-[272px] h-11 rounded-full flex items-center justify-center gap-2 text-white transition-colors ${!isSubFetching && !isSubscribed ? "bg-gray-300 cursor-not-allowed" : "bg-[#3197A5] hover:bg-[#288a96]"}`}
             >
               <svg
                 width="20"
@@ -350,7 +390,34 @@ export default function AIChatPage() {
           <div
             className={`w-full flex-1 overflow-y-auto px-4 py-2 space-y-1 ${isCollapsed ? "hidden" : ""}`}
           >
-            {historyLoading ? (
+            {!isSubFetching && !isSubscribed ? (
+              <div className="flex flex-col items-center justify-center pt-8 px-4 text-center opacity-50">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="mb-2"
+                >
+                  <rect
+                    x="3"
+                    y="11"
+                    width="18"
+                    height="11"
+                    rx="2"
+                    ry="2"
+                  ></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <div className="text-xs text-gray-500 font-sans">
+                  {t("ai_locked_title")}
+                </div>
+              </div>
+            ) : historyLoading ? (
               <div className="text-xs text-gray-500 px-4 py-2">
                 {t("common_loading")}
               </div>
@@ -426,184 +493,234 @@ export default function AIChatPage() {
         </div>
 
         {/* Main Chat Content */}
-        <div className="flex-1 flex flex-col items-center justify-start relative px-6 py-2 md:px-8 md:py-4">
-          {/* Background Elements (Gradients/Blur based on CSS) */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            {/* Placeholders for complex background images/gradients */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] opacity-10 bg-gradient-to-r from-[#55BDC0] to-[#3197A5] blur-3xl rounded-full"></div>
-          </div>
-
-          {/* Conversation Area (with hero for empty state) */}
-          <div className="z-10 w-full max-w-[947px] flex flex-col gap-2 h-full">
-            <div className="flex items-center justify-between mt-1">
-              <h2 className="text-xl font-semibold text-[#1F1F1F]">
-                {isNewChat && !selectedId
-                  ? t("ai_new_chat")
-                  : detail.title || t("ud_menu_ai_chat")}
-              </h2>
-              <div />
-            </div>
-            <div className="flex-1 min-h-0 w-full overflow-y-auto space-y-3 flex flex-col justify-end">
-              {detailLoading ? (
-                <div className="text-sm text-gray-500">
-                  {t("common_loading")}
-                </div>
-              ) : displayedMessages.length === 0 &&
-                (!selectedId || isNewChat) ? (
-                <div className="flex flex-col items-center justify-center flex-1">
-                  <div className="flex flex-col items-center gap-4 mb-6 text-center">
-                    <div className="relative mb-4">
-                      <div className="w-[90px] h-[90px] bg-white rounded-2xl shadow-lg flex items-center justify-center">
-                        <Image
-                          src="/robot.png"
-                          alt={t("ai_robot_alt")}
-                          width={60}
-                          height={60}
-                          className="object-contain"
-                        />
-                      </div>
-                    </div>
-
-                    <h1 className="text-[32px] md:text-[40px] font-bold font-sans leading-tight bg-gradient-to-r from-[#3197A5] to-[#55BDC0] bg-clip-text text-transparent">
-                      {t("ai_hero_hi")}, Kiara <br />
-                      <span className="text-[#1F1F1F]">
-                        {t("ai_hero_question")}
-                      </span>
-                    </h1>
-                    <p className="text-[#1F1F1F] text-base font-sans max-w-[620px]">
-                      {t("ai_hero_desc")}
-                    </p>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-[947px]">
-                    {[
-                      t("ai_suggestion_1"),
-                      t("ai_suggestion_2"),
-                      t("ai_suggestion_3"),
-                    ].map((text, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() => handleSuggestionClick(text)}
-                        className="bg-[rgba(31,31,31,0.04)] border border-[rgba(31,31,31,0.08)] rounded-lg px-4 py-3 cursor-pointer hover:bg-[rgba(31,31,31,0.08)] transition-colors h-[74px] flex items-center justify-center text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3197A5] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
-                      >
-                        <p className="text-[#1F1F1F] text-sm font-sans text-center leading-snug">
-                          {text}
-                        </p>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ) : displayedMessages.length === 0 ? (
-                <div className="text-sm text-gray-500">
-                  {t("dashboard_empty_data")}
-                </div>
-              ) : (
-                displayedMessages.map((m, i) => {
-                  const isTypingIndicator =
-                    m.role === "assistant" &&
-                    isStreaming &&
-                    i === displayedMessages.length - 1 &&
-                    (!m.content || m.content.length === 0) &&
-                    pendingChunks.length === 0;
-
-                  return (
-                    <div
-                      key={i}
-                      className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
-                    >
-                      <div
-                        className={`max-w-[80%] px-4 py-2 rounded-2xl text-sm leading-relaxed ${
-                          m.role === "user"
-                            ? "bg-[#3197A5] text-white rounded-br-sm"
-                            : "bg-white border border-gray-300 text-[#1F1F1F] rounded-bl-sm"
-                        }`}
-                        aria-label={`${m.role}`}
-                      >
-                        {isTypingIndicator ? (
-                          <span className="inline-flex gap-1 text-base tracking-widest">
-                            <span className="w-1 h-1 rounded-full bg-[#1F1F1F] animate-pulse" />
-                            <span className="w-1 h-1 rounded-full bg-[#1F1F1F] animate-pulse" />
-                            <span className="w-1 h-1 rounded-full bg-[#1F1F1F] animate-pulse" />
-                          </span>
-                        ) : (
-                          <ReactMarkdown
-                            components={{
-                              p: (props) => (
-                                <p
-                                  className="whitespace-pre-wrap mb-2"
-                                  {...props}
-                                />
-                              ),
-                              ul: (props) => (
-                                <ul
-                                  className="list-disc pl-5 mb-2"
-                                  {...props}
-                                />
-                              ),
-                              ol: (props) => (
-                                <ol
-                                  className="list-decimal pl-5 mb-2"
-                                  {...props}
-                                />
-                              ),
-                              li: (props) => <li className="mb-1" {...props} />,
-                              strong: (props) => (
-                                <strong className="font-semibold" {...props} />
-                              ),
-                              em: (props) => (
-                                <em className="italic" {...props} />
-                              ),
-                            }}
-                          >
-                            {m.content}
-                          </ReactMarkdown>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-            {/* Chat Input */}
-            <div className="z-10 w-full max-w-[947px]">
-              <div className="w-full h-[54px] bg-white border border-[#E1E1E1] rounded-full flex items-center px-4 shadow-sm focus-within:border-[#3197A5] transition-colors">
-                {/* Plus Button */}
-                <button
-                  type="button"
-                  className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F] mr-2"
+        {!isSubFetching && !isSubscribed ? (
+          <div className="flex-1 flex flex-col items-center justify-center relative px-6 py-2 md:px-8 md:py-4 h-full">
+            <div className="w-full max-w-[500px] flex flex-col items-center text-center p-10 bg-white border border-[#E1E1E1] rounded-[24px] shadow-sm">
+              <div className="w-24 h-24 bg-[#F3F8F9] rounded-full flex items-center justify-center mb-6">
+                <svg
+                  width="40"
+                  height="40"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#3197A5"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M12 5v14M5 12h14" />
-                  </svg>
-                </button>
+                  <rect
+                    x="3"
+                    y="11"
+                    width="18"
+                    height="11"
+                    rx="2"
+                    ry="2"
+                  ></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-[#1F1F1F] mb-4">
+                {t("ai_locked_title")}
+              </h2>
+              <p className="text-gray-600 mb-8 max-w-[400px] leading-relaxed">
+                {t("ai_locked_desc")}
+              </p>
+              <button
+                onClick={() => router.push("/dashboard/subscriptions/payment")}
+                className="bg-[#3197A5] hover:bg-[#288a96] text-white px-8 py-3.5 rounded-full font-medium transition-colors shadow-lg shadow-[#3197A5]/20 w-fit"
+              >
+                {t("ai_locked_btn")}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex-1 flex flex-col items-center justify-start relative px-6 py-2 md:px-8 md:py-4">
+            {/* Background Elements (Gradients/Blur based on CSS) */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              {/* Placeholders for complex background images/gradients */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] opacity-10 bg-gradient-to-r from-[#55BDC0] to-[#3197A5] blur-3xl rounded-full"></div>
+            </div>
 
-                {/* Input Field */}
-                <input
-                  type="text"
-                  placeholder={t("ai_input_placeholder")}
-                  className="flex-1 h-full outline-none text-[#1F1F1F] placeholder:text-[#8E8E8E] font-sans text-sm bg-transparent"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      void handleSend();
-                    }
-                  }}
-                />
+            {/* Conversation Area (with hero for empty state) */}
+            <div className="z-10 w-full max-w-[947px] flex flex-col gap-2 h-full">
+              <div className="flex items-center justify-between mt-1">
+                <h2 className="text-xl font-semibold text-[#1F1F1F]">
+                  {isNewChat && !selectedId
+                    ? t("ai_new_chat")
+                    : detail.title || t("ud_menu_ai_chat")}
+                </h2>
+                <div />
+              </div>
+              <div className="flex-1 min-h-0 w-full overflow-y-auto space-y-3 flex flex-col justify-end">
+                {detailLoading ? (
+                  <div className="text-sm text-gray-500">
+                    {t("common_loading")}
+                  </div>
+                ) : displayedMessages.length === 0 &&
+                  (!selectedId || isNewChat) ? (
+                  <div className="flex flex-col items-center justify-center flex-1">
+                    <div className="flex flex-col items-center gap-4 mb-6 text-center">
+                      <div className="relative mb-4">
+                        <div className="w-[90px] h-[90px] bg-white rounded-2xl shadow-lg flex items-center justify-center">
+                          <Image
+                            src="/robot.png"
+                            alt={t("ai_robot_alt")}
+                            width={60}
+                            height={60}
+                            className="object-contain"
+                          />
+                        </div>
+                      </div>
 
-                {/* Right Actions */}
-                <div className="flex items-center gap-2 ml-2">
+                      <h1 className="text-[32px] md:text-[40px] font-bold font-sans leading-tight bg-gradient-to-r from-[#3197A5] to-[#55BDC0] bg-clip-text text-transparent">
+                        {t("ai_hero_hi")}, Kiara <br />
+                        <span className="text-[#1F1F1F]">
+                          {t("ai_hero_question")}
+                        </span>
+                      </h1>
+                      <p className="text-[#1F1F1F] text-base font-sans max-w-[620px]">
+                        {t("ai_hero_desc")}
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-[947px]">
+                      {[
+                        t("ai_suggestion_1"),
+                        t("ai_suggestion_2"),
+                        t("ai_suggestion_3"),
+                      ].map((text, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => handleSuggestionClick(text)}
+                          className="bg-[rgba(31,31,31,0.04)] border border-[rgba(31,31,31,0.08)] rounded-lg px-4 py-3 cursor-pointer hover:bg-[rgba(31,31,31,0.08)] transition-colors h-[74px] flex items-center justify-center text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3197A5] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+                        >
+                          <p className="text-[#1F1F1F] text-sm font-sans text-center leading-snug">
+                            {text}
+                          </p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : displayedMessages.length === 0 ? (
+                  <div className="text-sm text-gray-500">
+                    {t("dashboard_empty_data")}
+                  </div>
+                ) : (
+                  displayedMessages.map((m, i) => {
+                    const isTypingIndicator =
+                      m.role === "assistant" &&
+                      isStreaming &&
+                      i === displayedMessages.length - 1 &&
+                      (!m.content || m.content.length === 0) &&
+                      pendingChunks.length === 0;
+
+                    return (
+                      <div
+                        key={i}
+                        className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+                      >
+                        <div
+                          className={`max-w-[80%] px-4 py-2 rounded-2xl text-sm leading-relaxed ${
+                            m.role === "user"
+                              ? "bg-[#3197A5] text-white rounded-br-sm"
+                              : "bg-white border border-gray-300 text-[#1F1F1F] rounded-bl-sm"
+                          }`}
+                          aria-label={`${m.role}`}
+                        >
+                          {isTypingIndicator ? (
+                            <span className="inline-flex gap-1 text-base tracking-widest">
+                              <span className="w-1 h-1 rounded-full bg-[#1F1F1F] animate-pulse" />
+                              <span className="w-1 h-1 rounded-full bg-[#1F1F1F] animate-pulse" />
+                              <span className="w-1 h-1 rounded-full bg-[#1F1F1F] animate-pulse" />
+                            </span>
+                          ) : (
+                            <ReactMarkdown
+                              components={{
+                                p: (props) => (
+                                  <p
+                                    className="whitespace-pre-wrap mb-2"
+                                    {...props}
+                                  />
+                                ),
+                                ul: (props) => (
+                                  <ul
+                                    className="list-disc pl-5 mb-2"
+                                    {...props}
+                                  />
+                                ),
+                                ol: (props) => (
+                                  <ol
+                                    className="list-decimal pl-5 mb-2"
+                                    {...props}
+                                  />
+                                ),
+                                li: (props) => (
+                                  <li className="mb-1" {...props} />
+                                ),
+                                strong: (props) => (
+                                  <strong
+                                    className="font-semibold"
+                                    {...props}
+                                  />
+                                ),
+                                em: (props) => (
+                                  <em className="italic" {...props} />
+                                ),
+                              }}
+                            >
+                              {m.content}
+                            </ReactMarkdown>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+              {/* Chat Input */}
+              <div className="z-10 w-full max-w-[947px]">
+                {audioFile && (
+                  <div className="w-full flex items-center gap-3 mb-3 px-4 py-3 bg-white border border-[#E1E1E1] rounded-xl shadow-sm">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#3197A5"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M9 18V5l12-2v13"></path>
+                      <circle cx="6" cy="18" r="3"></circle>
+                      <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                    <span className="text-sm text-gray-700 truncate font-medium">
+                      {audioFile.name}
+                    </span>
+                    <button
+                      onClick={() => setAudioFile(null)}
+                      className="ml-auto w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#F64C4C] transition-colors"
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                )}
+                <div className="w-full h-[54px] bg-white border border-[#E1E1E1] rounded-full flex items-center px-4 shadow-sm focus-within:border-[#3197A5] transition-colors">
+                  {/* Plus Button */}
                   <button
                     type="button"
-                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F]"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F] mr-2"
                   >
                     <svg
                       width="20"
@@ -613,37 +730,85 @@ export default function AIChatPage() {
                       stroke="currentColor"
                       strokeWidth="1.5"
                     >
-                      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-                      <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                      <line x1="12" y1="19" x2="12" y2="23" />
-                      <line x1="8" y1="23" x2="16" y2="23" />
+                      <path d="M12 5v14M5 12h14" />
                     </svg>
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      void handleSend();
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="audio/*,video/*"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        setAudioFile(e.target.files[0]);
+                        e.target.value = "";
+                      }
                     }}
-                    disabled={isStreaming || inputValue.trim().length === 0}
-                    className="w-10 h-10 flex items-center justify-center rounded-full bg-[#3197A5] text-white hover:bg-[#288a96] transition-colors shadow-md disabled:opacity-60"
-                  >
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
+                  />
+
+                  {/* Input Field */}
+                  <input
+                    type="text"
+                    placeholder={t("ai_input_placeholder")}
+                    className="flex-1 h-full outline-none text-[#1F1F1F] placeholder:text-[#8E8E8E] font-sans text-sm bg-transparent"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        void handleSend();
+                      }
+                    }}
+                  />
+
+                  {/* Right Actions */}
+                  <div className="flex items-center gap-2 ml-2">
+                    <button
+                      type="button"
+                      className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F]"
                     >
-                      <path d="M22 2 11 13" />
-                      <path d="M22 2 15 22 11 13 2 9 22 2z" />
-                    </svg>
-                  </button>
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                        <line x1="12" y1="19" x2="12" y2="23" />
+                        <line x1="8" y1="23" x2="16" y2="23" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        void handleSend();
+                      }}
+                      disabled={
+                        isStreaming || (!inputValue.trim() && !audioFile)
+                      }
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-[#3197A5] text-white hover:bg-[#288a96] transition-colors shadow-md disabled:opacity-60"
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M22 2 11 13" />
+                        <path d="M22 2 15 22 11 13 2 9 22 2z" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       {isConfirmOpen && (
         <div

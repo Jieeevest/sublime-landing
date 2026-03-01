@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useGetMeQuery } from "@/redux/api/sublimeApi";
+import { useGetMeQuery, sublimeApi } from "@/redux/api/sublimeApi";
+import { useDispatch } from "react-redux";
 import { useI18n } from "@/i18n";
 import UserDropdown from "@/components/shared/UserDropdown";
 import Link from "next/link";
@@ -26,6 +27,7 @@ export default function Navbar() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const read = () => {
@@ -62,6 +64,7 @@ export default function Navbar() {
     try {
       localStorage.removeItem("token");
     } catch {}
+    dispatch(sublimeApi.util.resetApiState());
     setIsAuthenticated(false);
     setIsUserMenuOpen(false);
     router.push("/login");

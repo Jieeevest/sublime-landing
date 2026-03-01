@@ -5,9 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { useRouter } from "next/navigation";
+import { useI18n } from "@/i18n";
 
 export default function SubscriptionsPage() {
   const router = useRouter();
+  const { t } = useI18n();
   return (
     <DashboardLayout activeItem="Home">
       <div className="w-full flex flex-col items-center pt-6 pb-20 px-4">
@@ -68,26 +70,27 @@ export default function SubscriptionsPage() {
                   color: "#3197A5",
                 }}
               >
-                Berlangganan
+                {t("promo_berlangganan")}
               </span>
             </div>
 
             {/* Main Title */}
             <h2 className="text-[#3197A5] font-bold text-4xl leading-tight mb-4">
-              Nikmati 30 hari hanya{" "}
-              <span className="text-[#023347] text-5xl ml-2">Rp,138,000,-</span>
+              {t("promo_nikmati")}{" "}
+              <span className="text-[#023347] text-5xl ml-2">
+                {t("promo_price")}
+              </span>
             </h2>
             <h2 className="text-[#3197A5] font-bold text-4xl leading-tight mb-8">
-              Untuk mengakses{" "}
+              {t("promo_akses")}{" "}
               <span className="text-white bg-[#3197A5] px-2 py-1 rounded">
-                Audio Strovia
+                {t("promo_audio_strovia")}
               </span>
             </h2>
 
             {/* Footer Text */}
             <p className="text-[#023347] text-sm max-w-[600px] opacity-80">
-              Tanpa perpanjangan otomatis. Tidak ada autodebet. Kamu tetap
-              sepenuhnya mengontrol proses berlanggananmu.
+              {t("promo_desc")}
             </p>
           </div>
 
@@ -100,11 +103,10 @@ export default function SubscriptionsPage() {
         {/* Header Section */}
         <div className="text-center max-w-[800px] mb-12 space-y-4">
           <h1 className="text-4xl md:text-5xl font-bold text-[#3197A5] leading-tight">
-            Ayo mulai perjalanan proses pemulihan mandiri stroke Anda bersama
-            Strovia
+            {t("subs_header_title")}
           </h1>
           <p className="text-gray-600 text-lg md:text-xl font-light">
-            Bayar dengan berbagai cara. Batalkan kapan saja.
+            {t("subs_header_subtitle")}
           </p>
 
           {/* Payment Methods */}
@@ -149,7 +151,7 @@ export default function SubscriptionsPage() {
             />
 
             <span className="text-gray-400 text-sm font-medium ml-2">
-              +4 lainnya
+              {t("subs_payment_others")}
             </span>
           </div>
         </div>
@@ -158,19 +160,23 @@ export default function SubscriptionsPage() {
         <div className="w-full max-w-[480px] bg-[#F3F8F9] rounded-[20px] p-8 border border-[#E1E1E1] relative overflow-hidden">
           {/* Popular Badge */}
           <div className="absolute top-8 right-8 bg-[#D3E8EB] text-[#3197A5] text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-            <span>🔥</span> Popular
+            <span>🔥</span> {t("subs_card_popular")}
           </div>
 
           <div className="mb-2">
-            <h3 className="text-xl font-bold text-[#1F1F1F]">Berlangganan</h3>
+            <h3 className="text-xl font-bold text-[#1F1F1F]">
+              {t("promo_berlangganan")}
+            </h3>
           </div>
 
           <div className="mb-8">
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold text-[#1F1F1F]">
-                Rp 138.000
+                {t("subs_card_price")}
               </span>
-              <span className="text-gray-500 text-sm">per 30 hari</span>
+              <span className="text-gray-500 text-sm">
+                {t("subs_card_period")}
+              </span>
             </div>
           </div>
 
@@ -194,7 +200,7 @@ export default function SubscriptionsPage() {
                   />
                 </svg>
               </div>
-              <span className="text-[#1F1F1F] text-sm">Akses semua audio</span>
+              <span className="text-[#1F1F1F] text-sm">{t("subs_feat_1")}</span>
             </div>
 
             <div className="flex items-center gap-3">
@@ -215,7 +221,7 @@ export default function SubscriptionsPage() {
                   />
                 </svg>
               </div>
-              <span className="text-[#1F1F1F] text-sm">Chat AI</span>
+              <span className="text-[#1F1F1F] text-sm">{t("subs_feat_2")}</span>
             </div>
 
             <div className="flex items-center gap-3">
@@ -236,7 +242,7 @@ export default function SubscriptionsPage() {
                   />
                 </svg>
               </div>
-              <span className="text-[#1F1F1F] text-sm">Artikel eksklusif</span>
+              <span className="text-[#1F1F1F] text-sm">{t("subs_feat_3")}</span>
             </div>
 
             <div className="flex items-center gap-3">
@@ -257,7 +263,7 @@ export default function SubscriptionsPage() {
                   />
                 </svg>
               </div>
-              <span className="text-[#1F1F1F] text-sm">Tanpa autodebet</span>
+              <span className="text-[#1F1F1F] text-sm">{t("subs_feat_4")}</span>
             </div>
           </div>
 
@@ -266,7 +272,7 @@ export default function SubscriptionsPage() {
             onClick={() => router.push("/dashboard/subscriptions/payment")}
             className="w-full bg-[#3197A5] hover:bg-[#288a96] text-white font-medium py-4 rounded-xl transition-colors shadow-lg shadow-[#3197A5]/20"
           >
-            Mulai Berlangganan
+            {t("promo_btn")}
           </button>
         </div>
       </div>

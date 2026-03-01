@@ -19,7 +19,7 @@ export default function DashboardLayout({
 
       <div className="flex-1 ml-[93px] flex flex-col">
         <DashboardTopbar />
-        <main className="flex-1 overflow-auto pb-32">{children}</main>
+        <main className="flex-1">{children}</main>
         <AudioPlayer />
       </div>
     </div>

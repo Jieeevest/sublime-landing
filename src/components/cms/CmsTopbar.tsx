@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useGetMeQuery } from "@/redux/api/sublimeApi";
+import { useGetMeQuery, sublimeApi } from "@/redux/api/sublimeApi";
+import { useDispatch } from "react-redux";
 import UserDropdown from "@/components/shared/UserDropdown";
 import { useI18n } from "@/i18n";
 
 export default function CmsTopbar() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { code, setLang, t } = useI18n();
@@ -32,6 +34,8 @@ export default function CmsTopbar() {
   const handleLogout = () => {
     // Remove token from localStorage
     localStorage.removeItem("token");
+    // Clear RTK Query Cache
+    dispatch(sublimeApi.util.resetApiState());
     // Redirect to login
     router.push("/login?redirect_reason=logout");
   };

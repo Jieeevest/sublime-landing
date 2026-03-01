@@ -209,6 +209,10 @@ const dict: Dict = {
     ai_dummy_4: "Lorem ipsum dolor sit amet consectetur. Con...",
     ai_dummy_5: "Lorem ipsum dolor sit amet consectetur. In vit...",
     ai_dummy_6: "Lorem ipsum dolor sit amet consectetur. Habi...",
+    ai_locked_title: "Fitur Premium Terkunci",
+    ai_locked_desc:
+      "Silakan berlangganan untuk membuka akses ke AI Chat (Dokter Via) dan mulai diskusikan proses pemulihan Anda.",
+    ai_locked_btn: "Berlangganan Sekarang",
 
     // Promo Cards
     promo_berlangganan: "Berlangganan",
@@ -223,6 +227,19 @@ const dict: Dict = {
       "Butuh bimbingan dan dukungan informasi sepanjang proses pemulihan diri anda?",
     promo_chat_desc: "Diskusi dengan Dokter Via kapan saja.",
     promo_chat_btn: "Chat Sekarang",
+
+    // Subscription Page
+    subs_header_title:
+      "Ayo mulai perjalanan proses pemulihan mandiri stroke Anda bersama Strovia",
+    subs_header_subtitle: "Bayar dengan berbagai cara. Batalkan kapan saja.",
+    subs_payment_others: "+4 lainnya",
+    subs_card_popular: "Populer",
+    subs_card_price: "Rp 138.000",
+    subs_card_period: "per 30 hari",
+    subs_feat_1: "Akses semua audio",
+    subs_feat_2: "Chat AI",
+    subs_feat_3: "Artikel eksklusif",
+    subs_feat_4: "Tanpa autodebet",
 
     // ─── Landing page ──────────────────────────────────────────────
     // Navbar
@@ -539,6 +556,10 @@ const dict: Dict = {
     ai_dummy_4: "Sample chat four...",
     ai_dummy_5: "Sample chat five...",
     ai_dummy_6: "Sample chat six...",
+    ai_locked_title: "Premium Feature Locked",
+    ai_locked_desc:
+      "Please subscribe to unlock access to AI Chat (Doctor Via) and start discussing your recovery process.",
+    ai_locked_btn: "Subscribe Now",
 
     // Promo Cards
     promo_berlangganan: "Subscribe",
@@ -553,6 +574,19 @@ const dict: Dict = {
       "Need guidance and information support throughout your recovery process?",
     promo_chat_desc: "Discuss with Doctor Via anytime.",
     promo_chat_btn: "Chat Now",
+
+    // Subscription Page
+    subs_header_title:
+      "Let's start your independent stroke recovery journey with Strovia",
+    subs_header_subtitle: "Pay in multiple ways. Cancel anytime.",
+    subs_payment_others: "+4 others",
+    subs_card_popular: "Popular",
+    subs_card_price: "Rp 138,000",
+    subs_card_period: "per 30 days",
+    subs_feat_1: "Access all audios",
+    subs_feat_2: "AI Chat",
+    subs_feat_3: "Exclusive articles",
+    subs_feat_4: "No auto-debit",
 
     // ─── Landing page ──────────────────────────────────────────────
     // Navbar
