@@ -47,4 +47,19 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  .animate-wave {
+    animation: sound-wave 1.2s ease-in-out infinite;
+    transform-origin: center bottom;
+  }
+
+  @keyframes sound-wave {
+    0%,
+    100% {
+      transform: scaleY(0.3);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
 }

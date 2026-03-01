@@ -23,8 +23,14 @@ export default function AIChatPage() {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
-  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [attachedFile, setAttachedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const recordingTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Fetch subscription status
   const { data: subscriptionData, isFetching: isSubFetching } =
@@ -133,16 +139,16 @@ export default function AIChatPage() {
     void handleSend(text);
   };
 
-  const handleSend = async (overrideText?: string) => {
+  const handleSend = async (overrideText?: string, overrideFile?: File) => {
     const raw = typeof overrideText === "string" ? overrideText : inputValue;
     const trimmed = raw.trim();
-    if ((!trimmed && !audioFile) || isStreaming) return;
+    const fileToSend = overrideFile || attachedFile;
+
+    if ((!trimmed && !fileToSend) || isStreaming) return;
 
     setInputValue("");
     setIsStreaming(true);
     setPendingChunks([]);
-
-    const audioToSend = audioFile;
 
     setCurrentMessages((prev) => {
       const shouldUseMessages = !isNewChat && selectedId && prev.length === 0;
@@ -150,8 +156,8 @@ export default function AIChatPage() {
 
       const userMessage: ChatMessage = {
         role: "user",
-        content: audioToSend
-          ? `[File: ${audioToSend.name}]\n${trimmed}`.trim()
+        content: fileToSend
+          ? `[File: ${fileToSend.name}]\n${trimmed}`.trim()
           : trimmed,
       };
 
@@ -167,9 +173,11 @@ export default function AIChatPage() {
 
     try {
       let response;
-      if (audioToSend) {
+      if (fileToSend) {
         const formData = new FormData();
-        formData.append("audio", audioToSend);
+        const isImage = fileToSend.type.startsWith("image/");
+        formData.append(isImage ? "image" : "audio", fileToSend);
+
         if (selectedId) {
           formData.append("sessionId", selectedId);
         }
@@ -182,13 +190,17 @@ export default function AIChatPage() {
           }
         }
 
-        response = await fetch(`${API_BASE_URL}/api/v1/ai/chat/audio`, {
+        const endpoint = isImage
+          ? "/api/v1/ai/chat/image"
+          : "/api/v1/ai/chat/audio";
+
+        response = await fetch(`${API_BASE_URL}${endpoint}`, {
           method: "POST",
           headers,
           body: formData,
         });
 
-        setAudioFile(null);
+        setAttachedFile(null);
       } else {
         const body: {
           sessionId?: string | null;
@@ -272,6 +284,66 @@ export default function AIChatPage() {
     }
   };
 
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          audioChunksRef.current.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        if (audioChunksRef.current.length > 0) {
+          const audioBlob = new Blob(audioChunksRef.current, {
+            type: "audio/mp3",
+          });
+          const file = new File([audioBlob], "audio-message.mp3", {
+            type: "audio/mp3",
+          });
+          void handleSend("", file);
+        }
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+      setRecordingTime(0);
+      if (recordingTimerRef.current) clearInterval(recordingTimerRef.current);
+      recordingTimerRef.current = setInterval(() => {
+        setRecordingTime((prev) => prev + 1);
+      }, 1000);
+    } catch (err) {
+      console.error("Error accessing microphone:", err);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      mediaRecorderRef.current.stream
+        .getTracks()
+        .forEach((track) => track.stop());
+      setIsRecording(false);
+      if (recordingTimerRef.current) clearInterval(recordingTimerRef.current);
+    }
+  };
+
+  const cancelRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      audioChunksRef.current = [];
+      mediaRecorderRef.current.stop();
+      mediaRecorderRef.current.stream
+        .getTracks()
+        .forEach((track) => track.stop());
+      setIsRecording(false);
+      if (recordingTimerRef.current) clearInterval(recordingTimerRef.current);
+    }
+  };
+
   useEffect(() => {
     if (pendingChunks.length === 0) return;
 
@@ -293,7 +365,7 @@ export default function AIChatPage() {
         }
         return updated;
       });
-    }, 25);
+    }, 60);
 
     return () => clearTimeout(timer);
   }, [pendingChunks]);
@@ -550,7 +622,7 @@ export default function AIChatPage() {
                 </h2>
                 <div />
               </div>
-              <div className="flex-1 min-h-0 w-full overflow-y-auto space-y-3 flex flex-col justify-end">
+              <div className="flex-1 min-h-0 w-full overflow-y-auto space-y-3 flex flex-col p-2">
                 {detailLoading ? (
                   <div className="text-sm text-gray-500">
                     {t("common_loading")}
@@ -675,30 +747,60 @@ export default function AIChatPage() {
                     );
                   })
                 )}
+                {/* Scroll Target */}
+                <div
+                  ref={(el) => {
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                />
               </div>
               {/* Chat Input */}
               <div className="z-10 w-full max-w-[947px]">
-                {audioFile && (
+                {attachedFile && (
                   <div className="w-full flex items-center gap-3 mb-3 px-4 py-3 bg-white border border-[#E1E1E1] rounded-xl shadow-sm">
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="#3197A5"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M9 18V5l12-2v13"></path>
-                      <circle cx="6" cy="18" r="3"></circle>
-                      <circle cx="18" cy="16" r="3"></circle>
-                    </svg>
+                    {attachedFile.type.startsWith("image/") ? (
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#3197A5"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect
+                          x="3"
+                          y="3"
+                          width="18"
+                          height="18"
+                          rx="2"
+                          ry="2"
+                        ></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                      </svg>
+                    ) : (
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#3197A5"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M9 18V5l12-2v13"></path>
+                        <circle cx="6" cy="18" r="3"></circle>
+                        <circle cx="18" cy="16" r="3"></circle>
+                      </svg>
+                    )}
                     <span className="text-sm text-gray-700 truncate font-medium">
-                      {audioFile.name}
+                      {attachedFile.name}
                     </span>
                     <button
-                      onClick={() => setAudioFile(null)}
+                      onClick={() => setAttachedFile(null)}
                       className="ml-auto w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#F64C4C] transition-colors"
                     >
                       <svg
@@ -715,95 +817,159 @@ export default function AIChatPage() {
                     </button>
                   </div>
                 )}
-                <div className="w-full h-[54px] bg-white border border-[#E1E1E1] rounded-full flex items-center px-4 shadow-sm focus-within:border-[#3197A5] transition-colors">
-                  {/* Plus Button */}
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F] mr-2"
-                  >
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    >
-                      <path d="M12 5v14M5 12h14" />
-                    </svg>
-                  </button>
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    className="hidden"
-                    accept="audio/*,video/*"
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files.length > 0) {
-                        setAudioFile(e.target.files[0]);
-                        e.target.value = "";
-                      }
-                    }}
-                  />
+                <div className="w-full h-[54px] bg-white border border-[#E1E1E1] rounded-full flex items-center px-4 shadow-sm focus-within:border-[#3197A5] transition-colors relative overflow-hidden">
+                  {isRecording ? (
+                    <div className="flex-1 flex items-center justify-between w-full h-full animate-in fade-in duration-200">
+                      <div className="flex items-center gap-3">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#F64C4C] animate-pulse"></span>
+                        <span className="font-mono text-sm font-medium text-[#F64C4C] min-w-[40px]">
+                          {Math.floor(recordingTime / 60)}:
+                          {(recordingTime % 60).toString().padStart(2, "0")}
+                        </span>
+                      </div>
 
-                  {/* Input Field */}
-                  <input
-                    type="text"
-                    placeholder={t("ai_input_placeholder")}
-                    className="flex-1 h-full outline-none text-[#1F1F1F] placeholder:text-[#8E8E8E] font-sans text-sm bg-transparent"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        void handleSend();
-                      }
-                    }}
-                  />
+                      <div className="flex-1 flex justify-center items-center gap-1 h-6 px-4">
+                        {[1, 2, 3, 4, 5, 4, 3, 2, 1].map((n, i) => (
+                          <div
+                            key={i}
+                            className="w-1 bg-[#3197A5] rounded-full animate-pulse"
+                            style={{
+                              height: `${Math.max(8, n * 6)}px`,
+                              animationDelay: `${i * 100}ms`,
+                            }}
+                          ></div>
+                        ))}
+                      </div>
 
-                  {/* Right Actions */}
-                  <div className="flex items-center gap-2 ml-2">
-                    <button
-                      type="button"
-                      className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F]"
-                    >
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={cancelRecording}
+                          className="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                        >
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                          </svg>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={stopRecording}
+                          className="w-8 h-8 flex items-center justify-center rounded-full bg-[#3197A5] text-white hover:bg-[#288a96] transition-colors shadow-sm"
+                        >
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                          >
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Plus Button */}
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F] mr-2"
                       >
-                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                        <line x1="12" y1="19" x2="12" y2="23" />
-                        <line x1="8" y1="23" x2="16" y2="23" />
-                      </svg>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        void handleSend();
-                      }}
-                      disabled={
-                        isStreaming || (!inputValue.trim() && !audioFile)
-                      }
-                      className="w-10 h-10 flex items-center justify-center rounded-full bg-[#3197A5] text-white hover:bg-[#288a96] transition-colors shadow-md disabled:opacity-60"
-                    >
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path d="M22 2 11 13" />
-                        <path d="M22 2 15 22 11 13 2 9 22 2z" />
-                      </svg>
-                    </button>
-                  </div>
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                        >
+                          <path d="M12 5v14M5 12h14" />
+                        </svg>
+                      </button>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        className="hidden"
+                        accept="image/*,audio/*,video/*"
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files.length > 0) {
+                            setAttachedFile(e.target.files[0]);
+                            e.target.value = "";
+                          }
+                        }}
+                      />
+
+                      {/* Input Field */}
+                      <input
+                        type="text"
+                        placeholder={t("ai_input_placeholder")}
+                        className="flex-1 h-full outline-none text-[#1F1F1F] placeholder:text-[#8E8E8E] font-sans text-sm bg-transparent"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            void handleSend();
+                          }
+                        }}
+                      />
+
+                      {/* Right Actions */}
+                      <div className="flex items-center gap-2 ml-2">
+                        <button
+                          type="button"
+                          onClick={startRecording}
+                          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F]"
+                        >
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          >
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                            <line x1="12" y1="19" x2="12" y2="23" />
+                            <line x1="8" y1="23" x2="16" y2="23" />
+                          </svg>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            void handleSend();
+                          }}
+                          disabled={
+                            isStreaming || (!inputValue.trim() && !attachedFile)
+                          }
+                          className="w-10 h-10 flex items-center justify-center rounded-full bg-[#3197A5] text-white hover:bg-[#288a96] transition-colors shadow-md disabled:opacity-60"
+                        >
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          >
+                            <path d="M22 2 11 13" />
+                            <path d="M22 2 15 22 11 13 2 9 22 2z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
