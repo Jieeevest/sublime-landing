@@ -41,10 +41,34 @@ self.addEventListener("fetch", (event) => {
           headers: headers,
           mode: "cors",
           credentials: "omit",
-          redirect: "follow",
+          // Intercept redirects manually to rewrite the MinIO URL
+          redirect: "manual",
         });
 
-        return fetch(authRequest);
+        const initialResponse = await fetch(authRequest);
+
+        // If it's an opaque redirect (status 0) or standard 3xx redirect
+        if (
+          initialResponse.type === "opaqueredirect" ||
+          (initialResponse.status >= 300 && initialResponse.status < 400)
+        ) {
+          const location = initialResponse.headers.get("Location");
+          if (location) {
+            let redirectUrl = location;
+            // Rewrite MinIO bucket HTTP IP to Frontend HTTPS Domain
+            if (redirectUrl.includes("72.61.215.67")) {
+              redirectUrl = redirectUrl.replace(
+                /https?:\/\/72\.61\.215\.67(:\d+)?/,
+                "https://strovia.app",
+              );
+            }
+
+            // Follow the fixed redirect
+            return Response.redirect(redirectUrl, 302);
+          }
+        }
+
+        return initialResponse;
       })(),
     );
   }
