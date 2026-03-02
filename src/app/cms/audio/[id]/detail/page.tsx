@@ -133,7 +133,18 @@ export default function AudioDetailPage({
             <h3 className="text-sm font-medium text-gray-700 mb-3">
               Preview Audio
             </h3>
-            <audio controls className="w-full rounded-lg" src={audio.audio_url}>
+            <audio
+              controls
+              className="w-full rounded-lg"
+              src={
+                audio.audio_url
+                  ? audio.audio_url.replace(
+                      /https?:\/\/72\.61\.215\.67(:\d+)?/,
+                      "https://strovia.app",
+                    )
+                  : ""
+              }
+            >
               Your browser does not support the audio element.
             </audio>
           </div>
