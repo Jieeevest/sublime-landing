@@ -883,7 +883,8 @@ export default function AIChatPage() {
                       <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F] mr-2"
+                        title={t("ai_upload_tooltip")}
+                        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F] mr-2 transition-colors relative group"
                       >
                         <svg
                           width="20"
@@ -900,7 +901,7 @@ export default function AIChatPage() {
                         type="file"
                         ref={fileInputRef}
                         className="hidden"
-                        accept="image/*,audio/*,video/*"
+                        accept="image/*,audio/mpeg,audio/wav,audio/flac,.mp3,.wav,.flac"
                         onChange={(e) => {
                           if (e.target.files && e.target.files.length > 0) {
                             setAttachedFile(e.target.files[0]);
@@ -928,8 +929,9 @@ export default function AIChatPage() {
                       <div className="flex items-center gap-2 ml-2">
                         <button
                           type="button"
+                          title={t("ai_record_tooltip")}
                           onClick={startRecording}
-                          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F]"
+                          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-[#1F1F1F] transition-colors"
                         >
                           <svg
                             width="20"
@@ -947,6 +949,7 @@ export default function AIChatPage() {
                         </button>
                         <button
                           type="button"
+                          title={t("ai_send_tooltip")}
                           onClick={() => {
                             void handleSend();
                           }}
