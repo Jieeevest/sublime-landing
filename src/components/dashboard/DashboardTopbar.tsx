@@ -19,7 +19,8 @@ export default function DashboardTopbar() {
   const { code, setLang, t } = useI18n();
 
   const { data: user, isLoading } = useGetMeQuery(undefined);
-  const { data: subscription } = useGetMySubscriptionQuery(undefined);
+  const { data: subscription, isLoading: isSubLoading } =
+    useGetMySubscriptionQuery(undefined);
   const isSubscribed = subscription?.is_subscribed;
 
   const toggleLanguage = () => {
@@ -86,8 +87,7 @@ export default function DashboardTopbar() {
       {/* Right Side */}
       <div className="flex items-center gap-3">
         {/* Premium Button */}
-        {/* Premium Button */}
-        {!isSubscribed && (
+        {!isSubLoading && !isSubscribed && (
           <button
             onClick={() => router.push("/dashboard/subscriptions")}
             className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-full text-base font-normal hover:bg-primary-600 transition-colors whitespace-nowrap"
