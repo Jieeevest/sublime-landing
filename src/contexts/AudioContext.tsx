@@ -173,8 +173,18 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         });
       }
 
+      let finalUrl = track.audioUrl;
+      // Append sw_token so SW catches it immediately on first fetch without race conditions.
+      if (
+        token &&
+        "serviceWorker" in navigator &&
+        finalUrl.includes("/api/v1/audios/stream/")
+      ) {
+        finalUrl += (finalUrl.includes("?") ? "&" : "?") + "sw_token=" + token;
+      }
+
       // We just assign it to src. The SW intercepts API URLs and adds the token header.
-      audioRef.current.src = track.audioUrl;
+      audioRef.current.src = finalUrl;
 
       // Play
       // We use a small timeout or wait for the src to be set?
