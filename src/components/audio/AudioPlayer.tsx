@@ -55,6 +55,7 @@ export default function AudioPlayer() {
     const newTime = percentage * duration;
     seek(newTime);
   };
+  const progressPercent = duration > 0 ? (progress / duration) * 100 : 0;
 
   return (
     <>
@@ -71,7 +72,7 @@ export default function AudioPlayer() {
           isExiting ? "animate-slide-down" : "animate-slide-up"
         }`}
       >
-        <div className="relative w-full max-w-[1440px] pointer-events-auto h-[104px]">
+        <div className="relative h-auto w-full max-w-[1440px] pointer-events-auto md:h-[104px]">
           {/* Glassmorphism Background */}
           <div
             className="absolute inset-0 z-0"
@@ -91,54 +92,94 @@ export default function AudioPlayer() {
           </div>
 
           {/* Content Container */}
-          <div className="relative z-10 flex items-center justify-between h-full px-6 md:px-[24px] gap-[24px]">
-            {/* Left: Track Info */}
-            <div className="flex items-center gap-[12px] min-w-[300px]">
-              {/* Thumbnail */}
-              <div className="w-[44px] h-[44px] relative rounded-[8px] overflow-hidden bg-gray-700 flex-shrink-0">
-                {currentTrack?.imageUrl ? (
-                  <Image
-                    src={"/audio-fallback.svg"}
-                    alt={currentTrack.title || "Audio track"}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-[#3197A5] to-teal-800" />
-                )}
+          <div className="relative z-10 flex flex-col gap-2 px-3 py-3 md:h-full md:flex-row md:items-center md:justify-between md:gap-6 md:px-6 md:py-0">
+            {/* Top Row (Mobile) + Left (Desktop): Track Info */}
+            <div className="flex items-center justify-between gap-3 md:min-w-[300px]">
+              <div className="flex min-w-0 items-center gap-3">
+                <div className="relative h-[44px] w-[44px] flex-shrink-0 overflow-hidden rounded-[8px] bg-gray-700">
+                  {currentTrack?.imageUrl ? (
+                    <Image
+                      src={"/audio-fallback.svg"}
+                      alt={currentTrack.title || "Audio track"}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-gradient-to-br from-[#3197A5] to-teal-800" />
+                  )}
+                </div>
+
+                <div className="flex min-w-0 flex-col">
+                  <h3
+                    className="max-w-[190px] text-white break-words sm:max-w-[250px] sm:truncate"
+                    style={{
+                      fontFamily: "'PP Neue Montreal', sans-serif",
+                      fontWeight: 500,
+                      fontSize: "14px",
+                      lineHeight: "22px",
+                    }}
+                  >
+                    {currentTrack?.title}
+                  </h3>
+                  <p
+                    className="max-w-[190px] truncate text-[#E1E1E1] sm:max-w-[250px]"
+                    style={{
+                      fontFamily: "'PP Neue Montreal', sans-serif",
+                      fontWeight: 400,
+                      fontSize: "12px",
+                      lineHeight: "18px",
+                    }}
+                  >
+                    {currentTrack?.subtitle || currentTrack?.description}
+                  </p>
+                </div>
               </div>
 
-              {/* Text */}
-              <div className="flex flex-col">
-                <h3
-                  className="text-white truncate max-w-[250px]"
-                  style={{
-                    fontFamily: "'PP Neue Montreal', sans-serif",
-                    fontWeight: 500,
-                    fontSize: "14px",
-                    lineHeight: "22px",
-                  }}
+              <button
+                onClick={handleClose}
+                className="p-2 text-white/70 hover:text-white md:hidden"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  {currentTrack?.title}
-                </h3>
-                <p
-                  className="text-[#E1E1E1] truncate max-w-[250px]"
-                  style={{
-                    fontFamily: "'PP Neue Montreal', sans-serif",
-                    fontWeight: 400,
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                  }}
-                >
-                  {currentTrack?.subtitle || currentTrack?.description}
-                </p>
-              </div>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
             </div>
 
-            {/* Center: Controls & Progress */}
-            <div className="flex flex-col items-center gap-[4px] flex-1 max-w-[629px]">
+            {/* Controls & Progress */}
+            <div className="flex w-full flex-col gap-2 md:max-w-[629px] md:flex-1 md:items-center">
               {/* Playback Controls */}
-              <div className="flex items-center justify-center gap-[24px]">
+              <div className="mx-auto flex w-fit items-center justify-center gap-4 md:gap-6">
+                <button
+                  className={`transition-colors md:hidden ${
+                    isLyricsOpen
+                      ? "text-[#3197A5]"
+                      : "text-white/70 hover:text-white"
+                  }`}
+                  onClick={() => setIsLyricsOpen(!isLyricsOpen)}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                </button>
+
                 {/* Shuffle (Mock) - Hidden remotely as requested */}
                 <button className="hidden text-white/70 hover:text-white transition-colors">
                   <svg
@@ -234,9 +275,9 @@ export default function AudioPlayer() {
               </div>
 
               {/* Progress Bar */}
-              <div className="flex items-center gap-[8px] w-full">
+              <div className="flex w-full items-center gap-2">
                 <span
-                  className="text-[#E1E1E1] text-xs w-[31px] text-right"
+                  className="w-[30px] text-right text-xs text-[#E1E1E1]"
                   style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
                 >
                   {formatTime(progress)}
@@ -258,7 +299,7 @@ export default function AudioPlayer() {
                   {/* Actual Progress */}
                   <div
                     className="absolute h-[5px] bg-white rounded-[4px] flex items-center justify-end"
-                    style={{ width: `${(progress / duration) * 100}%` }}
+                    style={{ width: `${progressPercent}%` }}
                   >
                     {/* Thumb (only visible on hover/active) */}
                     <div className="w-[12px] h-[12px] bg-white rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2" />
@@ -266,7 +307,7 @@ export default function AudioPlayer() {
                 </div>
 
                 <span
-                  className="text-[#E1E1E1] text-xs w-[30px]"
+                  className="w-[30px] text-xs text-[#E1E1E1]"
                   style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
                 >
                   {formatTime(duration)}
@@ -275,7 +316,7 @@ export default function AudioPlayer() {
             </div>
 
             {/* Right: Volume & Options */}
-            <div className="flex items-center justify-end gap-[24px] min-w-[300px]">
+            <div className="hidden min-w-[300px] items-center justify-end gap-6 md:flex">
               {/* Lyrics/Captions */}
               <button
                 className={`transition-colors ${

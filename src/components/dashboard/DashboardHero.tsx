@@ -1,6 +1,5 @@
 "use client";
 
-import { useAudio } from "@/contexts/AudioContext";
 import Image from "next/image";
 import { useI18n } from "@/i18n";
 
@@ -11,25 +10,18 @@ import { useI18n } from "@/i18n";
 export default function DashboardHero() {
   const { t } = useI18n();
 
-  const handlePlay = () => {
-    console.log("Play clicked (Static)");
-  };
-
   return (
     <div
-      className="relative w-full rounded-[16px] overflow-hidden flex flex-row items-center transition-all hover:shadow-lg"
+      className="relative flex w-full flex-col items-start gap-4 overflow-hidden rounded-[16px] p-5 transition-all hover:shadow-lg sm:p-6 md:h-[338px] md:flex-row md:items-center md:gap-6 md:p-10"
       style={{
-        height: "338px",
         background:
           "linear-gradient(90deg, #30A9AF 0%, rgba(121, 202, 206, 0.75) 100%), #F5F9FA",
-        padding: "40px",
-        gap: "24px",
         isolation: "isolate",
       }}
     >
       {/* Decorative Wave Vector Implementation */}
       <div
-        className="absolute pointer-events-none"
+        className="pointer-events-none absolute hidden md:block"
         style={{
           width: "1115.62px",
           height: "277px",
@@ -49,7 +41,7 @@ export default function DashboardHero() {
       </div>
 
       {/* Content (Left Side) */}
-      <div className="flex flex-col items-start gap-4 z-10 max-w-[712px]">
+      <div className="z-10 flex max-w-[712px] flex-col items-start gap-3 sm:gap-4">
         {/* Badge */}
         <div
           className="flex flex-row justify-center items-center px-4 py-1 gap-1"
@@ -88,17 +80,14 @@ export default function DashboardHero() {
 
         {/* Title */}
         <h1
+          className="w-full text-2xl font-bold leading-tight sm:text-3xl md:text-[36px] md:leading-[43px]"
           style={{
             fontFamily: "'PP Neue Montreal', sans-serif",
-            fontWeight: 700,
-            fontSize: "36px",
-            lineHeight: "43px",
             background:
               "linear-gradient(94.58deg, #C2F8FF 22.86%, #FFFFFF 62.57%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
-            width: "100%",
           }}
         >
           {t("dash_hero_title")}
@@ -106,12 +95,11 @@ export default function DashboardHero() {
 
         {/* Description */}
         <p
+          className="text-sm leading-6 sm:text-base sm:leading-7"
           style={{
             fontFamily: "'PP Neue Montreal', sans-serif",
             fontStyle: "normal",
             fontWeight: 400,
-            fontSize: "16px",
-            lineHeight: "28px",
             color: "#FFFFFF",
             maxWidth: "712px",
           }}
@@ -158,13 +146,13 @@ export default function DashboardHero() {
       </div>
 
       {/* Right Image (Woman) */}
-      <div className="absolute right-0 bottom-0 top-0 w-[500px] flex items-end justify-end pointer-events-none overflow-hidden rounded-r-[16px]">
+      <div className="pointer-events-none absolute bottom-0 right-0 top-0 hidden w-[280px] items-end justify-end overflow-hidden rounded-r-[16px] md:flex lg:w-[500px]">
         <div className="relative w-full h-full">
           <Image
             src="/active-dashboard-hero.svg"
             alt="Woman with headphones"
             fill
-            className="object-contain object-right-bottom scale-110 -translate-x-20 translate-y-4"
+            className="object-contain object-right-bottom md:scale-105 md:-translate-x-14 md:translate-y-2 lg:scale-110 lg:-translate-x-20 lg:translate-y-4"
             priority
           />
         </div>
@@ -172,22 +160,15 @@ export default function DashboardHero() {
 
       {/* Play Button */}
       <button
-        onClick={handlePlay}
-        className="absolute z-20 hover:scale-105 transition-transform group"
+        className="group absolute right-5 top-1/2 z-20 hidden -translate-y-1/2 items-center justify-center transition-transform hover:scale-105 md:flex lg:right-10"
         style={{
           width: "72px",
           height: "72px",
-          right: "40px",
-          top: "65%", // Adjusted visual center to match design
-          transform: "translateY(-50%)",
           background: "#3197A5",
           borderRadius: "50%",
           boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.45)",
           border: "none",
           cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
         }}
       >
         <svg

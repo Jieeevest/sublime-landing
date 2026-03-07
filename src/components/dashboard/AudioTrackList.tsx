@@ -6,11 +6,122 @@ import { useGetMySubscriptionQuery } from "@/redux/api/sublimeApi";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useI18n } from "@/i18n";
+import { useEffect, useRef, useState } from "react";
 
 interface AudioTrackListProps {
   sessions: AudioSession[];
   title?: string;
 }
+
+const GUIDE_TEXT = `Beberapa hal yang perlu Anda ketahui dan sadari saat memulai perjalanan pemulihan mandiri Anda 
+dari akibat derita stroke yang Anda alami. Kedua Audio Strovia tidak dapat menyembuhkan Anda dari 
+akibat serangan stroke, tapi diri Anda sendiri yang akan menyembuhkan dirinya sendiri. Dan Audio 
+Strovia akan membantu memicu dan membangkitkan kemampuan tubuh Anda untuk memulihkan dirinya 
+sendiri dari segala akibat serangan stroke. Juga penting untuk Anda ketahui bahwa Audio Strovia tidak 
+dimaksudkan dan tidak bertujuan menggantikan proses pemulihan maupun pengobatan medis dalam 
+bentuk apapun yang sedang Anda jalani. Tapi keduanya dapat jalan berdampingan dan saling 
+mendukung sehingga dapat mempercepat proses pemulihan Anda.
+ Seperti yang dikatakan serta dibuktikan oleh salah satu hypnotherapist terkenal, Dolores Canon, 
+bahwa tubuh kita adalah mesin yang ajaib yang dapat menyembuhkan dirinya sendiri dan seharusnya 
+Anda tidak akan pernah mengalami sakit.
+Tapi kenapa kemudian kita bisa sakit ?
+Sejauh yang saya ketahui berdasarkan pembelajaran dan pengalaman saya sepanjang hidup, semua sakit 
+yang kita alami, sebelum bermanifestasi pada tubuh fisik, penyakit tersebut dipicu oleh terjadinya 
+ketidakseimbangan aliran energi pada tubuh. Penyebab utama ketidakseimbangan aliran energi tersebut 
+adalah karena sumbatan-sumbatan energi yang tidak sadar kita ciptakan sendiri. Umumnya sumbatan￾sumbatan energi negatif ini terjadi karena saat momen energi ini seharusnya mengalir melewati diri kita, 
+tanpa sadar kita memblokir dan menekannya kembali ke dalam tubuh. Ini terjadi karena kita tidak 
+sanggup memprosesnya secara menyeluruh, hal ini umumnya terjadi saat kita mengalami momen￾momen di sepanjang hidup kita yang kita persepsi sebagai pengalaman buruk (negatif) bahkan traumatis. 
+Emosi-emosi negatif seperti kemarahan, sakit hati, kecewa, takut, cemas dll yang kita rasakan saat 
+momen penyebab emosi itu berlangsung tidak kita hadapi sepenuhnya sampai selesai, kita cenderung 
+"melarikan diri" dari situasi tersebut, sehingga emosi-emosi negatif itu secara tidak sadar kita hindari, 
+kita tekan atau kita alihkan. Dan ketidak mampuan kita memproses emosi-emosi negatif tersebut 
+menyebabkan energi dari emosi-emosi negatif tersebut tidak bisa mengalir melalui tubuh kita tapi 
+tertahan dan terus berputar di tempatnya dan menyebabkan terjadinya sumbatan-sumbatan energi , kita 
+juga dapat menyebutnya sebagai sumbatan batin. Dimana tumpukan sumbatan-sumbatan batin (energi) 
+tersebut lama-lama terus bertambah hingga akhirnya mengganggu aliran energi dalam tubuh dan 
+bermanifestasi menjadi berbagai penyakit fisik yang kita alami. Baik itu berupa sakit asam lambung, 
+jantung, darah tinggi, kolestrol, stroke dll.
+ Banyak cara untuk melepaskan sumbatan-sumbatan batin tersebut, dengan menjadi sepenuhnya 
+sadar, menjalani hidup dengan penuh kesadaran (mindfullness) kita dapat mentransmusi energi-energi 
+negatif atau sumbatan-sumbatan batin tersebut menjadi energi positif yang lebih tinggi, yang pada 
+akhirnya kita juga dapat kita mempergunakan energi-energi positif yang lebih tinggi tersebut untuk
+mewujudkan apapun yang kita inginkan di dalam hidup. Tapi untuk mencapai tingkat kesadaran 
+demikian, seseorang harus belajar untuk menjadi sadar (aware) sepanjang waktu, tanpa pernah 
+meninggalkan singgasana Sang Diri. 
+1/3
+Karena satu-satunya realitas adalah kesadaran itu sendiri. Tapi disini saya tidak akan membahas hal 
+tersebut lebih jauh dan mendalam. Apabila Anda ingin memahami apa yang saya tulis diatas dengan
+lebih mendalam, saya akan informasikan buku-buku yang dapat Anda peroleh sebagai bahan 
+pembelajaran pada halaman artikel. 
+Yaitu buku-buku seperti tulisan Michael Singer, David R Hawkins, Neviile Goddard, Bruce H Lipton, Greg 
+Bradden, Eckhart Tolle dll. Anda dapat mempelajarinya semuanya sendiri lalu mempraktekannya sendiri 
+juga. Anda sama sekali tidak memerlukan bantuan siapa-siapa, Anda juga tidak perlu bantuan guru-guru 
+(spritual) manapun, satu-satunya yang Anda perlukan hanyalah diri Anda sendiri, untuk mempelajari dan 
+menjalani apa yang sudah Anda pelajari. Karena apapun yang Anda butuhkan untuk dapat menjalani 
+hidup yang bahagia, sehat, berkelimpahan, damai, penuh welas asih, semuanya sudah tersedia didalam 
+diri Anda sendiri, komplit, Anda hanya perlu menemukan atau menyadarinya, lalu kemudian me-utilisasi 
+kemampuan tersebut untuk kebaikan Anda sendiri dan semua kehidupan yang dapat Anda jangkau.
+ Saat ini, lewat 2 Audio Strovia saya ingin berbagi pengalaman pemulihan mandiri yang dapat Anda 
+dan semua orang alami.
+Audio Strovia terbagi menjadi 2 audio, audio subliminal (tersembunyi ) yang di set pada frekuensi 528Hz 
+dan audio penghantar relaksasi berjudul "Ladang Kesadaran". Kedua audio dapat Anda dengarkan 
+secara bergantian, kapan saja dan dimana saja, sesering yang Anda inginkan.
+Audio subliminal Strovia berisi afirmasi-afirmasi positif yang akan memicu atau membangkitkan
+kemampuan pemulihan mandiri tubuh Anda. Audio tersebut dibuat subliminal (tersembunyi) agar 
+afirmasi-afirmasi dari audio tersebut tidak langsung kita dengar sehingga tidak terjadi penolakan oleh 
+pikiran sadar (conscious mind) kita, tapi bisa langsung ditangkap oleh pikiran bawah sadar kita 
+(unconscious mind atau subconscious mind).
+Kedua audio tersebut di set pada frekuensi 528Hz yaitu prekuensi yang dapat mempengaruhi 
+gelombang otak kita agar kita dapat masuk dan mengalami relaksasi mendalam dan holistik.
+Apabila saat mendengarkan audio tersebuk Anda akhirnya jatuh tidur, hal tersebut tidak apa-apa dan 
+efek yang di picu oleh kedua audiotersebut tetap akan berjalan.
+ Hal terpenting yang perlu Anda ketahui dan sadari adalah saat proses pemulihan mandiri Anda mulai 
+berproses, sangat besar kemungkinan semua emosi-emosi negatif penyebab sumbatan-sumbatan batin 
+yang selama ini Anda tekan dan bertumpuk-tumpuk akan muncul kembali. Mungkin Anda akan 
+mengalami dan merasakan emosi-emosi tersebut berupa rasa takut, marah, sakit hati, kecewa, cemas dll. 
+Ini adalah hal baik dan menguntungkan Anda, karena ini adalah saat yang tepat untuk memproses 
+kembali energi-energi yang dulu tidak pernah Anda selesaikan prosesnya, apa pun kejadian 
+penyebabnya. Apakah kejadian tersebut adalah tragedi perceraian, Anda kehilangan orang yang Anda 
+cintai, Anda ditinggal pacar, Anda ditipu sahabat Anda, bahkan tragedi pemerkosaan dll. Sebenarnya 
+semua peristiwa yang kita alami sepanjang hidup adalah ciptaan kita sendiri yang kita hadirkan sendiri
+untuk alasan tertentu, akibat ketidaktahuan, kita punya kecenderungan untuk meng-kambing hitamkan 
+kondisi eksternal di luar diri kita atas kejadian tersebut, padahal orang-orang maupun situasi yang terlibat 
+dalam kejadian tersebut hanyalah pemeran pembantu yang kita butuhkan untuk menciptakan peristiwa 
+tersebut, dan kita lah aktor sesungguhnya.
+2/3
+Tetapi saat ini, dengan tingkat kesadaran yang kita miliki, kita tidak mengerti kenapa kejadian itu harus 
+kita alami dan saya berharap bahwa pada saatnya nanti, Anda dapat mencapai tingkat kesadaran yang 
+lebih tinggi dan akhirmya Anda dapat memahami semuanya.
+ Yang perlu Anda lakukan saat emosi-emosi negatif atau sumbatan-sumbatan batin tersebut muncul 
+adalah Anda relaks dan berusaha untuk sadar, sadari siapa yang merasakan emosi-emosi tersebut. 
+Karena emosi negatif tidak dapat berdiri sendiri, tetapi Anda lah Sang Kesadaran yang menyadari dan 
+merasakan kehadiran emosi-emosi tersebut. Emosi-emosi tersebut BUKANLAH diri Anda, kesadaran 
+Anda lah yang menyadari dan merasakan emosi-emosi tersebut. Semua emosi, apapun itu hanyalah 
+obyek, sama seperti benda-benda lain di luar diri kita , semua itu adalah obyek. Dan diri Andalah 
+SUBYEKnya, Sang Kesadaran.
+Selama emosi-emosi negatif tersebut muncul dan Anda rasakan, Anda harus relaks, tetap berusaha 
+bertahan dalam kesadaran Anda dan tanpa putus amati (observe) serta rasakan emosi-emosi tersebut 
+sampai selesai. Emosi-emosi tersebut akan muncul disertai rasa sakit, karena itu dulu Anda berusaha 
+menghindari dan menekannya, kali ini Anda harus bertekad kuat untuk dapat menghadapi emosi-emosi 
+tersebut berikut rasa sakitnya, biarkan dia hadir dan mengalir hingga selesai, Anda harus tetap relaks dan 
+bertahan dalam kesadaran sepanjang emosi tersebut bergejolak dalam diri Anda. Kemunculan emosiemosi tersebut bisa jadi disertai oleh simptom fisik seperti mungkin rasa sesak di dada, perih di lambung, 
+mual, terasa panas di beberapa bagian tubuh dll, simptom yang kita rsakan di tubuh bisa bermacammacam bentuknya. Apapun yang Anda rasakan, kuncinya hanya lah tetap relaks, bukan berusaha 
+membuat emosi-emosi itu relaks, tapi Anda yang relaks sambil mengamati (merasakan) seluruh emosiemosi tersebut dan tetap bertahan di Singgasana Sang Diri yaitu KESADARAN itu sendiri. Dimana Anda 
+menyadari bahwa Anda sadar.
+ Salah satu cara mudah untuk mengetahui bagaimana kita tahu bahwa kita sadar atau berada di pusat 
+kesadaran (Singgasana Sang Diri) adalah dengan mengatakan dalam hati kata "halo.... halo.... halo" 
+berkali kali, atau bisa juga kata "saat ini-disini", apabila Anda dapat mendengar (menyadari) "suara" 
+yang Anda ucapkan dalam hati tersebut, berarti kesadaran Anda terpusat, Anda berada di singgasana 
+Sang Diri, Anda berada di pusat kesadaran. Semakin lama Anda bisa bertahan di singgasana Sang Diri 
+(Kesadaran) semakin baik. Anda dapat berlatih untuk selalu menjadi sadar dan semakin sadar.
+ Harapan saya, saat akhirnya Anda dapat merasakan pemulihan mandiri terbangkitkan dalam diri Anda, 
+dimana Anda mulai merasakan terjadinya perbaikan perbaikan dalam tubuh fisik Anda, hal tersebut juga 
+berjalan beriringan dengan terbangkitkannya kesadaran Anda ke level yang lebih tinggi, lebih tinggi lagi, 
+lebih tinggi lagi dan seterusnya, hingga Anda mencapai tingkat kesadaran yang menjawab pertanyaan 
+dasar di sepanjang sejarah eksistensi manusia dan kehidupan yaitu pertanyaan "SIAPAKAH AKU ?" 
+( Who Am I ? ).
+Terima kasih dan selamat memulai perjalanan kebangkitan diri Anda.`;
+const GUIDE_PDF_FILE_NAME = "PANDUAN YANG PERLU ANDA KETAHUI DAN SADARI.pdf";
 
 export default function AudioTrackList({
   sessions,
@@ -21,17 +132,54 @@ export default function AudioTrackList({
   const { playTrack, currentTrack } = useAudio();
   const { data: subscriptionData } = useGetMySubscriptionQuery(undefined);
   const isSubscribed = subscriptionData?.is_subscribed ?? false;
+  const [isGuideModalOpen, setIsGuideModalOpen] = useState(false);
+  const [hasReachedBottom, setHasReachedBottom] = useState(false);
+  const [hasReadGuide, setHasReadGuide] = useState(false);
+  const guideContentRef = useRef<HTMLDivElement>(null);
+
+  const handleDownloadGuide = () => {
+    const guideFileUrl = `/${encodeURIComponent(GUIDE_PDF_FILE_NAME)}`;
+    const anchor = document.createElement("a");
+    anchor.href = guideFileUrl;
+    anchor.download = GUIDE_PDF_FILE_NAME;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+  };
+
+  const handleGuideScroll = () => {
+    const element = guideContentRef.current;
+    if (!element) return;
+
+    const reachedBottom =
+      element.scrollTop + element.clientHeight >= element.scrollHeight - 8;
+    if (reachedBottom) {
+      setHasReachedBottom(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!isGuideModalOpen) return;
+
+    setHasReachedBottom(false);
+    setHasReadGuide(false);
+    const currentOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = currentOverflow;
+    };
+  }, [isGuideModalOpen]);
 
   return (
-    <div className="flex flex-col gap-[24px]">
+    <>
+      <div className="flex flex-col gap-5 sm:gap-6">
       {/* Header */}
-      <div className="h-[40px] flex items-center">
+      <div className="flex h-[36px] items-center sm:h-[40px]">
         <h2
-          className="font-medium text-[#1F1F1F]"
+          className="text-[20px] font-medium leading-7 text-[#1F1F1F] sm:text-[24px] sm:leading-8"
           style={{
             fontFamily: "'PP Neue Montreal', sans-serif",
-            fontSize: "24px",
-            lineHeight: "32px",
           }}
         >
           {title || t("dash_audio_title")}
@@ -39,7 +187,76 @@ export default function AudioTrackList({
       </div>
 
       {/* Content List */}
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-3 sm:gap-4">
+        <div className="flex items-center justify-between rounded-lg px-3 py-3 sm:px-6">
+          <p
+            className="pr-3 text-[14px] leading-[22px] text-[#1F1F1F] sm:text-[16px] sm:leading-[28px]"
+            style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+          >
+            Panduan yang anda perlu ketahui sebelum mendengarkan Audio Strovia
+          </p>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              type="button"
+              aria-label="Lihat panduan audio"
+              onClick={() => setIsGuideModalOpen(true)}
+              className="flex h-[36px] w-[36px] items-center justify-center rounded-full border border-[#E8E8E8] bg-white transition-colors hover:bg-[#F7F7F7] sm:h-[40px] sm:w-[40px]"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2 12C3.8 7.5 7.2 5 12 5C16.8 5 20.2 7.5 22 12C20.2 16.5 16.8 19 12 19C7.2 19 3.8 16.5 2 12Z"
+                  stroke="#1F1F1F"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <circle cx="12" cy="12" r="3" stroke="#1F1F1F" strokeWidth="1.5" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              aria-label="Unduh panduan audio"
+              onClick={handleDownloadGuide}
+              className="flex h-[36px] w-[36px] items-center justify-center rounded-full border border-[#E8E8E8] bg-white transition-colors hover:bg-[#F7F7F7] sm:h-[40px] sm:w-[40px]"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 3V14"
+                  stroke="#1F1F1F"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M8 10L12 14L16 10"
+                  stroke="#1F1F1F"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M5 19H19"
+                  stroke="#1F1F1F"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
         {sessions.length > 0 ? (
           sessions.slice(0, 3).map((session, index) => {
             const isPlaying = currentTrack?.id === session.id;
@@ -47,18 +264,15 @@ export default function AudioTrackList({
             return (
               <div
                 key={session.id}
-                className={`relative overflow-hidden flex items-center px-6 py-3 gap-[24px] rounded-lg group transition-colors ${
+                className={`group relative flex items-center gap-3 overflow-hidden rounded-lg px-3 py-3 transition-colors sm:gap-6 sm:px-6 ${
                   isSubscribed
                     ? "cursor-pointer hover:bg-white/50"
                     : "cursor-default hover:bg-gray-50/50"
                 }`}
-                style={{
-                  height: "68px",
-                }}
               >
                 {/* Track Number */}
                 <div
-                  className="w-[32px] h-[32px] flex items-center text-center justify-center font-normal text-[#1F1F1F]"
+                  className="hidden h-[32px] w-[32px] items-center justify-center text-center font-normal text-[#1F1F1F] sm:flex"
                   style={{
                     fontFamily: "'PP Neue Montreal', sans-serif",
                     fontSize: "16px",
@@ -107,9 +321,9 @@ export default function AudioTrackList({
                 </div>
 
                 {/* Title & Subtitle */}
-                <div className="flex flex-col justify-center gap-[4px] flex-1">
+                <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
                   <h3
-                    className="font-medium text-[#1F1F1F]"
+                    className="truncate font-medium text-[#1F1F1F]"
                     style={{
                       fontFamily: "'PP Neue Montreal', sans-serif",
                       fontSize: "14px",
@@ -145,18 +359,16 @@ export default function AudioTrackList({
 
                 {/* Duration */}
                 <div
-                  className="w-[33px] text-right font-normal text-[#1F1F1F]"
+                  className="ml-2 w-auto text-right text-sm font-normal text-[#1F1F1F] sm:ml-0 sm:w-[33px] sm:text-base"
                   style={{
                     fontFamily: "'PP Neue Montreal', sans-serif",
-                    fontSize: "16px",
-                    lineHeight: "28px",
                   }}
                 >
                   {session.duration}
                 </div>
 
                 {/* Menu Button (Ghost) */}
-                <button className="w-[44px] h-[44px] rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 bg-transparent hover:bg-gray-100 transition-all">
+                <button className="hidden h-[44px] w-[44px] items-center justify-center rounded-full bg-transparent opacity-0 transition-all hover:bg-gray-100 group-hover:opacity-100 sm:flex">
                   <svg
                     width="20"
                     height="20"
@@ -172,7 +384,7 @@ export default function AudioTrackList({
 
                 {/* Subscription Overlay */}
                 {!isSubscribed && (
-                  <div className="absolute inset-0 bg-[#0F0F0F]/30 flex flex-row items-center justify-center gap-6 opacity-0 group-hover:opacity-100 transition-all duration-300 z-50 backdrop-blur-[2px]">
+                  <div className="absolute inset-0 z-50 hidden flex-row items-center justify-center gap-6 bg-[#0F0F0F]/30 opacity-0 backdrop-blur-[2px] transition-all duration-300 group-hover:opacity-100 md:flex">
                     <div className="flex items-center gap-3">
                       <div className="p-1.5 bg-white/20 rounded-full backdrop-blur-md">
                         <svg
@@ -238,6 +450,89 @@ export default function AudioTrackList({
           </div>
         )}
       </div>
-    </div>
+      </div>
+
+      {isGuideModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+          onClick={() => setIsGuideModalOpen(false)}
+        >
+          <div
+            className="flex w-full max-w-[760px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-[#EFEFEF] px-5 py-4 sm:px-6">
+              <h3
+                className="text-[18px] font-medium leading-7 text-[#1F1F1F] sm:text-[20px]"
+                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+              >
+                Panduan Sebelum Mendengarkan Audio Strovia
+              </h3>
+              <button
+                type="button"
+                aria-label="Tutup panduan"
+                onClick={() => setIsGuideModalOpen(false)}
+                className="flex h-9 w-9 items-center justify-center rounded-full text-[#8E8E8E] transition-colors hover:bg-[#F5F5F5] hover:text-[#1F1F1F]"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18 6L6 18M6 6L18 18"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div
+              ref={guideContentRef}
+              onScroll={handleGuideScroll}
+              className="max-h-[56vh] overflow-y-auto px-5 py-5 sm:px-6 sm:py-6"
+            >
+              <p
+                className="whitespace-pre-line text-[14px] leading-[24px] text-[#4A4A4A] sm:text-[15px]"
+                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+              >
+                {GUIDE_TEXT}
+              </p>
+            </div>
+
+            <div className="border-t border-[#EFEFEF] px-5 py-4 sm:px-6">
+              <label
+                className={`flex items-center gap-3 text-[14px] leading-6 text-[#1F1F1F] ${
+                  hasReachedBottom ? "cursor-pointer" : "cursor-not-allowed"
+                }`}
+                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+              >
+                <input
+                  type="checkbox"
+                  checked={hasReadGuide}
+                  disabled={!hasReachedBottom}
+                  onChange={(e) => setHasReadGuide(e.target.checked)}
+                  className="h-4 w-4 rounded border-[#CFCFCF] text-[#1F1F1F] focus:ring-[#1F1F1F] disabled:cursor-not-allowed"
+                />
+                Saya sudah membaca panduan ini
+              </label>
+              {!hasReachedBottom && (
+                <p
+                  className="mt-2 text-[12px] leading-5 text-[#8E8E8E]"
+                  style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+                >
+                  Scroll sampai bagian paling bawah untuk mengaktifkan checkbox.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

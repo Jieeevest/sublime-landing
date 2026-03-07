@@ -92,10 +92,10 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout activeItem="Home">
-      <div className="px-10 pb-6 max-w-[1267px] mx-auto space-y-10">
+      <div className="mx-auto max-w-[1267px] space-y-6 px-4 pb-4 sm:space-y-8 sm:px-6 sm:pb-6 lg:space-y-10 lg:px-10">
         <DashboardHero />
 
-        <div className="min-h-[200px]">
+        <div className="min-h-[160px] sm:min-h-[200px]">
           {isLoadingAudios ? (
             <div className="text-center py-10 flex flex-col items-center justify-center h-full text-gray-400">
               <svg
@@ -130,12 +130,12 @@ export default function DashboardPage() {
           to prevent tailwind's space-y-10 from adding a margin to a hidden node.
         */}
         {!isSubscribed ? (
-          <div className="min-h-[148px] transition-all duration-300">
+          <div className="min-h-[120px] transition-all duration-300 sm:min-h-[148px]">
             <DashboardPromoCards />
           </div>
         ) : null}
 
-        <div className="min-h-[300px]">
+        <div className="min-h-[220px] sm:min-h-[300px]">
           <DashboardArticles
             articles={articles}
             isLoading={isLoadingArticles}

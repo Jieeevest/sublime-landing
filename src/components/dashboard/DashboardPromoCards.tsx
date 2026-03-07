@@ -12,13 +12,13 @@ export default function DashboardPromoCards() {
   const router = useRouter();
   const { t } = useI18n();
   return (
-    <div className="flex flex-col xl:flex-row gap-[40px] w-full max-w-[1267px] mx-auto">
+    <div className="mx-auto flex w-full max-w-[1267px] flex-col gap-6 xl:flex-row xl:gap-10">
       {/* ==============================================
           LEFT CARD: Subscription
           Width: 827px
           ============================================== */}
       <div
-        className="relative flex-1 rounded-[16px] flex items-center p-[40px] overflow-hidden group"
+        className="group relative flex flex-1 items-center overflow-hidden rounded-[16px] p-5 sm:p-8 lg:p-10"
         style={{
           minHeight: "319px",
           background: "#FFFFFF",
@@ -79,11 +79,11 @@ export default function DashboardPromoCards() {
         </div>
 
         {/* Content Container (Z-10) */}
-        <div className="relative z-10 flex flex-row items-center w-full h-full gap-[24px]">
+        <div className="relative z-10 flex h-full w-full flex-col items-start gap-6 lg:flex-row lg:items-center">
           {/* LEFT COLUMN: Badge & Price */}
-          <div className="flex-1 flex flex-col items-start justify-center gap-[16px]">
+          <div className="flex flex-1 flex-col items-start justify-center gap-4">
             {/* Header Group */}
-            <div className="flex flex-col gap-[16px]">
+            <div className="flex flex-col gap-4">
               {/* Badge */}
               <div
                 className="flex flex-row items-center justify-center gap-[4px] px-[16px] py-[4px] w-fit"
@@ -120,17 +120,17 @@ export default function DashboardPromoCards() {
 
               {/* Title */}
               <h2
-                className="text-[#3197A5] max-w-[480px] leading-tight"
+                className="max-w-[480px] leading-tight text-[#3197A5]"
                 style={{
                   fontFamily: "'PP Neue Montreal', sans-serif",
                   fontWeight: 700,
-                  fontSize: "36px",
+                  fontSize: "clamp(1.75rem, 6vw, 2.25rem)",
                 }}
               >
                 {t("promo_nikmati")} <br />
                 <span
                   style={{
-                    fontSize: "56px",
+                    fontSize: "clamp(2rem, 9vw, 3.5rem)",
                     color: "#023347",
                     display: "block",
                     margin: "8px 0",
@@ -150,9 +150,9 @@ export default function DashboardPromoCards() {
           </div>
 
           {/* RIGHT COLUMN: Info & Actions */}
-          <div className="w-[300px] flex flex-col justify-center items-end gap-[24px]">
+          <div className="flex w-full flex-col justify-center gap-4 lg:w-[300px] lg:items-end lg:gap-6">
             {/* Brand Line */}
-            <div className="relative w-[140px] h-[32px]">
+            <div className="relative h-[32px] w-[140px]">
               <Image
                 src="/strovia-log.png"
                 alt="STROVIA"
@@ -162,7 +162,7 @@ export default function DashboardPromoCards() {
             </div>
             {/* Description */}
             <p
-              className="text-[#023347] text-right"
+              className="text-left text-[#023347] lg:text-right"
               style={{
                 fontFamily: "'PP Neue Montreal', sans-serif",
                 fontWeight: 400,
@@ -190,10 +190,8 @@ export default function DashboardPromoCards() {
           Width: 400px
           ============================================== */}
       <div
-        className="relative rounded-[16px] overflow-hidden flex flex-col justify-center p-[40px] flex-shrink-0"
+        className="relative flex w-full flex-shrink-0 flex-col justify-center overflow-hidden rounded-[16px] p-6 sm:p-8 lg:p-10 xl:max-w-[400px]"
         style={{
-          width: "100%",
-          maxWidth: "400px",
           minHeight: "319px",
           background: "#3197A5",
         }}
@@ -245,13 +243,13 @@ export default function DashboardPromoCards() {
         </div>
 
         {/* Robot Image */}
-        <div className="absolute right-[-20px] bottom-[-40px] z-20 pointer-events-none">
+        <div className="pointer-events-none absolute bottom-[-30px] right-[-12px] z-20 sm:bottom-[-40px] sm:right-[-20px]">
           <Image
             src="/robot.png"
             alt="Robot"
             width={160}
             height={220}
-            className="object-contain"
+            className="h-auto w-[120px] object-contain sm:w-[160px]"
           />
         </div>
 

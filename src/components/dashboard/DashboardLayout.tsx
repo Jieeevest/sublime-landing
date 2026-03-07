@@ -14,10 +14,10 @@ export default function DashboardLayout({
   activeItem,
 }: DashboardLayoutProps) {
   return (
-    <div className="min-h-screen bg-[#F5F9FA] flex">
+    <div className="flex min-h-screen bg-[#F5F9FA]">
       <Sidebar activeItem={activeItem} />
 
-      <div className="flex-1 ml-[93px] flex flex-col">
+      <div className="flex flex-1 flex-col pb-[88px] md:ml-[93px] md:pb-0">
         <DashboardTopbar />
         <main className="flex-1">{children}</main>
         <AudioPlayer />
