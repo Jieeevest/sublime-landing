@@ -11,7 +11,7 @@ export default function CmsLayout({ children }: { children: React.ReactNode }) {
           <CmsSidebar />
           <div className="flex-1 ml-[93px] flex flex-col">
             <CmsTopbar />
-            <main className="flex-1 overflow-auto pb-32">{children}</main>
+            <main className="flex-1 overflow-auto pb-2">{children}</main>
           </div>
         </div>
       </I18nProvider>

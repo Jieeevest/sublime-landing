@@ -173,6 +173,15 @@ const dict: Dict = {
     dash_audio_sub_btn: "Berlangganan Sekarang",
     dash_audio_empty_title: "Belum ada audio saat ini",
     dash_audio_empty_desc: "Nantikan audio pilihan menarik untuk Anda segera.",
+    dash_audio_guide_label:
+      "Panduan yang anda perlu ketahui sebelum mendengarkan Audio Strovia",
+    dash_audio_guide_view: "Lihat Panduan",
+    dash_audio_guide_download: "Unduh Panduan",
+    dash_audio_guide_modal_title: "Panduan Sebelum Mendengarkan Audio Strovia",
+    dash_audio_guide_checkbox: "Saya sudah membaca panduan ini",
+    dash_audio_guide_scroll_hint:
+      "Scroll sampai bagian paling bawah untuk mengaktifkan checkbox.",
+    dash_audio_guide_continue: "Lanjutkan",
     // Dashboard Articles
     dash_articles_title: "Artikel terkait",
     dash_articles_view_all: "Lihat Semua",
@@ -519,6 +528,15 @@ const dict: Dict = {
     dash_audio_sub_btn: "Subscribe Now",
     dash_audio_empty_title: "No audio available currently",
     dash_audio_empty_desc: "Stay tuned for exciting curated audio coming soon.",
+    dash_audio_guide_label:
+      "Guide you need to know before listening to Strovia Audio",
+    dash_audio_guide_view: "View Guide",
+    dash_audio_guide_download: "Download Guide",
+    dash_audio_guide_modal_title: "Guide Before Listening to Strovia Audio",
+    dash_audio_guide_checkbox: "I have read this guide",
+    dash_audio_guide_scroll_hint:
+      "Scroll to the very bottom to enable the checkbox.",
+    dash_audio_guide_continue: "Continue",
     // Dashboard Articles
     dash_articles_title: "Articles for Your Recovery",
     dash_articles_view_all: "View All",

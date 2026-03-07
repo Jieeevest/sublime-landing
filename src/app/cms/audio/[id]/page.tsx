@@ -53,7 +53,6 @@ export default function EditAudioPage({
       </div>
 
       <AudioForm
-        title={t("audio_form_edit_title")}
         initialData={audioData?.data}
         onSubmit={handleSubmit}
         isLoading={isUpdating}

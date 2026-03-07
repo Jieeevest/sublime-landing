@@ -35,7 +35,6 @@ export default function AddAudioPage() {
       </div>
 
       <AudioForm
-        title={t("audio_form_new_title")}
         onSubmit={handleSubmit}
         isLoading={isLoading}
       />

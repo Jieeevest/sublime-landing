@@ -19,8 +19,10 @@
     "react-hot-toast": "^2.6.0",
     "react-markdown": "^10.1.0",
     "react-redux": "^9.2.0",
+    "react-select": "^5.10.2",
+    "recharts": "^3.7.0",
     "swr": "^2.4.0",
-    "recharts": "^3.7.0"
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@types/node": "^20",

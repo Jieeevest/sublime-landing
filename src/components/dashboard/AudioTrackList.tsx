@@ -121,21 +121,43 @@ lebih tinggi lagi dan seterusnya, hingga Anda mencapai tingkat kesadaran yang me
 dasar di sepanjang sejarah eksistensi manusia dan kehidupan yaitu pertanyaan "SIAPAKAH AKU ?" 
 ( Who Am I ? ).
 Terima kasih dan selamat memulai perjalanan kebangkitan diri Anda.`;
+const GUIDE_TEXT_EN = `Here are important points to understand before starting your self-recovery journey with Strovia Audio.
+Strovia audio does not replace medical treatment. Your body has an amazing capacity to recover, and Strovia is designed to support that natural process.
+
+Many physical conditions are closely related to unresolved emotional tension. Negative emotions such as fear, anger, hurt, and anxiety can accumulate over time and disrupt internal balance.
+With awareness and relaxation, these emotional blocks can be processed and released gradually.
+
+Strovia provides two audio experiences: a 528Hz subliminal audio and a relaxation guidance audio.
+You can listen anytime, as often as needed. If you fall asleep during playback, that is okay and the process may still continue.
+
+When recovery starts, old emotions may resurface. This is often part of a healthy release process.
+Observe what you feel, stay relaxed, and allow the emotions to move through you without suppression.
+
+Keep returning to awareness. Stay present, breathe calmly, and witness the emotions as passing objects.
+The more stable your awareness, the better your body and mind can cooperate in recovery.
+
+May this journey help you heal physically and grow in consciousness.
+Thank you, and welcome to your self-awakening journey.`;
 const GUIDE_PDF_FILE_NAME = "PANDUAN YANG PERLU ANDA KETAHUI DAN SADARI.pdf";
 
 export default function AudioTrackList({
   sessions,
   title,
 }: AudioTrackListProps) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const router = useRouter();
   const { playTrack, currentTrack } = useAudio();
   const { data: subscriptionData } = useGetMySubscriptionQuery(undefined);
   const isSubscribed = subscriptionData?.is_subscribed ?? false;
   const [isGuideModalOpen, setIsGuideModalOpen] = useState(false);
+  const [isGuideModalMounted, setIsGuideModalMounted] = useState(false);
   const [hasReachedBottom, setHasReachedBottom] = useState(false);
   const [hasReadGuide, setHasReadGuide] = useState(false);
   const guideContentRef = useRef<HTMLDivElement>(null);
+  const guideParagraphs = (lang === "en" ? GUIDE_TEXT_EN : GUIDE_TEXT)
+    .split(/\n\s*\n+/)
+    .map((paragraph) => paragraph.replace(/\s*\n\s*/g, " ").trim())
+    .filter(Boolean);
 
   const handleDownloadGuide = () => {
     const guideFileUrl = `/${encodeURIComponent(GUIDE_PDF_FILE_NAME)}`;
@@ -158,6 +180,17 @@ export default function AudioTrackList({
     }
   };
 
+  const openGuideModal = () => {
+    setIsGuideModalMounted(true);
+    requestAnimationFrame(() => {
+      setIsGuideModalOpen(true);
+    });
+  };
+
+  const closeGuideModal = () => {
+    setIsGuideModalOpen(false);
+  };
+
   useEffect(() => {
     if (!isGuideModalOpen) return;
 
@@ -170,6 +203,16 @@ export default function AudioTrackList({
       document.body.style.overflow = currentOverflow;
     };
   }, [isGuideModalOpen]);
+
+  useEffect(() => {
+    if (isGuideModalOpen || !isGuideModalMounted) return;
+
+    const timer = window.setTimeout(() => {
+      setIsGuideModalMounted(false);
+    }, 220);
+
+    return () => window.clearTimeout(timer);
+  }, [isGuideModalOpen, isGuideModalMounted]);
 
   return (
     <>
@@ -188,72 +231,81 @@ export default function AudioTrackList({
 
       {/* Content List */}
       <div className="flex flex-col gap-3 sm:gap-4">
-        <div className="flex items-center justify-between rounded-lg px-3 py-3 sm:px-6">
-          <p
-            className="pr-3 text-[14px] leading-[22px] text-[#1F1F1F] sm:text-[16px] sm:leading-[28px]"
-            style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
-          >
-            Panduan yang anda perlu ketahui sebelum mendengarkan Audio Strovia
-          </p>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <button
-              type="button"
-              aria-label="Lihat panduan audio"
-              onClick={() => setIsGuideModalOpen(true)}
-              className="flex h-[36px] w-[36px] items-center justify-center rounded-full border border-[#E8E8E8] bg-white transition-colors hover:bg-[#F7F7F7] sm:h-[40px] sm:w-[40px]"
+        <div className="py-2 sm:py-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p
+              className="pr-3 text-[14px] font-normal leading-[22px] text-[#1F1F1F] sm:text-[16px] sm:leading-[28px]"
+              style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
             >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+              <span className="mr-2 inline-flex h-5 w-5 items-center justify-center rounded-full border border-[#1F1F1F] bg-transparent text-[12px] font-semibold text-[#1F1F1F]">
+                !
+              </span>
+              {t("dash_audio_guide_label")}
+            </p>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <button
+                type="button"
+                aria-label={t("dash_audio_guide_view")}
+                onClick={openGuideModal}
+                className="inline-flex items-center gap-2 rounded-full border border-[#E8E8E8] bg-white px-3 py-2 text-[13px] font-medium text-[#1F1F1F] transition-colors hover:bg-[#F7F7F7]"
+                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
               >
-                <path
-                  d="M2 12C3.8 7.5 7.2 5 12 5C16.8 5 20.2 7.5 22 12C20.2 16.5 16.8 19 12 19C7.2 19 3.8 16.5 2 12Z"
-                  stroke="#1F1F1F"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <circle cx="12" cy="12" r="3" stroke="#1F1F1F" strokeWidth="1.5" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              aria-label="Unduh panduan audio"
-              onClick={handleDownloadGuide}
-              className="flex h-[36px] w-[36px] items-center justify-center rounded-full border border-[#E8E8E8] bg-white transition-colors hover:bg-[#F7F7F7] sm:h-[40px] sm:w-[40px]"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2 12C3.8 7.5 7.2 5 12 5C16.8 5 20.2 7.5 22 12C20.2 16.5 16.8 19 12 19C7.2 19 3.8 16.5 2 12Z"
+                    stroke="#1F1F1F"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="12" cy="12" r="3" stroke="#1F1F1F" strokeWidth="1.5" />
+                </svg>
+                <span>{t("dash_audio_guide_view")}</span>
+              </button>
+              <button
+                type="button"
+                aria-label={t("dash_audio_guide_download")}
+                onClick={handleDownloadGuide}
+                className="inline-flex items-center gap-2 rounded-full border border-[#E8E8E8] bg-white px-3 py-2 text-[13px] font-medium text-[#1F1F1F] transition-colors hover:bg-[#F7F7F7]"
+                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
               >
-                <path
-                  d="M12 3V14"
-                  stroke="#1F1F1F"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M8 10L12 14L16 10"
-                  stroke="#1F1F1F"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M5 19H19"
-                  stroke="#1F1F1F"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 3V14"
+                    stroke="#1F1F1F"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M8 10L12 14L16 10"
+                    stroke="#1F1F1F"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M5 19H19"
+                    stroke="#1F1F1F"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span>{t("dash_audio_guide_download")}</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -449,16 +501,23 @@ export default function AudioTrackList({
             <p className="text-sm mt-1">{t("dash_audio_empty_desc")}</p>
           </div>
         )}
+
       </div>
       </div>
 
-      {isGuideModalOpen && (
+      {isGuideModalMounted && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
-          onClick={() => setIsGuideModalOpen(false)}
+          className={`fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-200 ${
+            isGuideModalOpen ? "bg-black/50 opacity-100" : "bg-black/0 opacity-0"
+          }`}
+          onClick={closeGuideModal}
         >
           <div
-            className="flex w-full max-w-[760px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+            className={`flex w-full max-w-[760px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl transition-all duration-200 ease-out ${
+              isGuideModalOpen
+                ? "translate-y-0 scale-100 opacity-100"
+                : "translate-y-2 scale-[0.98] opacity-0"
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-[#EFEFEF] px-5 py-4 sm:px-6">
@@ -466,12 +525,12 @@ export default function AudioTrackList({
                 className="text-[18px] font-medium leading-7 text-[#1F1F1F] sm:text-[20px]"
                 style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
               >
-                Panduan Sebelum Mendengarkan Audio Strovia
+                {t("dash_audio_guide_modal_title")}
               </h3>
               <button
                 type="button"
                 aria-label="Tutup panduan"
-                onClick={() => setIsGuideModalOpen(false)}
+                onClick={closeGuideModal}
                 className="flex h-9 w-9 items-center justify-center rounded-full text-[#8E8E8E] transition-colors hover:bg-[#F5F5F5] hover:text-[#1F1F1F]"
               >
                 <svg
@@ -497,38 +556,67 @@ export default function AudioTrackList({
               onScroll={handleGuideScroll}
               className="max-h-[56vh] overflow-y-auto px-5 py-5 sm:px-6 sm:py-6"
             >
-              <p
-                className="whitespace-pre-line text-[14px] leading-[24px] text-[#4A4A4A] sm:text-[15px]"
-                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
-              >
-                {GUIDE_TEXT}
-              </p>
+              <div className="space-y-4">
+                {guideParagraphs.map((paragraph, index) => (
+                  <p
+                    key={`guide-paragraph-${index}`}
+                    className="text-justify text-[14px] leading-[24px] text-[#4A4A4A] sm:text-[15px]"
+                    style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
             </div>
 
             <div className="border-t border-[#EFEFEF] px-5 py-4 sm:px-6">
-              <label
-                className={`flex items-center gap-3 text-[14px] leading-6 text-[#1F1F1F] ${
-                  hasReachedBottom ? "cursor-pointer" : "cursor-not-allowed"
-                }`}
-                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
-              >
-                <input
-                  type="checkbox"
-                  checked={hasReadGuide}
-                  disabled={!hasReachedBottom}
-                  onChange={(e) => setHasReadGuide(e.target.checked)}
-                  className="h-4 w-4 rounded border-[#CFCFCF] text-[#1F1F1F] focus:ring-[#1F1F1F] disabled:cursor-not-allowed"
-                />
-                Saya sudah membaca panduan ini
-              </label>
-              {!hasReachedBottom && (
-                <p
-                  className="mt-2 text-[12px] leading-5 text-[#8E8E8E]"
+              <div className="flex items-center justify-between gap-3">
+                <label
+                  className={`flex items-center gap-3 text-[14px] leading-6 text-[#1F1F1F] ${
+                    hasReachedBottom ? "cursor-pointer" : "cursor-not-allowed"
+                  }`}
                   style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
                 >
-                  Scroll sampai bagian paling bawah untuk mengaktifkan checkbox.
-                </p>
-              )}
+                  <input
+                    type="checkbox"
+                    checked={hasReadGuide}
+                    disabled={!hasReachedBottom}
+                    onChange={(e) => setHasReadGuide(e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 accent-primary focus:ring-2 focus:ring-primary/30 disabled:cursor-not-allowed disabled:opacity-60"
+                  />
+                  {t("dash_audio_guide_checkbox")}
+                </label>
+                <button
+                  type="button"
+                  onClick={closeGuideModal}
+                  disabled={!hasReadGuide}
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-primary-600 disabled:cursor-not-allowed disabled:bg-[#D1D5DB] disabled:text-[#6B7280]"
+                  style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M20 6L9 17L4 12"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  {t("dash_audio_guide_continue")}
+                </button>
+              </div>
+              <p
+                className="mt-2 text-[12px] leading-5 text-[#8E8E8E]"
+                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+              >
+                {t("dash_audio_guide_scroll_hint")}
+              </p>
             </div>
           </div>
         </div>
