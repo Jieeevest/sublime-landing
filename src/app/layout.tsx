@@ -9,7 +9,7 @@ import { I18nProvider } from "@/i18n";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
-  title: "Strovia - Guided Audio Therapy",
+  title: "Strovia - Stroke Recovery Subliminal Audio",
   description:
     "Guided healing for a smoother recovery journey with 432 Hz audio therapy.",
   icons: {
