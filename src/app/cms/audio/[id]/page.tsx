@@ -25,8 +25,15 @@ export default function EditAudioPage({
   const [updateAudio, { isLoading: isUpdating }] = useUpdateAudioMutation();
 
   const handleSubmit = async (data: any) => {
+    const payload = {
+      ...data,
+      lyrics: data?.lyrics ?? "",
+      duration: data?.duration ?? "",
+      duration_seconds: data?.duration_seconds ?? 0,
+    };
+
     try {
-      await updateAudio({ id, ...data }).unwrap();
+      await updateAudio({ id, ...payload }).unwrap();
       toast.success(t("audio_update_success"));
       router.push("/cms/audio");
     } catch (error: any) {

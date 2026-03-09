@@ -13,8 +13,15 @@ export default function AddAudioPage() {
   const { t } = useI18n();
 
   const handleSubmit = async (data: any) => {
+    const payload = {
+      ...data,
+      lyrics: data?.lyrics ?? "",
+      duration: data?.duration ?? "",
+      duration_seconds: data?.duration_seconds ?? 0,
+    };
+
     try {
-      await createAudio(data).unwrap();
+      await createAudio(payload).unwrap();
       toast.success(t("audio_add_success"));
       router.push("/cms/audio");
     } catch (error: any) {

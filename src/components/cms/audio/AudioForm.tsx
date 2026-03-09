@@ -18,6 +18,7 @@ type FormState = {
   title: string;
   subtitle: string;
   description: string;
+  lyrics: string;
   category_id: string;
   is_premium: boolean;
   frequency: string;
@@ -26,8 +27,12 @@ type FormState = {
   thumbnail_url: string;
 };
 
+type AudioFormInitialData = Partial<FormState> & {
+  duration_seconds?: number;
+};
+
 interface AudioFormProps {
-  initialData?: Partial<FormState>;
+  initialData?: AudioFormInitialData;
   onSubmit: (data: FormState) => Promise<void>;
   isLoading: boolean;
 }
@@ -57,6 +62,15 @@ const formatFileSize = (bytes: number) => {
   }
 
   return `${size.toFixed(size >= 10 || unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
+};
+
+const parseDurationToSeconds = (value: string) => {
+  const [minsRaw, secsRaw] = value.split(":");
+  const mins = Number.parseInt(minsRaw ?? "0", 10);
+  const secs = Number.parseInt(secsRaw ?? "0", 10);
+
+  if (!Number.isFinite(mins) || !Number.isFinite(secs)) return 0;
+  return Math.max(0, mins * 60 + secs);
 };
 
 const getAudioDurationFromFile = (file: File): Promise<string> =>
@@ -118,6 +132,7 @@ const audioFormSchema = yup.object({
   title: yup.string().trim().required("Title is required"),
   subtitle: yup.string().trim().required("Subtitle is required"),
   description: yup.string().trim().required("Description is required"),
+  lyrics: yup.string().trim(),
   category_id: yup.string().trim().required("Category is required"),
   frequency: yup.string().trim().required("Frequency is required"),
   duration: yup.string().trim().required("Duration is required"),
@@ -154,6 +169,7 @@ export default function AudioForm({
     title: "",
     subtitle: "",
     description: "",
+    lyrics: "",
     category_id: "",
     is_premium: true,
     frequency: "528Hz",
@@ -166,6 +182,7 @@ export default function AudioForm({
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [isUploadingAudioFile, setIsUploadingAudioFile] = useState(false);
   const [submitMode, setSubmitMode] = useState<"draft" | "publish">("publish");
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>(
     {},
@@ -177,10 +194,15 @@ export default function AudioForm({
         title: initialData.title || "",
         subtitle: initialData.subtitle || "",
         description: initialData.description || "",
+        lyrics: initialData.lyrics || "",
         category_id: initialData.category_id || "",
         is_premium: true,
         frequency: initialData.frequency || "528Hz",
-        duration: initialData.duration || "",
+        duration:
+          initialData.duration ||
+          (initialData.duration_seconds
+            ? formatDuration(initialData.duration_seconds)
+            : ""),
         audio_url: initialData.audio_url || "",
         thumbnail_url: initialData.thumbnail_url || "",
       });
@@ -283,6 +305,7 @@ export default function AudioForm({
 
       // Upload Audio if changed
       if (audioFile) {
+        setIsUploadingAudioFile(true);
         const audioFormData = new FormData();
         audioFormData.append("file", audioFile);
         const audioRes = await uploadAudio(audioFormData).unwrap();
@@ -291,6 +314,7 @@ export default function AudioForm({
           currentDuration = formatDuration(audioRes.data.duration_seconds);
           setFormData((prev) => ({ ...prev, duration: currentDuration }));
         }
+        setIsUploadingAudioFile(false);
       }
 
       // Upload Thumbnail if changed
@@ -304,7 +328,9 @@ export default function AudioForm({
       const payload = {
         ...formData,
         is_premium: true,
+        lyrics: formData.lyrics?.trim() || "",
         duration: currentDuration,
+        duration_seconds: parseDurationToSeconds(currentDuration),
         audio_url: currentAudioUrl,
         thumbnail_url: currentThumbnailUrl,
         is_published: submitMode === "publish",
@@ -332,6 +358,7 @@ export default function AudioForm({
       const message = (error as { data?: { message?: string } })?.data?.message;
       toast.error(message ?? t("audio_form_submit_failed"));
     } finally {
+      setIsUploadingAudioFile(false);
       setIsUploading(false);
     }
   };
@@ -392,6 +419,31 @@ export default function AudioForm({
                   Size: {currentAudioName ? currentAudioSize : "--"}
                 </span>
               </div>
+              {isUploadingAudioFile && (
+                <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#1CA09A]/10 px-3 py-1 text-xs font-medium text-[#136F6B]">
+                  <svg
+                    className="animate-spin h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    ></path>
+                  </svg>
+                  {t("audio_uploading_audio")}
+                </div>
+              )}
               {errors.audio_url && (
                 <p className="text-xs text-red-500 mt-2 font-medium">
                   {errors.audio_url}
@@ -578,6 +630,28 @@ export default function AudioForm({
           )}
         </div>
 
+        {/* Lyrics */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-gray-700">
+            {t("audio_form_label_lyrics")}
+          </label>
+          <textarea
+            name="lyrics"
+            value={formData.lyrics}
+            onChange={handleChange}
+            rows={6}
+            className={`px-4 py-2 border rounded-lg outline-none resize-y ${
+              errors.lyrics
+                ? "border-red-500 focus:ring-2 focus:ring-red-200 focus:border-red-500"
+                : "border-gray-300 focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            }`}
+            placeholder={t("audio_form_placeholder_lyrics")}
+          />
+          {errors.lyrics && (
+            <p className="text-xs text-red-500 font-medium">{errors.lyrics}</p>
+          )}
+        </div>
+
         {/* Buttons */}
         <div className="flex items-center justify-end gap-4 mt-4">
           <button
@@ -590,7 +664,7 @@ export default function AudioForm({
           <button
             type="submit"
             onClick={() => setSubmitMode("draft")}
-            disabled={isLoading || isUploading}
+            disabled={isLoading || isUploading || isUploadingAudioFile}
             className="px-6 py-2.5 bg-amber-600 text-white rounded-full font-medium hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             <FileText className="h-4 w-4" />
@@ -599,10 +673,10 @@ export default function AudioForm({
           <button
             type="submit"
             onClick={() => setSubmitMode("publish")}
-            disabled={isLoading || isUploading}
+            disabled={isLoading || isUploading || isUploadingAudioFile}
             className="px-6 py-2.5 bg-primary text-white rounded-full font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
-            {(isLoading || isUploading) && (
+            {(isLoading || isUploading || isUploadingAudioFile) && (
               <svg
                 className="animate-spin h-5 w-5 text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -624,8 +698,12 @@ export default function AudioForm({
                 ></path>
               </svg>
             )}
-            {!isLoading && !isUploading && <Send className="h-4 w-4" />}
-            Save & Publish
+            {!isLoading && !isUploading && !isUploadingAudioFile && (
+              <Send className="h-4 w-4" />
+            )}
+            {isUploadingAudioFile
+              ? t("audio_uploading_audio")
+              : "Save & Publish"}
           </button>
         </div>
       </form>
