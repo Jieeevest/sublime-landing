@@ -158,6 +158,10 @@ export default function AudioTrackList({
     .split(/\n\s*\n+/)
     .map((paragraph) => paragraph.replace(/\s*\n\s*/g, " ").trim())
     .filter(Boolean);
+  const navigateWithLoading = (path: string) => {
+    window.dispatchEvent(new Event("app:navigation-start"));
+    router.push(path);
+  };
 
   const handleDownloadGuide = () => {
     const guideFileUrl = `/${encodeURIComponent(GUIDE_PDF_FILE_NAME)}`;
@@ -470,7 +474,7 @@ export default function AudioTrackList({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        router.push("/dashboard/subscriptions");
+                        navigateWithLoading("/dashboard/subscriptions");
                       }}
                       className="px-5 py-2 bg-white text-[#1F1F1F] rounded-full text-xs font-semibold hover:bg-gray-100 transition-transform hover:scale-105 shadow-lg"
                       style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}

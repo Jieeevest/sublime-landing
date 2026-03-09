@@ -11,6 +11,10 @@ import { useI18n } from "@/i18n";
 export default function DashboardPromoCards() {
   const router = useRouter();
   const { t } = useI18n();
+  const navigateWithLoading = (path: string) => {
+    window.dispatchEvent(new Event("app:navigation-start"));
+    router.push(path);
+  };
   return (
     <div className="mx-auto flex w-full max-w-[1267px] flex-col gap-6 xl:flex-row xl:gap-10">
       {/* ==============================================
@@ -174,7 +178,7 @@ export default function DashboardPromoCards() {
             </p>
             {/* Button */}
             <button
-              onClick={() => router.push("/dashboard/subscriptions")}
+              onClick={() => navigateWithLoading("/dashboard/subscriptions")}
               className="flex items-center justify-center px-[20px] py-[10px] bg-[#3197A5] hover:bg-[#288a96] rounded-full text-white transition-colors"
             >
               <span style={{ fontSize: "16px", fontWeight: 500 }}>
@@ -233,7 +237,7 @@ export default function DashboardPromoCards() {
           </p>
 
           <button
-            onClick={() => router.push("/dashboard/ai-chat")}
+            onClick={() => navigateWithLoading("/dashboard/ai-chat")}
             className="flex items-center justify-center px-[20px] py-[8px] bg-white text-[#1F1F1F] rounded-full w-fit mt-2 hover:scale-105 transition-transform"
           >
             <span style={{ fontSize: "16px", fontWeight: 500 }}>

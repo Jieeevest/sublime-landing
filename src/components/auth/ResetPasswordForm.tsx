@@ -5,8 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useResetPasswordMutation } from "@/redux/api/sublimeApi";
 import { toast } from "react-hot-toast";
+import { useI18n } from "@/i18n";
 
 export default function ResetPasswordForm() {
+  const { t } = useI18n();
   const router = useRouter();
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
   const [email, setEmail] = useState(""); // User can type their email
@@ -49,7 +51,7 @@ export default function ResetPasswordForm() {
     setSuccessMsg("");
 
     if (newPassword !== confirmPassword) {
-      const msg = "Password tidak cocok";
+      const msg = t("auth_reset_password_mismatch");
       setErrorMsg(msg);
       toast.error(msg);
       return;
@@ -57,7 +59,7 @@ export default function ResetPasswordForm() {
 
     const otpCode = otp.join("");
     if (otpCode.length !== 6) {
-      const msg = "Masukkan kode 6 digit dengan benar";
+      const msg = t("auth_reset_invalid_code");
       setErrorMsg(msg);
       toast.error(msg);
       return;
@@ -70,15 +72,17 @@ export default function ResetPasswordForm() {
       }).unwrap();
 
       const success =
-        "Password berhasil diubah. Mengalihkan ke halaman login...";
+        t("auth_reset_success_redirect");
       setSuccessMsg(success);
       toast.success(success);
 
       setTimeout(() => {
         router.push("/login");
       }, 2000);
-    } catch (err: any) {
-      const msg = err?.data?.message || "Gagal mengatur ulang kata sandi";
+    } catch (err: unknown) {
+      const msg =
+        (err as { data?: { message?: string } })?.data?.message ||
+        t("auth_reset_failed");
       setErrorMsg(msg);
       toast.error(msg);
     }
@@ -115,7 +119,7 @@ export default function ResetPasswordForm() {
             color: "#1F1F1F",
           }}
         >
-          Permintaan berhasil dikirim!
+          {t("auth_reset_request_sent")}
         </h2>
 
         <div className="w-full">
@@ -127,9 +131,7 @@ export default function ResetPasswordForm() {
               color: "#1F1F1F",
             }}
           >
-            Kami talah mengirimkan email konfirmasi 6 digit ke alamat email
-            Anda. Silakan masukkan kode tersebut di kolom di bawah ini untuk
-            memverifikasi email Anda.
+            {t("auth_reset_desc")}
           </p>
         </div>
       </div>
@@ -154,7 +156,7 @@ export default function ResetPasswordForm() {
             htmlFor="email"
             className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
           >
-            Email
+            {t("auth_email")}
           </label>
         </div>
 
@@ -198,7 +200,7 @@ export default function ResetPasswordForm() {
             htmlFor="newPassword"
             className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
           >
-            Kata Sandi Baru
+            {t("auth_reset_new_password")}
           </label>
 
           {/* Eye Icon Toggle */}
@@ -245,7 +247,7 @@ export default function ResetPasswordForm() {
             htmlFor="confirmPassword"
             className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
           >
-            Konfirmasi Kata Sandi Baru
+            {t("auth_reset_confirm_password")}
           </label>
 
           {/* Eye Icon Toggle */}
@@ -280,20 +282,28 @@ export default function ResetPasswordForm() {
         {/* Submit Button */}
         <button
           type="submit"
+          disabled={isLoading}
           className="w-full min-w-[120px] h-11 flex items-center justify-center px-3 py-2 bg-[#3197A5] text-[#F5F9FA] text-base font-normal rounded-[99px] hover:bg-[#2a8694] transition-colors"
         >
-          Perbarui Kata Sandi
+          {isLoading ? t("auth_processing") : t("auth_reset_update_button")}
         </button>
+
+        {errorMsg && (
+          <div className="text-red-500 text-sm text-center">{errorMsg}</div>
+        )}
+        {successMsg && (
+          <div className="text-green-600 text-sm text-center">{successMsg}</div>
+        )}
 
         {/* Resend Code & Back Links */}
         <div className="flex flex-row justify-center items-start gap-1 w-full">
-          <span className="text-sm text-[#1F1F1F]">Tidak punya kode?</span>
+          <span className="text-sm text-[#1F1F1F]">{t("auth_reset_no_code")}</span>
           <button
             type="button"
             onClick={handleResendCode}
             className="text-sm text-[#3197A5] hover:underline"
           >
-            Kirim ulang kode
+            {t("auth_reset_resend_code")}
           </button>
         </div>
 
@@ -320,7 +330,7 @@ export default function ResetPasswordForm() {
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          Kembali ke halaman masuk
+          {t("auth_back_to_login")}
         </Link>
       </form>
     </div>

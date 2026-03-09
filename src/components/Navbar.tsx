@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetMeQuery, sublimeApi } from "@/redux/api/sublimeApi";
 import { useDispatch } from "react-redux";
@@ -26,6 +26,9 @@ export default function Navbar() {
   const [hydrated, setHydrated] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLangSwitching, setIsLangSwitching] = useState(false);
+  const [isLangSwitchingExit, setIsLangSwitchingExit] = useState(false);
+  const langSwitchTimers = useRef<number[]>([]);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -72,26 +75,72 @@ export default function Navbar() {
 
   const toggleLanguage = () => setIsLangOpen(!isLangOpen);
   const selectLanguage = (l: string) => {
-    setLang(l === "EN" ? "en" : "id");
+    const nextLang = l === "EN" ? "en" : "id";
+    if (nextLang === lang) {
+      setIsLangOpen(false);
+      return;
+    }
+    langSwitchTimers.current.forEach((id) => window.clearTimeout(id));
+    langSwitchTimers.current = [];
+    setIsLangSwitchingExit(false);
+    setIsLangSwitching(true);
     setIsLangOpen(false);
+    langSwitchTimers.current.push(
+      window.setTimeout(() => setLang(nextLang), 130),
+      window.setTimeout(() => setIsLangSwitchingExit(true), 560),
+      window.setTimeout(() => {
+        setIsLangSwitching(false);
+        setIsLangSwitchingExit(false);
+      }, 760)
+    );
   };
-
+  useEffect(
+    () => () => {
+      langSwitchTimers.current.forEach((id) => window.clearTimeout(id));
+      langSwitchTimers.current = [];
+    },
+    []
+  );
   return (
-    <nav
-      className="absolute flex flex-row justify-between items-center"
-      style={{
-        padding: "12px 56px",
-        gap: "8px",
-        width: "100%",
-        height: "64px",
-        left: "0px",
-        top: "0px",
-        backdropFilter: "blur(20px)",
-        borderRadius: "0px",
-        zIndex: 8,
-        maxWidth: "100vw",
-      }}
-    >
+    <>
+      {isLangSwitching && (
+        <div
+          className={`fixed inset-0 z-[9998] bg-[#1F1F1F]/15 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300 ${
+            isLangSwitchingExit ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          <div
+            className={`flex items-center gap-3 rounded-full bg-white/90 px-5 py-3 shadow-lg transition-all duration-300 ${
+              isLangSwitchingExit
+                ? "opacity-0 scale-[0.98] translate-y-1"
+                : "opacity-100 scale-100 translate-y-0"
+            }`}
+          >
+            <div className="h-5 w-5 rounded-full border-2 border-[#3197A5]/25 border-t-[#3197A5] animate-spin" />
+            <p
+              className="text-[13px] leading-5 text-[#1F1F1F]"
+              style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+            >
+              {lang === "id" ? "Mengganti bahasa..." : "Switching language..."}
+            </p>
+          </div>
+        </div>
+      )}
+      <nav
+        className="absolute flex flex-row justify-between items-center"
+        style={{
+          padding: "12px 56px",
+          gap: "8px",
+          width: "100%",
+          height: "64px",
+          left: "0px",
+          top: "0px",
+          backdropFilter: "blur(20px)",
+          borderRadius: "0px",
+          zIndex: 8,
+          maxWidth: "100vw",
+        }}
+      >
       {/* Logo */}
       <Link
         href="#beranda"
@@ -131,21 +180,20 @@ export default function Navbar() {
           className="flex flex-col justify-center items-center rounded"
           style={{
             padding: "8px",
-            width: "108px",
+            width: "auto",
             height: "44px",
           }}
         >
           <span
-            className="font-normal text-center text-[#1F1F1F]/70 hover:text-[#3197A5] transition-colors duration-200"
+            className="font-normal text-center text-[#1F1F1F]/70 hover:text-[#3197A5] transition-colors duration-200 whitespace-nowrap"
             style={{
-              width: "92px",
               height: "24px",
               fontFamily: "'PP Neue Montreal', sans-serif",
               fontSize: "14px",
               lineHeight: "24px",
             }}
           >
-            Tentang Kami
+            {t("nav_tentang")}
           </span>
         </Link>
 
@@ -154,21 +202,20 @@ export default function Navbar() {
           className="flex flex-col justify-center items-center rounded"
           style={{
             padding: "8px",
-            width: "87px",
+            width: "auto",
             height: "44px",
           }}
         >
           <span
-            className="font-normal text-center text-[#1F1F1F]/70 hover:text-[#3197A5] transition-colors duration-200"
+            className="font-normal text-center text-[#1F1F1F]/70 hover:text-[#3197A5] transition-colors duration-200 whitespace-nowrap"
             style={{
-              width: "71px",
               height: "24px",
               fontFamily: "'PP Neue Montreal', sans-serif",
               fontSize: "14px",
               lineHeight: "24px",
             }}
           >
-            Cara Kerja
+            {t("nav_cara_kerja")}
           </span>
         </Link>
 
@@ -177,21 +224,20 @@ export default function Navbar() {
           className="flex flex-col justify-center items-center rounded"
           style={{
             padding: "8px",
-            width: "71px",
+            width: "auto",
             height: "44px",
           }}
         >
           <span
-            className="font-normal text-center text-[#1F1F1F]/70 hover:text-[#3197A5] transition-colors duration-200"
+            className="font-normal text-center text-[#1F1F1F]/70 hover:text-[#3197A5] transition-colors duration-200 whitespace-nowrap"
             style={{
-              width: "55px",
               height: "24px",
               fontFamily: "'PP Neue Montreal', sans-serif",
               fontSize: "14px",
               lineHeight: "24px",
             }}
           >
-            Manfaat
+            {t("nav_manfaat")}
           </span>
         </Link>
 
@@ -200,21 +246,20 @@ export default function Navbar() {
           className="flex flex-col justify-center items-center rounded"
           style={{
             padding: "8px",
-            width: "58px",
+            width: "auto",
             height: "44px",
           }}
         >
           <span
-            className="font-normal text-center text-[#1F1F1F]/70 hover:text-[#3197A5] transition-colors duration-200"
+            className="font-normal text-center text-[#1F1F1F]/70 hover:text-[#3197A5] transition-colors duration-200 whitespace-nowrap"
             style={{
-              width: "42px",
               height: "24px",
               fontFamily: "'PP Neue Montreal', sans-serif",
               fontSize: "14px",
               lineHeight: "24px",
             }}
           >
-            Artikel
+            {t("nav_artikel")}
           </span>
         </Link>
 
@@ -223,21 +268,20 @@ export default function Navbar() {
           className="flex flex-col justify-center items-center rounded"
           style={{
             padding: "8px",
-            width: "46px",
+            width: "auto",
             height: "44px",
           }}
         >
           <span
-            className="font-normal text-center text-[#1F1F1F]/70 hover:text-[#3197A5] transition-colors duration-200"
+            className="font-normal text-center text-[#1F1F1F]/70 hover:text-[#3197A5] transition-colors duration-200 whitespace-nowrap"
             style={{
-              width: "30px",
               height: "24px",
               fontFamily: "'PP Neue Montreal', sans-serif",
               fontSize: "14px",
               lineHeight: "24px",
             }}
           >
-            FAQ
+            {t("nav_faq")}
           </span>
         </Link>
       </div>
@@ -360,8 +404,8 @@ export default function Navbar() {
             className="flex flex-col justify-center items-center rounded-[99px]"
             style={{
               padding: "8px 12px",
-              width: "122px",
-              minWidth: "120px",
+              width: "auto",
+              minWidth: "122px",
               height: "44px",
               background: "#3197A5",
               transition: "all 0.3s ease",
@@ -377,9 +421,8 @@ export default function Navbar() {
             }}
           >
             <span
-              className="font-normal text-center"
+              className="font-normal text-center whitespace-nowrap"
               style={{
-                width: "98px",
                 height: "24px",
                 fontFamily: "'PP Neue Montreal', sans-serif",
                 fontSize: "14px",
@@ -387,7 +430,7 @@ export default function Navbar() {
                 color: "#FFFFFF",
               }}
             >
-              Masuk / Daftar
+              {t("nav_login")}
             </span>
           </Link>
         ) : isUserLoading ? (
@@ -421,6 +464,7 @@ export default function Navbar() {
           </div>
         )}
       </div>
-    </nav>
+      </nav>
+    </>
   );
 }

@@ -4,8 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { useForgotPasswordMutation } from "@/redux/api/sublimeApi";
 import { toast } from "react-hot-toast";
+import { useI18n } from "@/i18n";
 
 export default function ForgotPasswordForm() {
+  const { t } = useI18n();
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -17,10 +19,12 @@ export default function ForgotPasswordForm() {
 
     try {
       await forgotPassword({ email }).unwrap();
-      toast.success("Link reset password dikirim!");
+      toast.success(t("auth_forgot_success_toast"));
       setIsSubmitted(true);
-    } catch (err: any) {
-      const msg = err?.data?.message || "Gagal mengirim permintaan";
+    } catch (err: unknown) {
+      const msg =
+        (err as { data?: { message?: string } })?.data?.message ||
+        t("auth_forgot_failed");
       setErrorMsg(msg);
       toast.error(msg);
     }
@@ -56,7 +60,7 @@ export default function ForgotPasswordForm() {
               color: "#1F1F1F",
             }}
           >
-            Periksa email Anda
+            {t("auth_forgot_check_email")}
           </h2>
 
           <div className="w-full">
@@ -68,9 +72,8 @@ export default function ForgotPasswordForm() {
                 color: "#1F1F1F",
               }}
             >
-              Kami telah mengirimkan tautan reset kata sandi ke{" "}
-              <strong>{email}</strong>. Silakan periksa inbox Anda dan ikuti
-              instruksinya.
+              {t("auth_forgot_sent_prefix")} <strong>{email}</strong>
+              {t("auth_forgot_sent_suffix")}
             </p>
           </div>
         </div>
@@ -98,7 +101,7 @@ export default function ForgotPasswordForm() {
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          Kembali ke halaman masuk
+          {t("auth_back_to_login")}
         </Link>
       </div>
     );
@@ -147,7 +150,7 @@ export default function ForgotPasswordForm() {
             color: "#1F1F1F",
           }}
         >
-          Lupa kata sandi Anda?
+          {t("auth_forgot_title")}
         </h2>
 
         <div className="w-full">
@@ -159,9 +162,7 @@ export default function ForgotPasswordForm() {
               color: "#1F1F1F",
             }}
           >
-            Silakan masukkan alamat email yang terkait dengan akun Anda, dan
-            kami akan mengirimkan tautan melalui email untuk mengatur ulang kata
-            sandi Anda.
+            {t("auth_forgot_desc")}
           </p>
         </div>
       </div>
@@ -186,17 +187,22 @@ export default function ForgotPasswordForm() {
             htmlFor="email"
             className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
           >
-            Email
+            {t("auth_email")}
           </label>
         </div>
 
         {/* Submit Button */}
         <button
           type="submit"
+          disabled={isLoading}
           className="w-full min-w-[120px] h-11 flex items-center justify-center px-3 py-2 bg-[#3197A5] text-[#F5F9FA] text-base font-normal rounded-[99px] hover:bg-[#2a8694] transition-colors"
         >
-          Kirim Permintaan
+          {isLoading ? t("auth_processing") : t("auth_forgot_submit")}
         </button>
+
+        {errorMsg && (
+          <div className="text-red-500 text-sm text-center">{errorMsg}</div>
+        )}
 
         {/* Back to Login Link */}
         <Link
@@ -221,7 +227,7 @@ export default function ForgotPasswordForm() {
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          Kembali ke halaman masuk
+          {t("auth_back_to_login")}
         </Link>
       </form>
     </div>

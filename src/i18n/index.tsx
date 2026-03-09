@@ -1,8 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-type Lang = "id" | "en";
+export type Lang = "id" | "en";
 
 type Dict = Record<string, Record<string, string>>;
 
@@ -70,6 +70,82 @@ const dict: Dict = {
     common_loading: "Memuat...",
     common_success: "Berhasil!",
     common_deleted: "Terhapus!",
+    auth_email: "Email",
+    auth_password: "Kata Sandi",
+    auth_processing: "Memproses...",
+    auth_back_to_login: "Kembali ke halaman masuk",
+    auth_and: "dan",
+    auth_terms_title: "Syarat Ketentuan",
+    auth_privacy_title: "Kebijakan Privasi",
+    auth_login_join: "Bergabung dengan Strovia",
+    auth_login_new_user: "Pengguna baru?",
+    auth_login_create_account: "Buat akun",
+    auth_login_forgot_password: "Lupa Kata Sandi?",
+    auth_login_button: "Login",
+    auth_login_success: "Login berhasil!",
+    auth_login_failed: "Login gagal",
+    auth_login_error: "Terjadi kesalahan saat login",
+    auth_register_start_now: "Mulai sekarang",
+    auth_register_has_account: "Sudah punya akun?",
+    auth_register_create_account: "Buat Akun",
+    auth_register_success: "Registrasi berhasil!",
+    auth_register_failed: "Registrasi gagal",
+    auth_register_error: "Terjadi kesalahan saat mendaftar",
+    auth_register_agree_prefix: "Dengan mendaftar, saya menyetujui",
+    auth_first_name: "Nama Depan",
+    auth_last_name: "Nama Belakang",
+    auth_referral_optional: "Kode Referral (Opsional)",
+    auth_terms_intro:
+      "Selamat datang di Strovia. Dengan menggunakan layanan kami, Anda menyetujui Syarat Ketentuan ini.",
+    auth_terms_license_title: "1. Lisensi Penggunaan",
+    auth_terms_license_body:
+      "Layanan kami disediakan untuk tujuan rehabilitasi pribadi. Anda setuju untuk tidak menyalahgunakan atau mendistribusikan ulang konten kami.",
+    auth_terms_medical_title: "2. Penafian Medis",
+    auth_terms_medical_body:
+      "Strovia adalah alat pendukung dan tidak menggantikan saran medis profesional. Selalu konsultasikan dengan dokter Anda mengenai program rehabilitasi Anda.",
+    auth_terms_account_title: "3. Keamanan Akun",
+    auth_terms_account_body:
+      "Anda bertanggung jawab untuk menjaga kerahasiaan kredensial akun Anda.",
+    auth_privacy_intro:
+      "Privasi Anda penting bagi kami. Kebijakan Privasi ini menguraikan bagaimana kami menangani data Anda.",
+    auth_privacy_collect_title: "1. Pengumpulan Data",
+    auth_privacy_collect_body:
+      "Kami mengumpulkan informasi pribadi seperti nama dan email Anda untuk menyediakan layanan kami. Kami tidak menjual data pribadi Anda.",
+    auth_privacy_usage_title: "2. Data Penggunaan",
+    auth_privacy_usage_body:
+      "Kami dapat mengumpulkan data penggunaan untuk meningkatkan aplikasi kami dan pengalaman rehabilitasi Anda.",
+    auth_privacy_security_title: "3. Keamanan",
+    auth_privacy_security_body:
+      "Kami menerapkan langkah-langkah keamanan untuk melindungi informasi Anda, meskipun tidak ada metode transmisi yang 100% aman.",
+    auth_forgot_title: "Lupa kata sandi Anda?",
+    auth_forgot_desc:
+      "Silakan masukkan alamat email yang terkait dengan akun Anda, dan kami akan mengirimkan tautan melalui email untuk mengatur ulang kata sandi Anda.",
+    auth_forgot_submit: "Kirim Permintaan",
+    auth_forgot_success_toast: "Link reset password dikirim!",
+    auth_forgot_failed: "Gagal mengirim permintaan",
+    auth_forgot_check_email: "Periksa email Anda",
+    auth_forgot_sent_prefix:
+      "Kami telah mengirimkan tautan reset kata sandi ke",
+    auth_forgot_sent_suffix:
+      ". Silakan periksa inbox Anda dan ikuti instruksinya.",
+    auth_reset_request_sent: "Permintaan berhasil dikirim!",
+    auth_reset_desc:
+      "Kami telah mengirimkan email konfirmasi 6 digit ke alamat email Anda. Silakan masukkan kode tersebut di kolom di bawah ini untuk memverifikasi email Anda.",
+    auth_reset_new_password: "Kata Sandi Baru",
+    auth_reset_confirm_password: "Konfirmasi Kata Sandi Baru",
+    auth_reset_update_button: "Perbarui Kata Sandi",
+    auth_reset_no_code: "Tidak punya kode?",
+    auth_reset_resend_code: "Kirim ulang kode",
+    auth_reset_password_mismatch: "Password tidak cocok",
+    auth_reset_invalid_code: "Masukkan kode 6 digit dengan benar",
+    auth_reset_success_redirect:
+      "Password berhasil diubah. Mengalihkan ke halaman login...",
+    auth_reset_failed: "Gagal mengatur ulang kata sandi",
+    notif_title: "Notifikasi",
+    notif_loading: "Memuat notifikasi...",
+    notif_error: "Gagal memuat notifikasi.",
+    notif_empty: "Belum ada notifikasi.",
+    notif_item_fallback: "Notifikasi",
     breadcrumb_home: "Beranda",
     unknown: "Tidak Dikenal",
     unknown_user: "Pengguna Tidak Dikenal",
@@ -426,6 +502,81 @@ const dict: Dict = {
     common_loading: "Loading...",
     common_success: "Success!",
     common_deleted: "Deleted!",
+    auth_email: "Email",
+    auth_password: "Password",
+    auth_processing: "Processing...",
+    auth_back_to_login: "Back to sign in",
+    auth_and: "and",
+    auth_terms_title: "Terms of Use",
+    auth_privacy_title: "Privacy Policy",
+    auth_login_join: "Join Strovia",
+    auth_login_new_user: "New user?",
+    auth_login_create_account: "Create account",
+    auth_login_forgot_password: "Forgot Password?",
+    auth_login_button: "Login",
+    auth_login_success: "Login successful!",
+    auth_login_failed: "Login failed",
+    auth_login_error: "An error occurred during login",
+    auth_register_start_now: "Start now",
+    auth_register_has_account: "Already have an account?",
+    auth_register_create_account: "Create Account",
+    auth_register_success: "Registration successful!",
+    auth_register_failed: "Registration failed",
+    auth_register_error: "An error occurred during registration",
+    auth_register_agree_prefix: "By signing up, I agree to",
+    auth_first_name: "First Name",
+    auth_last_name: "Last Name",
+    auth_referral_optional: "Referral Code (Optional)",
+    auth_terms_intro:
+      "Welcome to Strovia. By using our services, you agree to these Terms of Use.",
+    auth_terms_license_title: "1. License of Use",
+    auth_terms_license_body:
+      "Our services are provided for personal rehabilitation purposes. You agree not to misuse or redistribute our content.",
+    auth_terms_medical_title: "2. Medical Disclaimer",
+    auth_terms_medical_body:
+      "Strovia is a support tool and does not replace professional medical advice. Always consult your doctor regarding your rehabilitation program.",
+    auth_terms_account_title: "3. Account Security",
+    auth_terms_account_body:
+      "You are responsible for keeping your account credentials confidential.",
+    auth_privacy_intro:
+      "Your privacy is important to us. This Privacy Policy explains how we handle your data.",
+    auth_privacy_collect_title: "1. Data Collection",
+    auth_privacy_collect_body:
+      "We collect personal information such as your name and email to provide our services. We do not sell your personal data.",
+    auth_privacy_usage_title: "2. Usage Data",
+    auth_privacy_usage_body:
+      "We may collect usage data to improve our app and your rehabilitation experience.",
+    auth_privacy_security_title: "3. Security",
+    auth_privacy_security_body:
+      "We implement security measures to protect your information, although no transmission method is 100% secure.",
+    auth_forgot_title: "Forgot your password?",
+    auth_forgot_desc:
+      "Please enter the email address associated with your account, and we will send a reset link to your email.",
+    auth_forgot_submit: "Send Request",
+    auth_forgot_success_toast: "Password reset link sent!",
+    auth_forgot_failed: "Failed to send request",
+    auth_forgot_check_email: "Check your email",
+    auth_forgot_sent_prefix: "We have sent a password reset link to",
+    auth_forgot_sent_suffix:
+      ". Please check your inbox and follow the instructions.",
+    auth_reset_request_sent: "Request sent successfully!",
+    auth_reset_desc:
+      "We have sent a 6-digit confirmation code to your email address. Please enter the code below to verify your email.",
+    auth_reset_new_password: "New Password",
+    auth_reset_confirm_password: "Confirm New Password",
+    auth_reset_update_button: "Update Password",
+    auth_reset_no_code: "Don't have a code?",
+    auth_reset_resend_code: "Resend code",
+    auth_reset_password_mismatch: "Passwords do not match",
+    auth_reset_invalid_code: "Enter a valid 6-digit code",
+    auth_reset_success_redirect:
+      "Password updated successfully. Redirecting to login...",
+    auth_reset_failed: "Failed to reset password",
+    notif_title: "Notifications",
+    notif_loading: "Loading notifications...",
+    notif_error: "Failed to load notifications.",
+    notif_empty: "No notifications.",
+    notif_item_fallback: "Notification",
     breadcrumb_home: "Home",
     unknown: "Unknown",
     unknown_user: "Unknown User",
@@ -725,16 +876,24 @@ type Ctx = {
 
 const I18nCtx = createContext<Ctx | null>(null);
 
-export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Lang>(() => {
-    if (typeof window === "undefined") return "id";
-    const saved = localStorage.getItem("cms_lang");
-    return saved === "en" || saved === "id" ? (saved as Lang) : "id";
-  });
+export function I18nProvider({
+  children,
+  initialLang = "id",
+}: {
+  children: React.ReactNode;
+  initialLang?: Lang;
+}) {
+  const [lang, setLangState] = useState<Lang>(
+    initialLang === "en" ? "en" : "id"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("cms_lang", lang);
+    document.cookie = `cms_lang=${lang}; path=/; max-age=31536000; samesite=lax`;
+  }, [lang]);
 
   const setLang = (l: Lang) => {
     setLangState(l);
-    if (typeof window !== "undefined") localStorage.setItem("cms_lang", l);
   };
 
   const t = (key: string) => {

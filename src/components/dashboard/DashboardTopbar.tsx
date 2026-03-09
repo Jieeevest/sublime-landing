@@ -1,44 +1,142 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import {
   useGetMeQuery,
+  useGetNotificationsQuery,
   useGetMySubscriptionQuery,
   sublimeApi,
 } from "@/redux/api/sublimeApi";
 import { useDispatch } from "react-redux";
 import UserDropdown from "@/components/shared/UserDropdown";
 import { useI18n } from "@/i18n";
+import { BellRing } from "lucide-react";
 
 export default function DashboardTopbar() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [isNotifMounted, setIsNotifMounted] = useState(false);
+  const [isNotifExit, setIsNotifExit] = useState(false);
+  const [isLangSwitching, setIsLangSwitching] = useState(false);
+  const [isLangSwitchingExit, setIsLangSwitchingExit] = useState(false);
+  const langSwitchTimers = useRef<number[]>([]);
+  const notifTimers = useRef<number[]>([]);
   const { code, setLang, t } = useI18n();
 
   const { data: user, isLoading } = useGetMeQuery(undefined);
   const { data: subscription, isLoading: isSubLoading } =
     useGetMySubscriptionQuery(undefined);
+  const {
+    data: notificationsData,
+    isLoading: isNotifLoading,
+    isFetching: isNotifFetching,
+    isError: isNotifError,
+  } = useGetNotificationsQuery({ page: 1, limit: 8 });
   const isSubscribed = subscription?.is_subscribed;
+
+  type NotificationItem = {
+    id: string | number;
+    title?: string;
+    message?: string;
+    body?: string;
+    created_at?: string;
+    is_read?: boolean;
+    read?: boolean;
+  };
+  const notificationsRaw = notificationsData?.data;
+  const notifications: NotificationItem[] = Array.isArray(notificationsRaw)
+    ? notificationsRaw
+    : Array.isArray(notificationsRaw?.items)
+      ? notificationsRaw.items
+      : [];
+  const unreadCount = notifications.reduce((count, item) => {
+    const isRead = item?.is_read ?? item?.read ?? false;
+    return isRead ? count : count + 1;
+  }, 0);
+
+  const closeNotif = () => {
+    if (!isNotifMounted) return;
+    notifTimers.current.forEach((id) => window.clearTimeout(id));
+    notifTimers.current = [];
+    setIsNotifExit(true);
+    notifTimers.current.push(
+      window.setTimeout(() => {
+        setIsNotifMounted(false);
+        setIsNotifExit(false);
+        setIsNotifOpen(false);
+      }, 180)
+    );
+  };
+
+  const openNotif = () => {
+    notifTimers.current.forEach((id) => window.clearTimeout(id));
+    notifTimers.current = [];
+    setIsNotifOpen(true);
+    setIsNotifExit(false);
+    setIsNotifMounted(true);
+  };
 
   const toggleLanguage = () => {
     setIsLangOpen(!isLangOpen);
     setIsProfileOpen(false);
+    closeNotif();
   };
 
   const toggleProfile = () => {
     setIsProfileOpen(!isProfileOpen);
     setIsLangOpen(false);
+    closeNotif();
+  };
+
+  const toggleNotif = () => {
+    if (isNotifOpen) {
+      closeNotif();
+    } else {
+      openNotif();
+    }
+    setIsLangOpen(false);
+    setIsProfileOpen(false);
   };
 
   const selectLanguage = (lang: "id" | "en") => {
-    setLang(lang);
+    const currentLang = code === "EN" ? "en" : "id";
+    if (lang === currentLang) {
+      setIsLangOpen(false);
+      return;
+    }
+
+    langSwitchTimers.current.forEach((id) => window.clearTimeout(id));
+    langSwitchTimers.current = [];
+
+    setIsLangSwitchingExit(false);
+    setIsLangSwitching(true);
     setIsLangOpen(false);
+
+    langSwitchTimers.current.push(
+      window.setTimeout(() => setLang(lang), 140),
+      window.setTimeout(() => setIsLangSwitchingExit(true), 620),
+      window.setTimeout(() => {
+        setIsLangSwitching(false);
+        setIsLangSwitchingExit(false);
+      }, 860)
+    );
   };
+
+  useEffect(
+    () => () => {
+      langSwitchTimers.current.forEach((id) => window.clearTimeout(id));
+      langSwitchTimers.current = [];
+      notifTimers.current.forEach((id) => window.clearTimeout(id));
+      notifTimers.current = [];
+    },
+    []
+  );
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -57,8 +155,32 @@ export default function DashboardTopbar() {
   };
 
   return (
-    <div className="relative z-30 flex flex-col gap-3 bg-[#F5F9FA] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6 sm:py-5 lg:px-10 lg:py-6">
-      <div className="order-2 hidden w-full flex-1 sm:order-1 sm:block sm:max-w-3xl">
+    <>
+      {isLangSwitching && (
+        <div
+          className={`fixed inset-0 z-[9998] bg-[#1F1F1F]/15 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300 ${
+            isLangSwitchingExit ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          <div
+            className={`flex items-center gap-3 rounded-full bg-white/90 px-5 py-3 shadow-lg transition-all duration-300 ${
+              isLangSwitchingExit
+                ? "opacity-0 scale-[0.98] translate-y-1"
+                : "opacity-100 scale-100 translate-y-0"
+            }`}
+          >
+            <div className="h-5 w-5 rounded-full border-2 border-[#3197A5]/25 border-t-[#3197A5] animate-spin" />
+            <p
+              className="text-[13px] leading-5 text-[#1F1F1F]"
+              style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+            >
+              {code === "ID" ? "Mengganti bahasa..." : "Switching language..."}
+            </p>
+          </div>
+        </div>
+      )}
+      <div className="relative z-30 flex flex-col gap-3 bg-[#F5F9FA] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6 sm:py-5 lg:px-10 lg:py-6">
+      <div className="hidden">
         <div className="relative">
           <svg
             className="absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500 sm:h-6 sm:w-6"
@@ -81,7 +203,7 @@ export default function DashboardTopbar() {
         </div>
       </div>
 
-      <div className="order-1 flex w-full items-center justify-between gap-2 rounded-2xl bg-primary px-3 py-2 sm:order-2 sm:w-auto sm:justify-end sm:gap-3 sm:rounded-none sm:bg-transparent sm:px-0 sm:py-0">
+      <div className="order-1 ml-auto flex w-auto items-center justify-end gap-2 rounded-2xl bg-primary px-3 py-2 sm:order-2 sm:gap-3 sm:rounded-none sm:bg-transparent sm:px-0 sm:py-0">
         <Link href="/dashboard" className="flex items-center sm:hidden">
           <Image
             src="/strovia-logo-white.png"
@@ -173,18 +295,73 @@ export default function DashboardTopbar() {
           )}
         </div>
 
-        <button className="relative hidden rounded-full p-3 transition-colors hover:bg-gray-100 sm:block">
-          <svg className="h-5 w-5 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              opacity="0.32"
-              d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"
-            />
-            <path d="M12 6c-2.76 0-5 2.24-5 5v5l-2 2h14l-2-2v-5c0-2.76-2.24-5-5-5z" />
-          </svg>
-          <span className="absolute right-2 top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#F64C4C] px-1.5">
-            <span className="text-xs font-medium text-white">3</span>
-          </span>
+        <div className="relative hidden sm:block">
+        <button
+          onClick={toggleNotif}
+          className="relative rounded-full p-3 transition-colors hover:bg-gray-100"
+        >
+          <BellRing className="h-5 w-5 text-gray-500" strokeWidth={1.8} />
+          {unreadCount > 0 && (
+            <span className="absolute right-2 top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#F64C4C] px-1.5">
+              <span className="text-xs font-medium text-white">
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            </span>
+          )}
         </button>
+        {isNotifMounted && (
+          <div
+            className={`absolute right-0 top-full z-50 mt-2 w-[360px] overflow-hidden rounded-xl border border-gray-100 bg-white shadow-lg transition-all duration-200 ${
+              isNotifExit
+                ? "translate-y-1 scale-[0.98] opacity-0"
+                : "translate-y-0 scale-100 opacity-100"
+            }`}
+          >
+            <div className="border-b border-gray-100 px-4 py-3">
+              <p className="text-sm font-semibold text-[#1F1F1F]">
+                {t("notif_title")}
+              </p>
+            </div>
+            <div className="max-h-[380px] overflow-y-auto">
+              {isNotifLoading || isNotifFetching ? (
+                <div className="px-4 py-6 text-center text-sm text-gray-500">
+                  {t("notif_loading")}
+                </div>
+              ) : isNotifError ? (
+                <div className="px-4 py-6 text-center text-sm text-red-500">
+                  {t("notif_error")}
+                </div>
+              ) : notifications.length === 0 ? (
+                <div className="px-4 py-6 text-center text-sm text-gray-500">
+                  {t("notif_empty")}
+                </div>
+              ) : (
+                notifications.map((notif) => {
+                  const message = notif.message || notif.body || "";
+                  const isRead = notif.is_read ?? notif.read ?? false;
+                  return (
+                    <div
+                      key={String(notif.id)}
+                      className={`border-b border-gray-50 px-4 py-3 last:border-b-0 ${
+                        isRead ? "bg-white" : "bg-[#3197A5]/[0.04]"
+                      }`}
+                    >
+                      <p className="text-sm font-medium text-[#1F1F1F]">
+                        {notif.title || t("notif_item_fallback")}
+                      </p>
+                      {message ? (
+                        <p className="mt-1 text-xs leading-5 text-gray-600">
+                          {message}
+                        </p>
+                      ) : null}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        )}
+        </div>
 
         <div className="relative">
           <button
@@ -211,6 +388,7 @@ export default function DashboardTopbar() {
         </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

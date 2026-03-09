@@ -4,10 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLoginMutation } from "@/redux/api/sublimeApi";
+import { useI18n } from "@/i18n";
 
 import { toast } from "react-hot-toast";
 
 export default function LoginForm() {
+  const { t } = useI18n();
   const router = useRouter();
   const [login, { isLoading }] = useLoginMutation();
   const [email, setEmail] = useState("");
@@ -22,7 +24,7 @@ export default function LoginForm() {
     try {
       const result = await login({ email, password }).unwrap();
       if (result.success && result.data?.token) {
-        toast.success("Login berhasil!");
+        toast.success(t("auth_login_success"));
         localStorage.setItem("token", result.data.token);
         // Dispatch user data to store if needed, or rely on getMe query in dashboard
 
@@ -34,12 +36,14 @@ export default function LoginForm() {
           router.push("/dashboard");
         }
       } else {
-        const msg = result.message || "Login failed";
+        const msg = result.message || t("auth_login_failed");
         setErrorMsg(msg);
         toast.error(msg);
       }
-    } catch (err: any) {
-      const msg = err?.data?.message || "Terjadi kesalahan saat login";
+    } catch (err: unknown) {
+      const msg =
+        (err as { data?: { message?: string } })?.data?.message ||
+        t("auth_login_error");
       setErrorMsg(msg);
       toast.error(msg);
     }
@@ -50,15 +54,15 @@ export default function LoginForm() {
       {/* Header */}
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-medium leading-8 text-[#1F1F1F]">
-          Bergabung dengan Strovia
+          {t("auth_login_join")}
         </h2>
         <div className="flex items-center gap-0 text-sm">
-          <span className="text-[#1F1F1F]">Pengguna baru?</span>
+          <span className="text-[#1F1F1F]">{t("auth_login_new_user")}</span>
           <Link
             href="/register"
             className="text-[#3197A5] hover:underline ml-1"
           >
-            Buat akun
+            {t("auth_login_create_account")}
           </Link>
         </div>
       </div>
@@ -80,7 +84,7 @@ export default function LoginForm() {
             htmlFor="email"
             className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
           >
-            Email
+            {t("auth_email")}
           </label>
         </div>
 
@@ -99,8 +103,8 @@ export default function LoginForm() {
             <label
               htmlFor="password"
               className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
-            >
-              Password
+          >
+              {t("auth_password")}
             </label>
 
             {/* Eye Icon Toggle */}
@@ -136,9 +140,9 @@ export default function LoginForm() {
           <div className="flex justify-end">
             <Link
               href="/forgot-password"
-              className="text-sm text-[#3197A5] hover:underline"
-            >
-              Lupa Kata Sandi?
+            className="text-sm text-[#3197A5] hover:underline"
+          >
+              {t("auth_login_forgot_password")}
             </Link>
           </div>
         </div>
@@ -175,10 +179,10 @@ export default function LoginForm() {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              <span>Memproses...</span>
+              <span>{t("auth_processing")}</span>
             </>
           ) : (
-            "Login"
+            t("auth_login_button")
           )}
         </button>
       </form>

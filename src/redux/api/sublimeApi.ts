@@ -791,6 +791,17 @@ export const sublimeApi = apiSlice.injectEndpoints({
         responseHandler: (response) => response.blob(),
       }),
     }),
+
+    // =========================================================================
+    // Notifications
+    // =========================================================================
+    getNotifications: builder.query({
+      query: (params) => ({
+        url: "/api/v1/notifications/",
+        params,
+      }),
+      providesTags: ["Notifications"],
+    }),
   }),
 });
 
@@ -945,6 +956,9 @@ export const {
 
   // Files
   useGetFileQuery,
+
+  // Notifications
+  useGetNotificationsQuery,
 } = sublimeApi;
 
 export const useGetChatHistoryQuery =

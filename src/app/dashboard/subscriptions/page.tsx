@@ -1,7 +1,6 @@
 "use client";
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import Link from "next/link";
 import Image from "next/image";
 
 import { useRouter } from "next/navigation";
@@ -10,6 +9,10 @@ import { useI18n } from "@/i18n";
 export default function SubscriptionsPage() {
   const router = useRouter();
   const { t } = useI18n();
+  const navigateWithLoading = (path: string) => {
+    window.dispatchEvent(new Event("app:navigation-start"));
+    router.push(path);
+  };
   return (
     <DashboardLayout activeItem="Home">
       <div className="w-full flex flex-col items-center pt-6 pb-20 px-4">
@@ -269,7 +272,7 @@ export default function SubscriptionsPage() {
 
           {/* Action Button */}
           <button
-            onClick={() => router.push("/dashboard/subscriptions/payment")}
+            onClick={() => navigateWithLoading("/dashboard/subscriptions/payment")}
             className="w-full bg-[#3197A5] hover:bg-[#288a96] text-white font-medium py-4 rounded-xl transition-colors shadow-lg shadow-[#3197A5]/20"
           >
             {t("promo_btn")}

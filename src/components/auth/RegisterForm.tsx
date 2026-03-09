@@ -6,8 +6,10 @@ import { useRouter } from "next/navigation";
 import { useRegisterMutation } from "@/redux/api/sublimeApi";
 import { toast } from "react-hot-toast";
 import Modal from "@/components/ui/Modal";
+import { useI18n } from "@/i18n";
 
 export default function RegisterForm() {
+  const { t } = useI18n();
   const router = useRouter();
   const [register, { isLoading }] = useRegisterMutation();
   const [firstName, setFirstName] = useState("");
@@ -28,7 +30,12 @@ export default function RegisterForm() {
 
     try {
       const name = `${firstName} ${lastName}`.trim();
-      const payload: any = {
+      const payload: {
+        name: string;
+        email: string;
+        password: string;
+        referral_code: string;
+      } = {
         name,
         email,
         password,
@@ -38,7 +45,7 @@ export default function RegisterForm() {
       const result = await register(payload).unwrap();
 
       if (result.success) {
-        toast.success("Registrasi berhasil!");
+        toast.success(t("auth_register_success"));
         if (result.data?.token) {
           localStorage.setItem("token", result.data.token);
           router.push("/dashboard");
@@ -46,12 +53,14 @@ export default function RegisterForm() {
           router.push("/login");
         }
       } else {
-        const msg = result.message || "Registration failed";
+        const msg = result.message || t("auth_register_failed");
         setErrorMsg(msg);
         toast.error(msg);
       }
-    } catch (err: any) {
-      const msg = err?.data?.message || "Terjadi kesalahan saat mendaftar";
+    } catch (err: unknown) {
+      const msg =
+        (err as { data?: { message?: string } })?.data?.message ||
+        t("auth_register_error");
       setErrorMsg(msg);
       toast.error(msg);
     }
@@ -69,12 +78,12 @@ export default function RegisterForm() {
             color: "#1F1F1F",
           }}
         >
-          Mulai sekarang
+          {t("auth_register_start_now")}
         </h2>
         <div className="flex items-center gap-0 text-sm">
-          <span className="text-[#1F1F1F]">Sudah punya akun?</span>
+          <span className="text-[#1F1F1F]">{t("auth_register_has_account")}</span>
           <Link href="/login" className="text-[#3197A5] hover:underline ml-1">
-            Login
+            {t("auth_login_button")}
           </Link>
         </div>
       </div>
@@ -98,7 +107,7 @@ export default function RegisterForm() {
               htmlFor="firstName"
               className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
             >
-              Nama Depan
+              {t("auth_first_name")}
             </label>
           </div>
 
@@ -117,7 +126,7 @@ export default function RegisterForm() {
               htmlFor="lastName"
               className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
             >
-              Nama Belakang
+              {t("auth_last_name")}
             </label>
           </div>
         </div>
@@ -137,7 +146,7 @@ export default function RegisterForm() {
             htmlFor="email"
             className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
           >
-            Email
+            {t("auth_email")}
           </label>
         </div>
 
@@ -156,7 +165,7 @@ export default function RegisterForm() {
             htmlFor="password"
             className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
           >
-            Kata Sandi
+            {t("auth_password")}
           </label>
 
           {/* Eye Icon Toggle */}
@@ -202,7 +211,7 @@ export default function RegisterForm() {
             htmlFor="referralCode"
             className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
           >
-            Kode Referral (Opsional)
+            {t("auth_referral_optional")}
           </label>
         </div>
 
@@ -216,26 +225,26 @@ export default function RegisterForm() {
           disabled={isLoading}
           className="w-full min-w-[120px] h-11 flex items-center justify-center px-3 py-2 bg-[#3197A5] text-white text-base font-normal rounded-[99px] hover:bg-[#2a8694] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? "Memproses..." : "Buat Akun"}
+          {isLoading ? t("auth_processing") : t("auth_register_create_account")}
         </button>
 
         {/* Privacy Policy Text */}
         <p className="text-xs text-center text-[#8E8E8E]">
-          Dengan mendaftar, saya menyetujui{" "}
+          {t("auth_register_agree_prefix")}{" "}
           <button
             type="button"
             onClick={() => setShowTerms(true)}
             className="text-[#3197A5] hover:underline"
           >
-            Terms of Use
+            {t("auth_terms_title")}
           </button>{" "}
-          dan{" "}
+          {t("auth_and")}{" "}
           <button
             type="button"
             onClick={() => setShowPrivacy(true)}
             className="text-[#3197A5] hover:underline"
           >
-            Privacy Policy
+            {t("auth_privacy_title")}
           </button>
         </p>
       </form>
@@ -244,32 +253,26 @@ export default function RegisterForm() {
       <Modal
         isOpen={showTerms}
         onClose={() => setShowTerms(false)}
-        title="Syarat Ketentuan"
+        title={t("auth_terms_title")}
       >
         <div className="space-y-4">
           <p>
-            Selamat datang di Strovia. Dengan menggunakan layanan kami, Anda
-            menyetujui Syarat Ketentuan ini.
+            {t("auth_terms_intro")}
           </p>
           <p>
-            <strong>1. Lisensi Penggunaan</strong>
+            <strong>{t("auth_terms_license_title")}</strong>
             <br />
-            Layanan kami disediakan untuk tujuan rehabilitasi pribadi. Anda
-            setuju untuk tidak menyalahgunakan atau mendistribusikan ulang
-            konten kami.
+            {t("auth_terms_license_body")}
           </p>
           <p>
-            <strong>2. Penafian Medis</strong>
+            <strong>{t("auth_terms_medical_title")}</strong>
             <br />
-            Strovia adalah alat pendukung dan tidak menggantikan saran medis
-            profesional. Selalu konsultasikan dengan dokter Anda mengenai
-            program rehabilitasi Anda.
+            {t("auth_terms_medical_body")}
           </p>
           <p>
-            <strong>3. Keamanan Akun</strong>
+            <strong>{t("auth_terms_account_title")}</strong>
             <br />
-            Anda bertanggung jawab untuk menjaga kerahasiaan kredensial akun
-            Anda.
+            {t("auth_terms_account_body")}
           </p>
         </div>
       </Modal>
@@ -278,31 +281,26 @@ export default function RegisterForm() {
       <Modal
         isOpen={showPrivacy}
         onClose={() => setShowPrivacy(false)}
-        title="Kebijakan Privasi"
+        title={t("auth_privacy_title")}
       >
         <div className="space-y-4">
           <p>
-            Privasi Anda penting bagi kami. Kebijakan Privasi ini menguraikan
-            bagaimana kami menangani data Anda.
+            {t("auth_privacy_intro")}
           </p>
           <p>
-            <strong>1. Pengumpulan Data</strong>
+            <strong>{t("auth_privacy_collect_title")}</strong>
             <br />
-            Kami mengumpulkan informasi pribadi seperti nama dan email Anda
-            untuk menyediakan layanan kami. Kami tidak menjual data pribadi
-            Anda.
+            {t("auth_privacy_collect_body")}
           </p>
           <p>
-            <strong>2. Data Penggunaan</strong>
+            <strong>{t("auth_privacy_usage_title")}</strong>
             <br />
-            Kami dapat mengumpulkan data penggunaan untuk meningkatkan aplikasi
-            kami dan pengalaman rehabilitasi Anda.
+            {t("auth_privacy_usage_body")}
           </p>
           <p>
-            <strong>3. Keamanan</strong>
+            <strong>{t("auth_privacy_security_title")}</strong>
             <br />
-            Kami menerapkan langkah-langkah keamanan untuk melindungi informasi
-            Anda, meskipun tidak ada metode transmisi yang 100% aman.
+            {t("auth_privacy_security_body")}
           </p>
         </div>
       </Modal>
