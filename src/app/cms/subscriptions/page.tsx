@@ -11,6 +11,13 @@ import { useI18n } from "@/i18n";
 export default function CmsSubscriptionsPage() {
   const { t } = useI18n();
   const [activeTab, setActiveTab] = useState("subscribers"); // 'subscribers' | 'plans'
+  const [confirmState, setConfirmState] = useState<{
+    message: string;
+    onConfirm: () => Promise<void>;
+    confirmLabel?: string;
+    destructive?: boolean;
+  } | null>(null);
+  const [isConfirmLoading, setIsConfirmLoading] = useState(false);
 
   // Subscriptions Data
   const { data: subsData, isLoading: isLoadingSubs } =
@@ -42,15 +49,33 @@ export default function CmsSubscriptionsPage() {
   const plans: AdminPlan[] = (plansData?.data as AdminPlan[]) || [];
 
   const handleDeletePlan = async (id: string) => {
-    if (confirm(t("plans_confirm_delete"))) {
-      try {
-        await deletePlan(id).unwrap();
-        refetchPlans();
-      } catch (e) {
-        console.error(e);
-        alert(t("plans_delete_failed"));
-      }
-    }
+    setConfirmState({
+      message: t("plans_confirm_delete"),
+      confirmLabel: t("action_delete"),
+      destructive: true,
+      onConfirm: async () => {
+        try {
+          await deletePlan(id).unwrap();
+          refetchPlans();
+        } catch (e) {
+          console.error(e);
+          alert(t("plans_delete_failed"));
+        }
+      },
+    });
+  };
+
+  const closeConfirm = () => {
+    if (isConfirmLoading) return;
+    setConfirmState(null);
+  };
+
+  const handleConfirmAction = async () => {
+    if (!confirmState) return;
+    setIsConfirmLoading(true);
+    await confirmState.onConfirm();
+    setIsConfirmLoading(false);
+    setConfirmState(null);
   };
 
   return (
@@ -190,6 +215,53 @@ export default function CmsSubscriptionsPage() {
                 </div>
               ))
             )}
+          </div>
+        </div>
+      )}
+
+      {confirmState && (
+        <div className="fixed inset-0 z-[60] flex items-start justify-center px-4 pt-16 sm:pt-20">
+          <button
+            type="button"
+            aria-label="Close confirmation modal"
+            onClick={closeConfirm}
+            className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl border border-[#EFE7EB]"
+          >
+            <div className="px-5 py-4 border-b border-[#EFE7EB]">
+              <p className="text-sm font-semibold text-gray-700">strovia.app</p>
+            </div>
+            <div className="px-5 py-5">
+              <p className="text-sm text-[#3D3D3D]">{confirmState.message}</p>
+            </div>
+            <div className="px-5 pb-5 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={closeConfirm}
+                disabled={isConfirmLoading}
+                className="px-5 py-2 text-sm font-medium rounded-full bg-[#F9E7EC] text-[#7C4A57] hover:bg-[#F3D8E0] transition-colors disabled:opacity-60"
+              >
+                {t("form_cancel_button")}
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmAction}
+                disabled={isConfirmLoading}
+                className={`px-6 py-2 text-sm font-semibold rounded-full border transition-colors disabled:opacity-60 ${
+                  confirmState.destructive
+                    ? "bg-[#8F3C4F] text-white border-[#8F3C4F] hover:bg-[#7E3143]"
+                    : "bg-[#1CA09A] text-white border-[#1CA09A] hover:bg-[#178F87]"
+                }`}
+              >
+                {isConfirmLoading
+                  ? t("common_loading")
+                  : (confirmState.confirmLabel ?? t("common_ok"))}
+              </button>
+            </div>
           </div>
         </div>
       )}
