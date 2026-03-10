@@ -13,7 +13,6 @@ import {
 import { useDispatch } from "react-redux";
 import UserDropdown from "@/components/shared/UserDropdown";
 import { useI18n } from "@/i18n";
-import { BellRing } from "lucide-react";
 
 export default function DashboardTopbar() {
   const router = useRouter();
@@ -179,7 +178,7 @@ export default function DashboardTopbar() {
           </div>
         </div>
       )}
-      <div className="relative z-30 flex flex-col gap-3 bg-[#F5F9FA] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6 sm:py-5 lg:px-10 lg:py-6">
+      <div className="relative z-30 flex h-20 flex-col gap-3 bg-[#F5F9FA] px-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6 lg:px-10">
       <div className="hidden">
         <div className="relative">
           <svg
@@ -220,19 +219,13 @@ export default function DashboardTopbar() {
             onClick={() => router.push("/dashboard/subscriptions")}
             className="hidden items-center gap-2 whitespace-nowrap rounded-full bg-primary px-4 py-2.5 text-base font-normal text-white transition-colors hover:bg-primary-600 sm:flex"
           >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.5}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <Image
+              src="/icons/icon-berlangganan.svg"
+              alt="Mulai berlangganan"
+              width={20}
+              height={20}
+              className="h-5 w-5 object-contain"
+            />
             {t("ud_subscribe_start")}
           </button>
         )}
@@ -257,7 +250,7 @@ export default function DashboardTopbar() {
             </svg>
             <span className="text-sm text-white sm:text-base sm:text-gray-500">{code}</span>
             <svg
-              className={`h-5 w-5 text-white transition-transform sm:h-10 sm:w-10 sm:text-gray-500 ${
+              className={`h-4 w-4 text-white transition-transform sm:h-5 sm:w-5 sm:text-gray-500 ${
                 isLangOpen ? "rotate-180" : ""
               }`}
               fill="none"
@@ -300,7 +293,13 @@ export default function DashboardTopbar() {
           onClick={toggleNotif}
           className="relative rounded-full p-3 transition-colors hover:bg-gray-100"
         >
-          <BellRing className="h-5 w-5 text-gray-500" strokeWidth={1.8} />
+          <Image
+            src="/icons/icon-notification.svg"
+            alt="Notification"
+            width={44}
+            height={44}
+            className="h-11 w-11 object-contain"
+          />
           {unreadCount > 0 && (
             <span className="absolute right-2 top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#F64C4C] px-1.5">
               <span className="text-xs font-medium text-white">

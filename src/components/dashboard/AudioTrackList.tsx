@@ -138,8 +138,6 @@ The more stable your awareness, the better your body and mind can cooperate in r
 
 May this journey help you heal physically and grow in consciousness.
 Thank you, and welcome to your self-awakening journey.`;
-const GUIDE_PDF_FILE_NAME = "PANDUAN YANG PERLU ANDA KETAHUI DAN SADARI.pdf";
-
 export default function AudioTrackList({
   sessions,
   title,
@@ -161,16 +159,6 @@ export default function AudioTrackList({
   const navigateWithLoading = (path: string) => {
     window.dispatchEvent(new Event("app:navigation-start"));
     router.push(path);
-  };
-
-  const handleDownloadGuide = () => {
-    const guideFileUrl = `/${encodeURIComponent(GUIDE_PDF_FILE_NAME)}`;
-    const anchor = document.createElement("a");
-    anchor.href = guideFileUrl;
-    anchor.download = GUIDE_PDF_FILE_NAME;
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
   };
 
   const handleGuideScroll = () => {
@@ -220,7 +208,10 @@ export default function AudioTrackList({
 
   return (
     <>
-      <div className="flex flex-col gap-5 sm:gap-6">
+      <div
+        className="flex flex-col gap-5 sm:gap-6"
+        style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+      >
       {/* Header */}
       <div className="flex h-[36px] items-center sm:h-[40px]">
         <h2
@@ -236,79 +227,61 @@ export default function AudioTrackList({
       {/* Content List */}
       <div className="flex flex-col gap-3 sm:gap-4">
         <div className="py-2 sm:py-3">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p
-              className="pr-3 text-[14px] font-normal leading-[22px] text-[#1F1F1F] sm:text-[16px] sm:leading-[28px]"
-              style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
-            >
-              <span className="mr-2 inline-flex h-5 w-5 items-center justify-center rounded-full border border-[#1F1F1F] bg-transparent text-[12px] font-semibold text-[#1F1F1F]">
-                !
-              </span>
-              {t("dash_audio_guide_label")}
-            </p>
-            <div className="flex items-center gap-2 sm:gap-3">
-              <button
-                type="button"
-                aria-label={t("dash_audio_guide_view")}
-                onClick={openGuideModal}
-                className="inline-flex items-center gap-2 rounded-full border border-[#E8E8E8] bg-white px-3 py-2 text-[13px] font-medium text-[#1F1F1F] transition-colors hover:bg-[#F7F7F7]"
-                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
-              >
+          <div className="rounded-xl border border-[#BFEAF3] bg-[#E6F7FB] px-4 py-3 sm:px-5 sm:py-4">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 flex h-6 w-6 items-center justify-center">
                 <svg
-                  width="18"
-                  height="18"
+                  width="22"
+                  height="22"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M2 12C3.8 7.5 7.2 5 12 5C16.8 5 20.2 7.5 22 12C20.2 16.5 16.8 19 12 19C7.2 19 3.8 16.5 2 12Z"
-                    stroke="#1F1F1F"
-                    strokeWidth="1.5"
+                    d="M4 12a8 8 0 0 1 16 0v6a2 2 0 0 1-2 2h-1"
+                    stroke="#18A9C7"
+                    strokeWidth="1.6"
                     strokeLinecap="round"
-                    strokeLinejoin="round"
                   />
-                  <circle cx="12" cy="12" r="3" stroke="#1F1F1F" strokeWidth="1.5" />
+                  <rect
+                    x="2"
+                    y="11"
+                    width="4"
+                    height="7"
+                    rx="1.5"
+                    fill="#18A9C7"
+                  />
+                  <rect
+                    x="18"
+                    y="11"
+                    width="4"
+                    height="7"
+                    rx="1.5"
+                    fill="#18A9C7"
+                  />
                 </svg>
-                <span>{t("dash_audio_guide_view")}</span>
-              </button>
-              <button
-                type="button"
-                aria-label={t("dash_audio_guide_download")}
-                onClick={handleDownloadGuide}
-                className="inline-flex items-center gap-2 rounded-full border border-[#E8E8E8] bg-white px-3 py-2 text-[13px] font-medium text-[#1F1F1F] transition-colors hover:bg-[#F7F7F7]"
-                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+              </div>
+              <div className="flex flex-col gap-1">
+                <p
+                  className="text-[14px] font-semibold text-[#0B6D86] sm:text-[15px]"
+                  style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
                 >
-                  <path
-                    d="M12 3V14"
-                    stroke="#1F1F1F"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M8 10L12 14L16 10"
-                    stroke="#1F1F1F"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M5 19H19"
-                    stroke="#1F1F1F"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <span>{t("dash_audio_guide_download")}</span>
-              </button>
+                  {t("dash_audio_guide_title")}
+                </p>
+                <p
+                  className="text-[13px] font-normal text-[#1F1F1F]/80 sm:text-[14px]"
+                  style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+                >
+                  {t("dash_audio_guide_label")}{" "}
+                  <button
+                    type="button"
+                    onClick={openGuideModal}
+                    className="font-semibold text-[#0B6D86] underline underline-offset-2 hover:text-[#08748E]"
+                  >
+                    {t("dash_audio_guide_view")}
+                  </button>
+                </p>
+              </div>
             </div>
           </div>
         </div>

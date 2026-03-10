@@ -21,6 +21,7 @@ export default async function LoginPage() {
           ? "Let's start your independent recovery journey with full support from Strovia."
           : "Mari kita mulai perjalanan pemulihan mandiri dengan dukungan penuh bersama Strovia."
       }
+      fontFamily="'PP Neue Montreal', sans-serif"
     >
       <LoginForm />
     </AuthLayout>

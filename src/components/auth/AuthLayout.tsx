@@ -5,15 +5,20 @@ interface AuthLayoutProps {
   children: React.ReactNode;
   title: string;
   subtitle: string;
+  fontFamily?: string;
 }
 
 export default function AuthLayout({
   children,
   title,
   subtitle,
+  fontFamily,
 }: AuthLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-[#F5F9FA] overflow-hidden">
+    <div
+      className="min-h-screen flex flex-col lg:flex-row bg-[#F5F9FA] overflow-hidden"
+      style={fontFamily ? { fontFamily } : undefined}
+    >
       {/* Left Panel - Accent Color with Decorations */}
       <div className="relative lg:flex-1 min-h-[400px] lg:min-h-screen bg-[#3197A5] overflow-hidden">
         {/* Background Image with Blur */}

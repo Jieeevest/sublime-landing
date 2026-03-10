@@ -59,7 +59,7 @@ export default function DashboardArticles({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}>
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-medium text-[#1F1F1F]">
           {t("dash_articles_title")}

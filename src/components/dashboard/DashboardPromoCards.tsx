@@ -16,7 +16,10 @@ export default function DashboardPromoCards() {
     router.push(path);
   };
   return (
-    <div className="mx-auto flex w-full max-w-[1267px] flex-col gap-6 xl:flex-row xl:gap-10">
+    <div
+      className="mx-auto flex w-full max-w-[1267px] flex-col gap-6 xl:flex-row xl:gap-10"
+      style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+    >
       {/* ==============================================
           LEFT CARD: Subscription
           Width: 827px

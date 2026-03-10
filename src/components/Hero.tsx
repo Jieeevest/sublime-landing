@@ -84,7 +84,7 @@ export default function Hero() {
                 style={{
                   width: "85px",
                   height: "24px",
-                  fontFamily: "'Neue Montreal', sans-serif",
+                  fontFamily: "'PP Neue Montreal', sans-serif",
                   fontSize: "14px",
                   lineHeight: "24px",
                   color: "#3197A5",
@@ -143,7 +143,7 @@ export default function Hero() {
                       <p
                         className="font-medium"
                         style={{
-                          fontFamily: "'Neue Montreal', sans-serif",
+                          fontFamily: "'PP Neue Montreal', sans-serif",
                           fontSize: "14px",
                           lineHeight: "22px",
                           color: "#FFFFFF",
@@ -155,7 +155,7 @@ export default function Hero() {
                       <p
                         className="font-normal"
                         style={{
-                          fontFamily: "'Neue Montreal', sans-serif",
+                          fontFamily: "'PP Neue Montreal', sans-serif",
                           fontSize: "12px",
                           lineHeight: "150%",
                           color: "#E1E1E1",

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import NextImage from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useResetPasswordMutation } from "@/redux/api/sublimeApi";
 import { toast } from "react-hot-toast";
 import { useI18n } from "@/i18n";
@@ -10,6 +11,7 @@ import { useI18n } from "@/i18n";
 export default function ResetPasswordForm() {
   const { t } = useI18n();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
   const [email, setEmail] = useState(""); // User can type their email
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -19,7 +21,30 @@ export default function ResetPasswordForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const passwordMismatch =
+    hasSubmitted && newPassword !== confirmPassword;
+
+  useEffect(() => {
+    const tokenParam = searchParams?.get("token")?.trim() ?? "";
+    const emailParam = searchParams?.get("email")?.trim() ?? "";
+
+    if (emailParam) {
+      setEmail(emailParam);
+    }
+
+    if (tokenParam) {
+      const digits = tokenParam.replace(/\D/g, "").slice(0, 6);
+      if (digits.length) {
+        const nextOtp = ["", "", "", "", "", ""];
+        digits.split("").forEach((char, index) => {
+          nextOtp[index] = char;
+        });
+        setOtp(nextOtp);
+      }
+    }
+  }, [searchParams]);
 
   const handleOtpChange = (index: number, value: string) => {
     // Only allow numbers
@@ -47,6 +72,7 @@ export default function ResetPasswordForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setHasSubmitted(true);
     setErrorMsg("");
     setSuccessMsg("");
 
@@ -97,16 +123,13 @@ export default function ResetPasswordForm() {
     <div className="flex flex-col items-center gap-10 w-full">
       {/* Send Email Icon */}
       <div className="w-24 h-24 flex items-center justify-center">
-        <svg width="96" height="96" viewBox="0 0 96 96" fill="none">
-          {/* Paper airplane - send email */}
-          <path
-            d="M10 10l50 30-30 50-5-35-35-5z"
-            fill="#3197A5"
-            opacity="0.5"
-          />
-          <path d="M60 40L80 20" stroke="#3197A5" strokeWidth="3" fill="none" />
-          <path d="M25 70L35 60" stroke="#3197A5" strokeWidth="2" fill="none" />
-        </svg>
+        <NextImage
+          src="/icons/icon-send-email.svg"
+          alt="Send email icon"
+          width={96}
+          height={96}
+          className="object-contain"
+        />
       </div>
 
       {/* Header */}
@@ -194,11 +217,17 @@ export default function ResetPasswordForm() {
             onChange={(e) => setNewPassword(e.target.value)}
             required
             placeholder=" "
-            className="peer w-full h-[54px] px-[14px] text-sm text-[#1F1F1F] border border-[#E1E1E1] rounded-lg outline-none focus:border-[#3197A5] transition-colors"
+            className={`peer w-full h-[54px] px-[14px] text-sm text-[#1F1F1F] border rounded-lg outline-none transition-colors ${
+              passwordMismatch
+                ? "border-[#FF5A5A] focus:border-[#FF5A5A]"
+                : "border-[#E1E1E1] focus:border-[#3197A5]"
+            }`}
           />
           <label
             htmlFor="newPassword"
-            className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
+            className={`absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs ${
+              passwordMismatch ? "text-[#FF5A5A]" : "text-[#8E8E8E]"
+            }`}
           >
             {t("auth_reset_new_password")}
           </label>
@@ -231,6 +260,11 @@ export default function ResetPasswordForm() {
             </svg>
           </button>
         </div>
+        {passwordMismatch && (
+          <p className="-mt-4 w-full text-xs text-[#FF5A5A]">
+            {t("auth_reset_password_mismatch")}
+          </p>
+        )}
 
         {/* Confirm Password Field */}
         <div className="relative w-full">
@@ -241,11 +275,17 @@ export default function ResetPasswordForm() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
             placeholder=" "
-            className="peer w-full h-[54px] px-[14px] text-sm text-[#1F1F1F] border border-[#E1E1E1] rounded-lg outline-none focus:border-[#3197A5] transition-colors"
+            className={`peer w-full h-[54px] px-[14px] text-sm text-[#1F1F1F] border rounded-lg outline-none transition-colors ${
+              passwordMismatch
+                ? "border-[#FF5A5A] focus:border-[#FF5A5A]"
+                : "border-[#E1E1E1] focus:border-[#3197A5]"
+            }`}
           />
           <label
             htmlFor="confirmPassword"
-            className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
+            className={`absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs ${
+              passwordMismatch ? "text-[#FF5A5A]" : "text-[#8E8E8E]"
+            }`}
           >
             {t("auth_reset_confirm_password")}
           </label>
@@ -278,6 +318,11 @@ export default function ResetPasswordForm() {
             </svg>
           </button>
         </div>
+        {passwordMismatch && (
+          <p className="-mt-4 w-full text-xs text-[#FF5A5A]">
+            {t("auth_reset_password_mismatch")}
+          </p>
+        )}
 
         {/* Submit Button */}
         <button
@@ -288,9 +333,7 @@ export default function ResetPasswordForm() {
           {isLoading ? t("auth_processing") : t("auth_reset_update_button")}
         </button>
 
-        {errorMsg && (
-          <div className="text-red-500 text-sm text-center">{errorMsg}</div>
-        )}
+        {/* Error shown inline near fields; no global error under button */}
         {successMsg && (
           <div className="text-green-600 text-sm text-center">{successMsg}</div>
         )}

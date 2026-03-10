@@ -28,7 +28,10 @@ export default function AudioSessionCard({ session }: AudioSessionCardProps) {
   };
 
   return (
-    <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+    <div
+      className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+      style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+    >
       {/* Image Container */}
       <div className="relative aspect-video bg-gradient-to-br from-primary-100 to-primary-200 overflow-hidden">
         {/* Placeholder gradient background */}
@@ -91,10 +94,10 @@ export default function AudioSessionCard({ session }: AudioSessionCardProps) {
 
       {/* Content */}
       <div className="p-5">
-        <h3 className="font-hero text-lg font-semibold text-secondary mb-2 line-clamp-1">
+        <h3 className="font-hero text-lg font-semibold text-secondary mb-2">
           {session.title}
         </h3>
-        <p className="text-sm text-secondary/60 line-clamp-2">
+        <p className="text-sm text-secondary/60">
           {session.description}
         </p>
       </div>

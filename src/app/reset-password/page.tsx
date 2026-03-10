@@ -16,6 +16,7 @@ export default function ResetPasswordPage() {
         padding: "40px",
         gap: "24px",
         isolation: "isolate",
+        fontFamily: "'PP Neue Montreal', sans-serif",
       }}
     >
       {/* Logo - Top Left (absolute positioned) */}

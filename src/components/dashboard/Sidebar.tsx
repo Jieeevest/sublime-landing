@@ -47,45 +47,21 @@ function isItemActive(activeItem: string, item: MenuItem) {
 }
 
 function MenuIcon({ icon, isActive }: { icon: MenuItem["icon"]; isActive: boolean }) {
-  if (icon === "home") {
-    return (
-      <svg
-        className={`h-6 w-6 text-white ${isActive ? "opacity-100" : "opacity-50"}`}
-        fill="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-      </svg>
-    );
-  }
-
-  if (icon === "article") {
-    return (
-      <svg
-        className={`h-6 w-6 text-white ${isActive ? "opacity-100" : "opacity-50"}`}
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <rect x="4" y="4" width="16" height="16" rx="2" />
-        <path d="M9 9h6M9 13h6M9 17h3" strokeLinecap="round" />
-      </svg>
-    );
-  }
+  const src =
+    icon === "home"
+      ? "/icons/icon-home.svg"
+      : icon === "article"
+        ? "/icons/icon-article.svg"
+        : "/icons/icon-chat.svg";
 
   return (
-    <svg
-      className={`h-6 w-6 text-white ${isActive ? "opacity-100" : "opacity-50"}`}
-      fill="currentColor"
-      viewBox="0 0 20 20"
-    >
-      <path
-        d="M10 2c-4.418 0-8 3.134-8 7 0 1.434.493 2.767 1.338 3.877L2 17l4.083-.98A8.841 8.841 0 0010 17c4.418 0 8-3.134 8-7s-3.582-7-8-7z"
-        opacity="0.5"
-      />
-      <ellipse cx="10" cy="9" rx="0.5" ry="0.5" fill="white" />
-    </svg>
+    <Image
+      src={src}
+      alt={icon}
+      width={24}
+      height={24}
+      className={`h-6 w-6 object-contain ${isActive ? "opacity-100" : "opacity-50"}`}
+    />
   );
 }
 

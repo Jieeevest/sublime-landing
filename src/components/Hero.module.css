@@ -42,7 +42,7 @@
 
 /* Typography */
 .heading {
-  font-family: "Neue Montreal", sans-serif;
+  font-family: "PP Neue Montreal", sans-serif;
   font-size: 40px;
   line-height: 58px;
   font-weight: 700;
@@ -56,7 +56,7 @@
 }
 
 .description {
-  font-family: "Neue Montreal", sans-serif;
+  font-family: "PP Neue Montreal", sans-serif;
   font-size: 18px;
   line-height: 32px;
   font-weight: 400;
@@ -110,7 +110,7 @@
 }
 
 .buttonText {
-  font-family: "Neue Montreal", sans-serif;
+  font-family: "PP Neue Montreal", sans-serif;
   font-size: 14px;
   line-height: 24px;
   font-weight: 400;
@@ -137,7 +137,7 @@
 }
 
 .audioCardHeaderText {
-  font-family: "Neue Montreal", sans-serif;
+  font-family: "PP Neue Montreal", sans-serif;
   font-size: 14px;
   line-height: 150%;
   color: #1f1f1f;
@@ -160,7 +160,7 @@
 }
 
 .affirmationTitle {
-  font-family: "Neue Montreal", sans-serif;
+  font-family: "PP Neue Montreal", sans-serif;
   font-size: 24px;
   line-height: 29px;
   font-weight: 700;
@@ -180,7 +180,7 @@
 }
 
 .affirmationText {
-  font-family: "Neue Montreal", sans-serif;
+  font-family: "PP Neue Montreal", sans-serif;
   font-size: 18px;
   line-height: 26px;
   font-weight: 500;

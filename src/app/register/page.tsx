@@ -25,6 +25,7 @@ export default async function RegisterPage() {
           ? "Support your self-recovery process after stroke with 528Hz subliminal messages and sound from Strovia."
           : "Dukung proses pemulihan mandiri yang anda miliki dalam diri anda setelah pengalaman stroke dengan bantuan 528Hz subliminal message and sound bersama Strovia."
       }
+      fontFamily="'PP Neue Montreal', sans-serif"
     >
       <RegisterForm />
     </AuthLayout>

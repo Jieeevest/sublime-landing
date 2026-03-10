@@ -16,6 +16,7 @@ export default function ForgotPasswordPage() {
         padding: "40px",
         gap: "40px",
         isolation: "isolate",
+        fontFamily: "'PP Neue Montreal', sans-serif",
       }}
     >
       {/* Logo - Top Left (absolute positioned) */}

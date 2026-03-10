@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import NextImage from "next/image";
 import { useForgotPasswordMutation } from "@/redux/api/sublimeApi";
 import { toast } from "react-hot-toast";
 import { useI18n } from "@/i18n";
@@ -35,19 +36,13 @@ export default function ForgotPasswordForm() {
       <div className="flex flex-col items-center gap-10 w-full">
         {/* Success Icon - Mail */}
         <div className="w-24 h-24 flex items-center justify-center">
-          <svg width="96" height="96" viewBox="0 0 96 96" fill="none">
-            <path
-              d="M12 20h72a4 4 0 0 1 4 4v48a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V24a4 4 0 0 1 4-4z"
-              fill="#3197A5"
-              opacity="0.5"
-            />
-            <path
-              d="M12 20l36 24 36-24"
-              stroke="#3197A5"
-              strokeWidth="2"
-              fill="none"
-            />
-          </svg>
+          <NextImage
+            src="/icons/icon-forgot-password.svg"
+            alt="Forgot password icon"
+            width={96}
+            height={96}
+            className="object-contain"
+          />
         </div>
 
         {/* Header */}
@@ -111,33 +106,13 @@ export default function ForgotPasswordForm() {
     <div className="flex flex-col items-center gap-10 w-full">
       {/* Lock Icon */}
       <div className="w-24 h-24 flex items-center justify-center">
-        <svg width="96" height="96" viewBox="0 0 96 96" fill="none">
-          {/* Lock body */}
-          <rect
-            x="24"
-            y="44"
-            width="48"
-            height="36"
-            rx="4"
-            fill="#3197A5"
-            opacity="0.5"
-          />
-          {/* Lock shackle */}
-          <path
-            d="M32 44V32a16 16 0 0 1 32 0v12"
-            stroke="#3197A5"
-            strokeWidth="4"
-            fill="none"
-          />
-          {/* Question mark */}
-          <circle cx="48" cy="58" r="3" fill="#3197A5" />
-          <path
-            d="M48 50v-2a4 4 0 0 1 4-4"
-            stroke="#3197A5"
-            strokeWidth="2"
-            fill="none"
-          />
-        </svg>
+        <NextImage
+          src="/icons/icon-forgot-password.svg"
+          alt="Forgot password icon"
+          width={96}
+          height={96}
+          className="object-contain"
+        />
       </div>
 
       {/* Header */}

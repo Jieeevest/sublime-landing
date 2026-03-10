@@ -92,7 +92,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout activeItem="Home">
-      <div className="mx-auto max-w-[1267px] space-y-6 px-4 pb-4 sm:space-y-8 sm:px-6 sm:pb-6 lg:space-y-10 lg:px-10">
+      <div className="mx-auto max-w-[1267px] space-y-6 px-10 pb-4 sm:space-y-8 sm:pb-6 lg:space-y-10">
         <DashboardHero />
 
         <div className="min-h-[160px] sm:min-h-[200px]">

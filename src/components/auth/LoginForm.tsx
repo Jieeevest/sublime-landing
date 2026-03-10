@@ -16,6 +16,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const hasError = Boolean(errorMsg);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,11 +79,17 @@ export default function LoginForm() {
             onChange={(e) => setEmail(e.target.value)}
             required
             placeholder=" "
-            className="peer w-full h-[54px] px-[14px] text-sm text-[#1F1F1F] border border-[#E1E1E1] rounded-lg outline-none focus:border-[#3197A5] transition-colors"
+            className={`peer w-full h-[54px] px-[14px] text-sm text-[#1F1F1F] border rounded-lg outline-none transition-colors ${
+              hasError
+                ? "border-[#FF5A5A] focus:border-[#FF5A5A]"
+                : "border-[#E1E1E1] focus:border-[#3197A5]"
+            }`}
           />
           <label
             htmlFor="email"
-            className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
+            className={`absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs ${
+              hasError ? "text-[#FF5A5A]" : "text-[#8E8E8E]"
+            }`}
           >
             {t("auth_email")}
           </label>
@@ -98,11 +105,17 @@ export default function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder=" "
-              className="peer w-full h-[54px] px-[14px] text-sm text-[#1F1F1F] border border-[#E1E1E1] rounded-lg outline-none focus:border-[#3197A5] transition-colors"
+              className={`peer w-full h-[54px] px-[14px] text-sm text-[#1F1F1F] border rounded-lg outline-none transition-colors ${
+                hasError
+                  ? "border-[#FF5A5A] focus:border-[#FF5A5A]"
+                  : "border-[#E1E1E1] focus:border-[#3197A5]"
+              }`}
             />
             <label
               htmlFor="password"
-              className="absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs text-[#8E8E8E] bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
+              className={`absolute left-[14px] top-1/2 -translate-y-1/2 px-[2px] text-xs bg-white pointer-events-none transition-all peer-focus:top-0 peer-focus:text-xs peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs ${
+                hasError ? "text-[#FF5A5A]" : "text-[#8E8E8E]"
+              }`}
           >
               {t("auth_password")}
             </label>
@@ -135,6 +148,9 @@ export default function LoginForm() {
               </svg>
             </button>
           </div>
+          {hasError && (
+            <p className="-mt-4 text-xs text-[#FF5A5A]">{errorMsg}</p>
+          )}
 
           {/* Forgot Password Link */}
           <div className="flex justify-end">
@@ -146,10 +162,6 @@ export default function LoginForm() {
             </Link>
           </div>
         </div>
-
-        {errorMsg && (
-          <div className="text-red-500 text-sm text-center">{errorMsg}</div>
-        )}
 
         {/* Submit Button */}
         <button

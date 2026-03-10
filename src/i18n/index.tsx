@@ -254,6 +254,7 @@ const dict: Dict = {
     dash_audio_sub_btn: "Berlangganan Sekarang",
     dash_audio_empty_title: "Belum ada audio saat ini",
     dash_audio_empty_desc: "Nantikan audio pilihan menarik untuk Anda segera.",
+    dash_audio_guide_title: "Panduan Audio",
     dash_audio_guide_label:
       "Panduan yang anda perlu ketahui sebelum mendengarkan Audio Strovia",
     dash_audio_guide_view: "Lihat Panduan",
@@ -688,6 +689,7 @@ const dict: Dict = {
     dash_audio_sub_btn: "Subscribe Now",
     dash_audio_empty_title: "No audio available currently",
     dash_audio_empty_desc: "Stay tuned for exciting curated audio coming soon.",
+    dash_audio_guide_title: "Listening Guide",
     dash_audio_guide_label:
       "Guide you need to know before listening to Strovia Audio",
     dash_audio_guide_view: "View Guide",

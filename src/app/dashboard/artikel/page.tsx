@@ -7,7 +7,7 @@ import { useGetPublicContentsQuery } from "@/redux/api/sublimeApi";
 import { useI18n } from "@/i18n";
 
 export default function ArtikelPage() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { data, isLoading } = useGetPublicContentsQuery({ type: "article" });
   const articles = data?.data || [];
   type PublicArticle = {
@@ -20,23 +20,30 @@ export default function ArtikelPage() {
     created_at?: string;
   };
 
+  const locale = lang === "en" ? "en-US" : "id-ID";
+  const formatDate = (value?: string) =>
+    value
+      ? new Date(value).toLocaleDateString(locale, {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })
+      : "-";
+
+  const featured = articles[0];
+  const sideCards = articles.slice(1, 3);
+  const gridCards = articles.slice(3, 6);
+
   return (
     <DashboardLayout activeItem={t("ud_menu_articles")}>
-      <div className="p-8 max-w-7xl mx-auto space-y-8">
+      <div
+        className="mx-auto max-w-[1267px] space-y-8 px-10 pb-10"
+        style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+      >
         {/* Header */}
-        <div className="space-y-2  mb-3 ">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fillRule="evenodd"
-                d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-                clipRule="evenodd"
-              />
-            </svg>
+        <div>
+          <h1 className="text-xl font-semibold text-[#5A96A0]">
             {t("ud_articles_label")}
-          </div>
-          <h1 className="text-3xl font-bold text-primary">
-            {articles[0]?.title}
           </h1>
         </div>
 
@@ -46,141 +53,196 @@ export default function ArtikelPage() {
           </div>
         ) : articles.length > 0 ? (
           <>
-            {/* Featured Article (First one) */}
-            {articles[0] && (
-              <Link href={`/dashboard/artikel/${articles[0].slug}`}>
-                <div className="hover:scale-[1.005] transition-all  relative bg-gradient-to-br from-primary-100 to-primary-200 rounded-3xl overflow-hidden h-96 group cursor-pointer">
-                  {/* Placeholder or Real Image */}
-                  {articles[0].cover_image_url ? (
-                    <img
-                      src={articles[0].cover_image_url}
-                      alt={articles[0].title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <svg
-                        className="w-32 h-32 text-primary/20"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                  )}
-
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-secondary/40 to-transparent group-hover:from-secondary/90 transition-all" />
-
-                  {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                    <div className="flex items-center gap-2 text-sm mb-3">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+            {/* Top Grid */}
+            <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+              {/* Featured Article */}
+              {featured && (
+                <Link href={`/dashboard/artikel/${featured.slug}`}>
+                  <div className="relative h-[340px] overflow-hidden rounded-2xl bg-[#DDEFF3] shadow-sm transition-transform hover:scale-[1.004]">
+                    {featured.cover_image_url ? (
+                      <img
+                        src={featured.cover_image_url}
+                        alt={featured.title}
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <svg
+                          className="h-24 w-24 text-primary/20"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#2C4A52]/80 via-[#2C4A52]/35 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
+                      <div className="mb-2 flex items-center gap-2 text-[11px] text-white/80">
+                        <svg
+                          className="h-3.5 w-3.5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
                           strokeWidth={2}
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                      {articles[0].created_at
-                        ? new Date(articles[0].created_at).toLocaleDateString()
-                        : "-"}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                        {formatDate(featured.created_at)}
+                      </div>
+                      <h2 className="text-lg font-semibold leading-snug">
+                        {featured.title}
+                      </h2>
                     </div>
-                    <h2 className="text-3xl font-bold mb-3 group-hover:text-primary-200 transition-colors">
-                      {articles[0].title}
-                    </h2>
-                    <div
-                      className="text-white/90 text-lg max-w-2xl"
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          articles[0].excerpt || articles[0].subtitle || "",
-                      }}
-                    />
                   </div>
-                </div>
-              </Link>
-            )}
+                </Link>
+              )}
 
-            {/* Articles Grid (Rest) */}
-            {articles.length > 1 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {articles.slice(1).map((article: PublicArticle) => (
+              {/* Side Cards */}
+              <div className="flex flex-col gap-6">
+                {sideCards.map((article: PublicArticle) => (
                   <Link
                     key={article.id}
                     href={`/dashboard/artikel/${article.slug}`}
                   >
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer border border-gray-100">
-                      {/* Image */}
-                      <div className="aspect-video bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center relative overflow-hidden">
-                        {article.cover_image_url ? (
-                          <img
-                            src={article.cover_image_url}
-                            alt={article.title}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <>
-                            <svg
-                              className="w-16 h-16 text-primary/30"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                          </>
-                        )}
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-5 space-y-3">
-                        <div className="flex items-center gap-2 text-xs text-secondary/60">
+                    <div className="relative h-[158px] overflow-hidden rounded-2xl bg-[#DDEFF3] shadow-sm transition-transform hover:scale-[1.01]">
+                      {article.cover_image_url ? (
+                        <img
+                          src={article.cover_image_url}
+                          alt={article.title}
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
                           <svg
-                            className="w-4 h-4"
+                            className="h-12 w-12 text-primary/20"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#2C4A52]/80 via-[#2C4A52]/35 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                        <div className="mb-1 flex items-center gap-2 text-[10px] text-white/80">
+                          <svg
+                            className="h-3 w-3"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
+                            strokeWidth={2}
                           >
                             <path
                               strokeLinecap="round"
                               strokeLinejoin="round"
-                              strokeWidth={2}
                               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                             />
                           </svg>
-                          {article.created_at
-                            ? new Date(article.created_at).toLocaleDateString()
-                            : "-"}
+                          {formatDate(article.created_at)}
                         </div>
-                        <h3 className="font-bold text-secondary text-lg line-clamp-2 group-hover:text-primary transition-colors">
+                        <h3 className="text-sm font-semibold leading-snug line-clamp-2">
                           {article.title}
                         </h3>
-                        <div
-                          className="text-sm text-secondary/60 line-clamp-2"
-                          dangerouslySetInnerHTML={{
-                            __html: article.excerpt || article.subtitle || "",
-                          }}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom Grid */}
+            {gridCards.length > 0 && (
+              <div className="grid gap-6 md:grid-cols-3">
+                {gridCards.map((article: PublicArticle) => (
+                  <Link
+                    key={article.id}
+                    href={`/dashboard/artikel/${article.slug}`}
+                  >
+                    <div className="relative h-[170px] overflow-hidden rounded-2xl bg-[#DDEFF3] shadow-sm transition-transform hover:scale-[1.01]">
+                      {article.cover_image_url ? (
+                        <img
+                          src={article.cover_image_url}
+                          alt={article.title}
+                          className="absolute inset-0 h-full w-full object-cover"
                         />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <svg
+                            className="h-12 w-12 text-primary/20"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#2C4A52]/80 via-[#2C4A52]/35 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                        <div className="mb-1 flex items-center gap-2 text-[10px] text-white/80">
+                          <svg
+                            className="h-3 w-3"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                          </svg>
+                          {formatDate(article.created_at)}
+                        </div>
+                        <h3 className="text-sm font-semibold leading-snug line-clamp-2">
+                          {article.title}
+                        </h3>
                       </div>
                     </div>
                   </Link>
                 ))}
               </div>
             )}
+
+            {/* Load More Button */}
+            <div className="flex justify-center pt-2">
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-full border border-[#D6E6EA] bg-white px-4 py-2 text-xs font-medium text-[#4E6A73] shadow-sm transition hover:bg-[#F7FBFC]"
+              >
+                {t("dash_articles_view_all")}
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+            </div>
           </>
         ) : (
           <div className="py-20 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200">
@@ -204,27 +266,6 @@ export default function ArtikelPage() {
           </div>
         )}
 
-        {/* Load More Button - Only show if there might be more (e.g. pagination) - For now hide/disabled as we only fetch one batch */}
-        {/*
-        <div className="flex justify-center pt-4">
-          <button className="px-6 py-3 border-2 border-primary text-primary rounded-full font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-2">
-            Lihat Lebih Banyak
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
-        </div>
-        */}
       </div>
     </DashboardLayout>
   );
