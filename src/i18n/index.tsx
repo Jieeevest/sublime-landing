@@ -340,7 +340,7 @@ const dict: Dict = {
     nav_logout: "Keluar",
     // Hero
     hero_heading:
-      "Audio subliminal yang di set pada frekuensi 528HZ yang memicu pemulihan mandiri bagi penderita stroke.",
+      "Audio subliminal berfrekuensi 528 Hz yang dirancang untuk mendukung dan mengoptimalkan proses pemulihan mandiri pada penderita stroke.",
     hero_cta_primary: "Mulai Perjalanan Anda",
     hero_cta_secondary: "Unduh Aplikasi",
     hero_audio_label: "Audio Pilihan untuk Anda",
