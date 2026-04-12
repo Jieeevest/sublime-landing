@@ -15,7 +15,6 @@ services:
       - ./tsconfig.json:/app/tsconfig.json
       - ./package.json:/app/package.json
       - ./package-lock.json:/app/package-lock.json
-    command: >
-            bash -c "npm run build && npm run start"
+    command: ["sh", "-c", "npm run build && npm run start"]
     ports:
       - "3045:3045"
