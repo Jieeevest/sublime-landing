@@ -1,17 +1,21 @@
-version: "3.8"
+version: "1"
 services:
   sublime-landing:
     image: sublime-landing
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: sublime-landing
     restart: unless-stopped
+    volumes:
+      - .env:/app/.env
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./next.config.ts:/app/next.config.ts
+      - ./tailwind.config.ts:/app/tailwind.config.ts
+      - ./postcss.config.mjs:/app/postcss.config.mjs
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
     command: >
-      bash -c "npm run build && npm run start"
-    environment:
-      - NODE_ENV=production
-    env_file:
-      - .env
+            bash -c "npm run build && npm run start"
     ports:
       - "3045:3045"
