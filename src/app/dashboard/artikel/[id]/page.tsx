@@ -42,12 +42,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const canonicalUrl = `${SITE_URL}/dashboard/artikel/${slug}`;
 
   return {
-    title,
+    title: article.seo_title ? { absolute: article.seo_title } : title,
     description,
     openGraph: {
       type: "article",
       url: canonicalUrl,
-      title,
+      title: article.seo_title || title,
       description,
       siteName: "Strovia",
       images: [
@@ -63,7 +63,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: article.seo_title || title,
       description,
       images: [imageUrl],
     },
