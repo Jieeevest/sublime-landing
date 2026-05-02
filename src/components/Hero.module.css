@@ -47,7 +47,8 @@
   line-height: 58px;
   font-weight: 700;
   width: 450px;
-  height: 290px;
+  min-height: 290px;
+  height: auto;
   background: linear-gradient(94.58deg, #c2f8ff 22.86%, #ffffff 62.57%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -273,7 +274,8 @@
     font-size: 52px;
     line-height: 68px;
     width: 560px;
-    height: 340px;
+    min-height: 340px;
+    height: auto;
   }
 
   .description {

@@ -21,10 +21,13 @@ export default function AuthGuard({
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
 
-    if (!storedToken) {
+    // List of public paths that don't require authentication
+    const isPublicPath = pathname?.startsWith("/dashboard/artikel");
+
+    if (!storedToken && !isPublicPath) {
       router.push("/login"); // Or /login?redirect=...
     }
-  }, [router]);
+  }, [router, pathname]);
 
   const {
     data: userData,
@@ -35,11 +38,13 @@ export default function AuthGuard({
   });
 
   useEffect(() => {
-    if (token && isError) {
+    // Only redirect on API error if not on a public path
+    const isPublicPath = pathname?.startsWith("/dashboard/artikel");
+    if (token && isError && !isPublicPath) {
       localStorage.removeItem("token"); // Clear invalid token
       router.push("/login"); // Or handle 401 specifically
     }
-  }, [token, isError, router]);
+  }, [token, isError, router, pathname]);
 
   // Admin Check
   useEffect(() => {
@@ -52,7 +57,9 @@ export default function AuthGuard({
     }
   }, [requireAdmin, userData, router]);
 
-  if (!isClient || !token || isLoading) {
+  const isPublicPath = pathname?.startsWith("/dashboard/artikel");
+
+  if (!isClient || (!token && !isPublicPath) || (token && isLoading)) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#3197A5]"></div>

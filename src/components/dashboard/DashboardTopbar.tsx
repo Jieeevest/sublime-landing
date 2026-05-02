@@ -24,19 +24,30 @@ export default function DashboardTopbar() {
   const [isNotifExit, setIsNotifExit] = useState(false);
   const [isLangSwitching, setIsLangSwitching] = useState(false);
   const [isLangSwitchingExit, setIsLangSwitchingExit] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
   const langSwitchTimers = useRef<number[]>([]);
   const notifTimers = useRef<number[]>([]);
   const { code, setLang, t } = useI18n();
 
-  const { data: user, isLoading } = useGetMeQuery(undefined);
+  // Check token on client side only
+  useEffect(() => {
+    const stored = localStorage.getItem("token");
+    setToken(stored);
+  }, []);
+
+  const isGuest = !token;
+
+  const { data: user, isLoading } = useGetMeQuery(undefined, {
+    skip: isGuest,
+  });
   const { data: subscription, isLoading: isSubLoading } =
-    useGetMySubscriptionQuery(undefined);
+    useGetMySubscriptionQuery(undefined, { skip: isGuest });
   const {
     data: notificationsData,
     isLoading: isNotifLoading,
     isFetching: isNotifFetching,
     isError: isNotifError,
-  } = useGetNotificationsQuery({ page: 1, limit: 8 });
+  } = useGetNotificationsQuery({ page: 1, limit: 8 }, { skip: isGuest });
   const isSubscribed = subscription?.is_subscribed;
 
   type NotificationItem = {
@@ -288,103 +299,114 @@ export default function DashboardTopbar() {
           )}
         </div>
 
-        <div className="relative hidden sm:block">
-        <button
-          onClick={toggleNotif}
-          className="relative rounded-full p-3 transition-colors hover:bg-gray-100"
-        >
-          <Image
-            src="/icons/icon-notification.svg"
-            alt="Notification"
-            width={44}
-            height={44}
-            className="h-11 w-11 object-contain"
-          />
-          {unreadCount > 0 && (
-            <span className="absolute right-2 top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#F64C4C] px-1.5">
-              <span className="text-xs font-medium text-white">
-                {unreadCount > 99 ? "99+" : unreadCount}
-              </span>
-            </span>
-          )}
-        </button>
-        {isNotifMounted && (
-          <div
-            className={`absolute right-0 top-full z-50 mt-2 w-[360px] overflow-hidden rounded-xl border border-gray-100 bg-white shadow-lg transition-all duration-200 ${
-              isNotifExit
-                ? "translate-y-1 scale-[0.98] opacity-0"
-                : "translate-y-0 scale-100 opacity-100"
-            }`}
+        {isGuest ? (
+          <Link
+            href="/login"
+            className="flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/30 sm:bg-primary sm:text-white sm:hover:bg-primary-600"
           >
-            <div className="border-b border-gray-100 px-4 py-3">
-              <p className="text-sm font-semibold text-[#1F1F1F]">
-                {t("notif_title")}
-              </p>
-            </div>
-            <div className="max-h-[380px] overflow-y-auto">
-              {isNotifLoading || isNotifFetching ? (
-                <div className="px-4 py-6 text-center text-sm text-gray-500">
-                  {t("notif_loading")}
-                </div>
-              ) : isNotifError ? (
-                <div className="px-4 py-6 text-center text-sm text-red-500">
-                  {t("notif_error")}
-                </div>
-              ) : notifications.length === 0 ? (
-                <div className="px-4 py-6 text-center text-sm text-gray-500">
-                  {t("notif_empty")}
-                </div>
-              ) : (
-                notifications.map((notif) => {
-                  const message = notif.message || notif.body || "";
-                  const isRead = notif.is_read ?? notif.read ?? false;
-                  return (
-                    <div
-                      key={String(notif.id)}
-                      className={`border-b border-gray-50 px-4 py-3 last:border-b-0 ${
-                        isRead ? "bg-white" : "bg-[#3197A5]/[0.04]"
-                      }`}
-                    >
-                      <p className="text-sm font-medium text-[#1F1F1F]">
-                        {notif.title || t("notif_item_fallback")}
-                      </p>
-                      {message ? (
-                        <p className="mt-1 text-xs leading-5 text-gray-600">
-                          {message}
-                        </p>
-                      ) : null}
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </div>
-        )}
-        </div>
-
-        <div className="relative">
-          <button
-            onClick={toggleProfile}
-            className="rounded-lg p-1 transition-colors hover:bg-white/10 sm:hover:bg-gray-50"
-          >
-            <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-600 ring-2 ring-transparent transition-all hover:ring-primary/20 sm:h-10 sm:w-10">
-              {isLoading ? (
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-              ) : (
-                <span className="text-sm font-semibold text-white">
-                  {getInitials(user?.data?.name)}
+            Masuk / Daftar
+          </Link>
+        ) : (
+          <>
+            <div className="relative hidden sm:block">
+            <button
+              onClick={toggleNotif}
+              className="relative rounded-full p-3 transition-colors hover:bg-gray-100"
+            >
+              <Image
+                src="/icons/icon-notification.svg"
+                alt="Notification"
+                width={44}
+                height={44}
+                className="h-11 w-11 object-contain"
+              />
+              {unreadCount > 0 && (
+                <span className="absolute right-2 top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#F64C4C] px-1.5">
+                  <span className="text-xs font-medium text-white">
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </span>
                 </span>
               )}
+            </button>
+            {isNotifMounted && (
+              <div
+                className={`absolute right-0 top-full z-50 mt-2 w-[360px] overflow-hidden rounded-xl border border-gray-100 bg-white shadow-lg transition-all duration-200 ${
+                  isNotifExit
+                    ? "translate-y-1 scale-[0.98] opacity-0"
+                    : "translate-y-0 scale-100 opacity-100"
+                }`}
+              >
+                <div className="border-b border-gray-100 px-4 py-3">
+                  <p className="text-sm font-semibold text-[#1F1F1F]">
+                    {t("notif_title")}
+                  </p>
+                </div>
+                <div className="max-h-[380px] overflow-y-auto">
+                  {isNotifLoading || isNotifFetching ? (
+                    <div className="px-4 py-6 text-center text-sm text-gray-500">
+                      {t("notif_loading")}
+                    </div>
+                  ) : isNotifError ? (
+                    <div className="px-4 py-6 text-center text-sm text-red-500">
+                      {t("notif_error")}
+                    </div>
+                  ) : notifications.length === 0 ? (
+                    <div className="px-4 py-6 text-center text-sm text-gray-500">
+                      {t("notif_empty")}
+                    </div>
+                  ) : (
+                    notifications.map((notif) => {
+                      const message = notif.message || notif.body || "";
+                      const isRead = notif.is_read ?? notif.read ?? false;
+                      return (
+                        <div
+                          key={String(notif.id)}
+                          className={`border-b border-gray-50 px-4 py-3 last:border-b-0 ${
+                            isRead ? "bg-white" : "bg-[#3197A5]/[0.04]"
+                          }`}
+                        >
+                          <p className="text-sm font-medium text-[#1F1F1F]">
+                            {notif.title || t("notif_item_fallback")}
+                          </p>
+                          {message ? (
+                            <p className="mt-1 text-xs leading-5 text-gray-600">
+                              {message}
+                            </p>
+                          ) : null}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
             </div>
-          </button>
 
-          {isProfileOpen && (
-            <UserDropdown
-              onClose={() => setIsProfileOpen(false)}
-              onLogout={handleLogout}
-            />
-          )}
-        </div>
+            <div className="relative">
+              <button
+                onClick={toggleProfile}
+                className="rounded-lg p-1 transition-colors hover:bg-white/10 sm:hover:bg-gray-50"
+              >
+                <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-600 ring-2 ring-transparent transition-all hover:ring-primary/20 sm:h-10 sm:w-10">
+                  {isLoading ? (
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                  ) : (
+                    <span className="text-sm font-semibold text-white">
+                      {getInitials(user?.data?.name)}
+                    </span>
+                  )}
+                </div>
+              </button>
+
+              {isProfileOpen && (
+                <UserDropdown
+                  onClose={() => setIsProfileOpen(false)}
+                  onLogout={handleLogout}
+                />
+              )}
+            </div>
+          </>
+        )}
         </div>
       </div>
       </div>
