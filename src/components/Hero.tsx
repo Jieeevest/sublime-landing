@@ -1,6 +1,7 @@
 "use client";
 
 import NextImage from "next/image";
+import Link from "next/link";
 import Navbar from "./Navbar";
 import styles from "./Hero.module.css";
 import { useI18n } from "@/i18n";
@@ -48,13 +49,14 @@ export default function Hero() {
 
           {/* Action Buttons */}
           <div className={`${styles.buttonGroup} flex flex-row items-start`}>
-            <button
+            <Link
+              href="/dashboard"
               className={`${styles.primaryButton} flex flex-row justify-center items-center`}
             >
               <span className={`${styles.buttonText} text-white`}>
                 {t("hero_cta_primary")}
               </span>
-            </button>
+            </Link>
 
             <button
               className={`${styles.outlineButton} flex flex-row justify-center items-center`}
