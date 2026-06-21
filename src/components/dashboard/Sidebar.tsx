@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useI18n } from "@/i18n";
 
 interface SidebarProps {
   activeItem?: string;
@@ -9,24 +10,30 @@ interface SidebarProps {
 
 type MenuItem = {
   id: string;
-  label: string;
+  labelKey: string;
   href: string;
-  icon: "home" | "article" | "chat";
+  icon: "home" | "article" | "chat" | "referral";
 };
 
 const menuItems: MenuItem[] = [
-  { id: "home", label: "Home", icon: "home", href: "/dashboard" },
+  { id: "home", labelKey: "breadcrumb_home", icon: "home", href: "/dashboard" },
   {
     id: "artikel",
-    label: "Artikel",
+    labelKey: "ud_menu_articles",
     icon: "article",
     href: "/dashboard/artikel",
   },
   {
     id: "ai-chat",
-    label: "AI Chat",
+    labelKey: "ud_menu_ai_chat",
     icon: "chat",
     href: "/dashboard/ai-chat",
+  },
+  {
+    id: "program-referal",
+    labelKey: "ud_menu_referral_program",
+    icon: "referral",
+    href: "/dashboard/program-referal",
   },
 ];
 
@@ -40,9 +47,11 @@ function isItemActive(activeItem: string, item: MenuItem) {
 
   return (
     value === item.id ||
-    value === normalize(item.label) ||
+    value === normalize(item.href) ||
     (item.id === "artikel" && value.includes("article")) ||
-    (item.id === "ai-chat" && value.includes("chat"))
+    (item.id === "ai-chat" && value.includes("chat")) ||
+    (item.id === "program-referal" &&
+      (value.includes("referal") || value.includes("referral")))
   );
 }
 
@@ -52,7 +61,9 @@ function MenuIcon({ icon, isActive }: { icon: MenuItem["icon"]; isActive: boolea
       ? "/icons/icon-home.svg"
       : icon === "article"
         ? "/icons/icon-article.svg"
-        : "/icons/icon-chat.svg";
+        : icon === "chat"
+          ? "/icons/icon-chat.svg"
+          : "/icons/icon-berlangganan.svg";
 
   return (
     <Image
@@ -66,6 +77,8 @@ function MenuIcon({ icon, isActive }: { icon: MenuItem["icon"]; isActive: boolea
 }
 
 export default function Sidebar({ activeItem = "Home" }: SidebarProps) {
+  const { t } = useI18n();
+
   return (
     <>
       <aside className="fixed left-0 top-0 z-40 hidden h-full w-[93px] flex-col items-center border-r border-dashed border-white bg-primary py-0 md:flex">
@@ -96,7 +109,9 @@ export default function Sidebar({ activeItem = "Home" }: SidebarProps) {
                 }`}
               >
                 <MenuIcon icon={item.icon} isActive={active} />
-                <span className="text-sm font-medium text-white">{item.label}</span>
+                <span className="text-center text-[11px] font-medium leading-4 text-white">
+                  {t(item.labelKey)}
+                </span>
               </Link>
             );
           })}
@@ -116,7 +131,9 @@ export default function Sidebar({ activeItem = "Home" }: SidebarProps) {
                 }`}
               >
                 <MenuIcon icon={item.icon} isActive={active} />
-                <span className="truncate text-[11px] font-medium leading-4">{item.label}</span>
+                <span className="truncate text-[11px] font-medium leading-4">
+                  {t(item.labelKey)}
+                </span>
               </Link>
             );
           })}
