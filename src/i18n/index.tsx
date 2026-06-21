@@ -279,6 +279,34 @@ const dict: Dict = {
     ud_articles_empty_desc:
       "Silakan kembali lagi nanti untuk membaca artikel terbaru kami.",
     ud_menu_ai_chat: "AI Chat",
+    ud_menu_referral_program: "Referal",
+    referral_program_title: "Program Referal Strovia",
+    referral_program_subtitle:
+      "Bagikan kebaikan, dapatkan penghasilan tambahan!",
+    referral_program_how_it_works: "Cara Kerja",
+    referral_program_step_1_title: "Bagikan Kode",
+    referral_program_step_1_desc:
+      "Ajak teman atau kerabat menggunakan kode referal unik kamu.",
+    referral_program_step_2_title: "Dapatkan Bonus",
+    referral_program_step_2_desc:
+      "Setiap ada yang berlangganan (Rp138.000 + pajak), kamu otomatis dapat Rp27.600.",
+    referral_program_step_3_title: "Bonus Berulang",
+    referral_program_step_3_desc:
+      "Kamu akan terus mendapatkan Rp27.600 setiap bulan selama mereka memperpanjang langganannya.",
+    referral_program_withdrawal_title: "Ketentuan Penarikan (WD)",
+    referral_program_withdrawal_1:
+      "Minimal penarikan saldo adalah Rp100.000.",
+    referral_program_withdrawal_2:
+      "Bonus diproses langsung ke rekening terdaftar setelah mencapai batas minimal.",
+    referral_program_highlight_title: "Potensi Bonusmu",
+    referral_program_highlight_desc:
+      "Setiap langganan aktif dari kode referalmu menghasilkan bonus berulang yang dapat terkumpul otomatis setiap bulan.",
+    referral_program_note:
+      "Pastikan rekening terdaftar sudah benar agar proses pencairan bonus berjalan lancar.",
+    referral_program_flow_label: "Alur Referal Strovia",
+    referral_program_insight_label: "Ringkasan Bonus",
+    referral_program_monthly_bonus_label: "Bonus Bulanan",
+    referral_program_withdrawal_label: "Penarikan",
     ai_new_chat: "Obrolan Baru",
     ai_search_chats_placeholder: "Cari Obrolan",
     ai_sidebar_your_chats: "Obrolan Anda",
@@ -359,13 +387,13 @@ const dict: Dict = {
       "Strovia adalah produk audio subliminal berbasis frekuensi khusus yang bertujuan untuk membangkitkan kemampuan pemulihan mandiri (self healing) dalam diri penderita stroke.",
     about_card1_title: "Audio Strovia 528 Hz",
     about_card1_desc:
-      "Produk audio Strovia di set pada frekuensi khusus 528Hz, frejuensi yangmempengaruhi gelombang otak agar tubuh dapat mengalami relaksasi mendalam.",
+      "Produk audio Strovia diatur pada frekuensi khusus 528Hz, frekuensi yang mempengaruhi gelombang otak agar tubuh dapat mengalami relaksasi mendalam.",
     about_card1_audio_title: "Audio Strovia Versi Bahasa Indonesia",
     about_card1_audio_desc:
       "Pikiranku mulai pulih. Tubuhku ingat cara memulihkan diri.",
     about_card2_title: "Afirmasi Subliminal",
     about_card2_desc:
-      'Afirmasi positif yang "disembunyikan" dalam gelombang audio sehingga dapat menembus pikiran sadar kemudia langsung diterima olaeh pikiran bawah sadar agar afirmasi tersebut dapat bekerja dengan efektif.',
+      'Afirmasi positif yang "disembunyikan" dalam gelombang audio sehingga dapat menembus pikiran sadar kemudian langsung diterima oleh pikiran bawah sadar agar afirmasi tersebut dapat bekerja dengan efektif.',
     about_card3_title: "Pendamping AI Personal",
     about_card3_desc:
       "Layanan informasi berbasis AI yang siap memberikan segala informasi yang Anda butuhkan.",
@@ -381,13 +409,13 @@ const dict: Dict = {
     how_heading: "Bagaimana Strovia Membantu Proses Pemulihan Anda",
     how_card1_title: "Frekuensi 528 Hz",
     how_card1_body1:
-      "Produk audio Strovia dirancang pada frekuensi 528Hz, dalam penelitian ilmiah (science) dan penelitian medis frekuensi ini telah dibuktikan dapat mempengaruhi gelombang otak untuk mengalami relaksasi yang mendalam yang otomatis dapat menenangkan sistem syaraf, menurunkan stres, menciptakan ketenangan dan kesimbangan dalam tubuh.",
+      "Produk audio Strovia dirancang pada frekuensi 528Hz, dalam penelitian ilmiah (science) dan penelitian medis frekuensi ini telah dibuktikan dapat mempengaruhi gelombang otak untuk mengalami relaksasi yang mendalam yang otomatis dapat menenangkan sistem saraf, menurunkan stres, menciptakan ketenangan dan keseimbangan dalam tubuh.",
     how_card1_body2:
       "Studi yang dipublikasikan di jurnal ilmiah dan dirujuk oleh National Institutes of Health (NIH) menunjukkan bahwa stimulasi audio dapat memengaruhi aktivitas otak dan membantu regulasi stres — faktor penting dalam pemulihan neurologis.",
     how_card1_nih: "National Institutes of Health (NIH)",
     how_card2_title: "Afirmasi Subliminal",
     how_card2_body1:
-      "Dalam audio Strovia juga disematkan afirmasi (pesan) yang bersifat subliminal (tersembunyi), dimana pesan tersebut tidak terdengar pada frekuensi pendengaran norma manusia sehingga tidak tertangkap oleh pikiran sadar tapi dapat tertangkap oleh pikiran bawah sadar. Hal tersebut untuk menghindari resistansi (penolakan) oleh pikiran sadar tapi pesan tersebut dapat ditangkap sepenuhnya oleh pikiran bawah sadar, yaitu bagian dari pikiran (otak) yang 95% mengontrol aktifitas fisik bahkan kehidupan kita sehari hari.",
+      "Dalam audio Strovia juga disematkan afirmasi (pesan) yang bersifat subliminal (tersembunyi), dimana pesan tersebut tidak terdengar pada frekuensi pendengaran normal manusia sehingga tidak tertangkap oleh pikiran sadar tapi dapat tertangkap oleh pikiran bawah sadar. Hal tersebut untuk menghindari resistensi (penolakan) oleh pikiran sadar tapi pesan tersebut dapat ditangkap sepenuhnya oleh pikiran bawah sadar, yaitu bagian dari pikiran (otak) yang 95% mengontrol aktivitas fisik bahkan kehidupan kita sehari hari.",
     how_card2_journal: "Frontiers in Human Neuroscience",
     how_card2_body2:
       "Penelitian di jurnal menunjukkan bahwa rangsangan subliminal dapat mengaktifkan area otak yang berhubungan dengan emosi dan motivasi. Sementara itu, publikasi dari Harvard Medical School menjelaskan bahwa pola pikir dan ekspektasi positif dapat memperkuat respons alami tubuh terhadap pemulihan.",
@@ -397,10 +425,10 @@ const dict: Dict = {
     adv_heading: "Keunggulan Utama Strovia",
     adv_1_title: "Membuat otak (pikiran) & tubuh relaks",
     adv_1_desc:
-      "Produk audio Strovia yang di set pada frekuensi 528Hz akan mempengaruhi otak dan tubuh untuk masuk dalam kondisi relaksasi yang mendalam sehingga kdeuanya dapat mencapai kesimbangan.",
+      "Produk audio Strovia yang di set pada frekuensi 528Hz akan mempengaruhi otak dan tubuh untuk masuk dalam kondisi relaksasi yang mendalam sehingga keduanya dapat mencapai keseimbangan.",
     adv_2_title: "Memicu Pemulihan Mandiri",
     adv_2_desc:
-      "Afirmasi (pesan) subliminal audio strovia akan memicu kemampuan tubuh kita untuk dapat memulihkan semua kerusakan akibat serangan stroke, baik secara neurologis, kemampuan motorik dll.",
+      "Afirmasi (pesan) subliminal audio Strovia akan memicu kemampuan tubuh kita untuk dapat memulihkan semua kerusakan akibat serangan stroke, baik secara neurologis, kemampuan motorik dll.",
     adv_3_title: "Dukungan Informasi",
     adv_3_desc:
       "Layanan informasi apapun yang berbasis teknologi AI terbaru akan selalu melayani kebutuhan Anda akan berbagai macam informasi yang Anda perlukan.",
@@ -425,20 +453,20 @@ const dict: Dict = {
       "Strovia dibuat khusus bagi Anda yang mengalami serangan Stroke dan bertekad untuk pulih dari kondisi tersebut lewat kemampuan yang dimiliki oleh tubuh Anda untuk memulihkan dirinya sendiri.",
     faq_q3: "Berapa biaya untuk menggunakan Strovia ?",
     faq_a3:
-      "Biaya paket berlangganan akses Strovia dapat Anda peroleh dengan jelas di halaman berlangganan dan paket tersebut tidak menggukan perpanjangan otomatis, sehingga Anda bisa menetukan kapan saja ingin berlangganan Strovia sesuai kebutuhan dan situasi Anda.",
+      "Biaya paket berlangganan akses Strovia dapat Anda peroleh dengan jelas di halaman berlangganan dan paket tersebut tidak menggunakan perpanjangan otomatis, sehingga Anda bisa menentukan kapan saja ingin berlangganan Strovia sesuai kebutuhan dan situasi Anda.",
     faq_q4:
       "Apakah saya bisa mendengarkan audio Strovia lebih dari sekali dalam sehari?",
     faq_a4:
       "Tidak ada batasan untuk berapa kali Anda dapat mendengarkan audio Strovia. Anda dapat mengatur sendiri berapa kali Anda ingin mendengarkan audio Strovia di saat yang memang kondusif bagi situasi Anda.",
     faq_q5: "Apakah Strovia dapat membantu kondisi stroke?",
     faq_a5:
-      "Afirmasi dalam audio Strovua dirancang sedemikian rupa untuk dapat memicu pemulihan mandiri dari berbagai macam kondisi stroke yang Anda alami.",
+      "Afirmasi dalam audio Strovia dirancang sedemikian rupa untuk dapat memicu pemulihan mandiri dari berbagai macam kondisi stroke yang Anda alami.",
     faq_q6: "Bagaimana cara kerja terapi subliminal ?",
     faq_a6:
-      "Dalam audio Strovia juga disematkan afirmasi (pesan) yang bersifat subliminal (tersembunyi), dimana pesan tersebut tidak terdengar pada frekuensi pendengaran norma manusia sehingga tidak tertangkap oleh pikiran sadar tapi dapat tertangkap oleh pikiran bawah sadar. Hal tersebut untuk menghindari resistansi (penolakan) oleh pikiran sadar tapi pesan tersebut dapat ditangkap sepenuhnya oleh pikiran bawah sadar, yaitu bagian dari pikiran (otak) yang 95% mengontrol aktifitas fisik bahkan kehidupan kita sehari hari.",
+      "Dalam audio Strovia juga disematkan afirmasi (pesan) yang bersifat subliminal (tersembunyi), dimana pesan tersebut tidak terdengar pada frekuensi pendengaran normal manusia sehingga tidak tertangkap oleh pikiran sadar tapi dapat tertangkap oleh pikiran bawah sadar. Hal tersebut untuk menghindari resistensi (penolakan) oleh pikiran sadar tapi pesan tersebut dapat ditangkap sepenuhnya oleh pikiran bawah sadar, yaitu bagian dari pikiran (otak) yang 95% mengontrol aktivitas fisik bahkan kehidupan kita sehari hari.",
     faq_q7: "Apakah saya memerlukan alat khusus ?",
     faq_a7:
-      "Anda dapat menggunakan alat pemutar/ penyetel audio apapun, akan lebih baik bila Anda dapat menggunakan earphoene, earbud, headset dll. Tapi Media apapun tidak akan mengurangi fungsi dari Audio Strovia, selama audio dapat Anda dengarkan dengan nyaman dan jelas, itu sudah cukup efektif.",
+      "Anda dapat menggunakan alat pemutar/penyetel audio apapun, akan lebih baik bila Anda dapat menggunakan earphone, earbud, headset dll. Tapi Media apapun tidak akan mengurangi fungsi dari Audio Strovia, selama audio dapat Anda dengarkan dengan nyaman dan jelas, itu sudah cukup efektif.",
     // CTASection
     cta_heading:
       "Selamat memulai perjalanan pemulihan mandiri Anda bersama Strovia",
@@ -713,6 +741,34 @@ const dict: Dict = {
     ud_articles_empty_title: "No articles yet",
     ud_articles_empty_desc: "Please check back later for our latest articles.",
     ud_menu_ai_chat: "AI Chat",
+    ud_menu_referral_program: "Referral",
+    referral_program_title: "Strovia Referral Program",
+    referral_program_subtitle:
+      "Share the goodness, earn extra income!",
+    referral_program_how_it_works: "How It Works",
+    referral_program_step_1_title: "Share Your Code",
+    referral_program_step_1_desc:
+      "Invite friends or relatives using your unique referral code.",
+    referral_program_step_2_title: "Get Rewarded",
+    referral_program_step_2_desc:
+      "Every time someone subscribes (Rp138.000 + tax), you automatically earn Rp27.600.",
+    referral_program_step_3_title: "Recurring Bonus",
+    referral_program_step_3_desc:
+      "You will keep earning Rp27.600 every month as long as they renew their subscription.",
+    referral_program_withdrawal_title: "Withdrawal Terms",
+    referral_program_withdrawal_1:
+      "The minimum balance withdrawal is Rp100.000.",
+    referral_program_withdrawal_2:
+      "Bonuses are transferred directly to your registered bank account after reaching the minimum threshold.",
+    referral_program_highlight_title: "Your Bonus Potential",
+    referral_program_highlight_desc:
+      "Each active subscription from your referral code generates recurring bonuses that can accumulate automatically every month.",
+    referral_program_note:
+      "Make sure your registered bank account details are correct so bonus payouts can be processed smoothly.",
+    referral_program_flow_label: "Strovia Referral Flow",
+    referral_program_insight_label: "Bonus Snapshot",
+    referral_program_monthly_bonus_label: "Monthly Bonus",
+    referral_program_withdrawal_label: "Withdrawal",
     ai_new_chat: "New Chat",
     ai_search_chats_placeholder: "Search Chats",
     ai_sidebar_your_chats: "Your Chats",
