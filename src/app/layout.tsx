@@ -29,6 +29,15 @@ export const metadata: Metadata = {
     "healing audio",
     "Strovia",
   ],
+  applicationName: "Strovia",
+  appleWebApp: {
+    capable: true,
+    title: "Strovia",
+    statusBarStyle: "default",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   authors: [{ name: "Strovia", url: SITE_URL }],
   creator: "Strovia",
   publisher: "Strovia",
@@ -51,9 +60,7 @@ export const metadata: Metadata = {
       "Strovia membantu pemulihan stroke dengan terapi audio subliminal 432 Hz yang menenangkan. Mulai perjalanan penyembuhan Anda hari ini.",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "/image-cover.png",
         alt: "Strovia - Stroke Recovery Subliminal Audio",
       },
     ],
@@ -63,7 +70,7 @@ export const metadata: Metadata = {
     title: "Strovia - Stroke Recovery Subliminal Audio",
     description:
       "Strovia membantu pemulihan stroke dengan terapi audio subliminal 432 Hz yang menenangkan.",
-    images: ["/og-image.png"],
+    images: ["/image-cover.png"],
   },
   icons: {
     icon: "/icon.svg",
@@ -89,6 +96,49 @@ export default async function RootLayout({
     <html lang={initialLang}>
       <body className="antialiased">
         <GoogleAnalytics />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  name: "Strovia",
+                  url: SITE_URL,
+                  image: `${SITE_URL}/image-cover.png`,
+                  description:
+                    "Strovia membantu pemulihan stroke dengan terapi audio subliminal 432 Hz yang menenangkan.",
+                  potentialAction: {
+                    "@type": "SearchAction",
+                    target: `${SITE_URL}/?s={search_term_string}`,
+                    "query-input": "required name=search_term_string",
+                  },
+                },
+                {
+                  "@type": "Organization",
+                  name: "Strovia",
+                  url: SITE_URL,
+                  logo: `${SITE_URL}/icon.svg`,
+                  sameAs: [],
+                },
+                {
+                  "@type": "SoftwareApplication",
+                  name: "Strovia",
+                  applicationCategory: "HealthApplication",
+                  operatingSystem: "Any",
+                  offers: {
+                    "@type": "Offer",
+                    price: "0",
+                    priceCurrency: "IDR",
+                  },
+                  description:
+                    "Strovia adalah produk audio subliminal berbasis frekuensi khusus yang bertujuan untuk membangkitkan kemampuan pemulihan mandiri (self healing) dalam diri pasien stroke.",
+                },
+              ],
+            }),
+          }}
+        />
         <ReduxProvider>
           <I18nProvider initialLang={initialLang}>
             <AudioProvider>
