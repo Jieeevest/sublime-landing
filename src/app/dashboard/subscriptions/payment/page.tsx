@@ -47,11 +47,9 @@ export default function PaymentPage() {
 
   const VA_BANKS = [
     { key: "MANDIRI", name: "Bank Mandiri", icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-mandiri.svg" },
-    { key: "BCA", name: "BCA", icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-bca.svg" },
-    { key: "CIMB", name: "CIMB Niaga", icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-cimb.svg" },
+    { key: "BCA",     name: "BCA",          icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-bca.svg" },
+    { key: "CIMB",    name: "CIMB Niaga",   icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-cimb.svg" },
     { key: "DANAMON", name: "Bank Danamon", icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-danamon.svg" },
-    { key: "PERMATA", name: "Bank Permata", icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-permata.svg" },
-    { key: "MAYBANK", name: "Maybank", icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-maybank.svg" },
   ];
 
   useEffect(() => {
