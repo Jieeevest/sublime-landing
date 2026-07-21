@@ -30,6 +30,8 @@ interface PaymentResult {
   qr_content?: string;
   validity_period?: string;
   reference_no?: string;
+  // internal
+  _bankInfo?: { key: string; name: string; icon: string } | null;
 }
 
 export default function PaymentPage() {
@@ -102,7 +104,8 @@ export default function PaymentPage() {
       const res = await purchaseSubscription(payload).unwrap();
 
       if (res.success) {
-        setPaymentResult(res.data);
+        const selectedBankInfo = VA_BANKS.find((b) => b.key === selectedBank) ?? null;
+        setPaymentResult({ ...res.data, _bankInfo: selectedBankInfo });
         setPollingOrderId(res.data.order_id);
         toast.success("Transaksi berhasil dibuat. Selesaikan pembayaran.");
       } else {
@@ -132,6 +135,12 @@ export default function PaymentPage() {
             {/* Virtual Account */}
             {paymentResult.payment_type === "virtual_account" && (
               <div className="space-y-4">
+                {paymentResult._bankInfo && (
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                    <img src={paymentResult._bankInfo.icon} alt={paymentResult._bankInfo.name} className="h-8 object-contain" />
+                    <span className="text-[16px] font-semibold text-[#1F1F1F]">{paymentResult._bankInfo.name}</span>
+                  </div>
+                )}
                 <p className="text-[14px] text-[#8E8E8E] text-center">Transfer ke Virtual Account berikut</p>
                 <div className="bg-[#F9FAFB] rounded-[12px] p-6 text-center">
                   <p className="text-[12px] text-[#8E8E8E] mb-2 uppercase tracking-wide">Nomor Virtual Account</p>
