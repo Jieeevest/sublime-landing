@@ -41,8 +41,18 @@ export default function PaymentPage() {
   const [triggerCheckStatus] = useLazyCheckPaymentStatusQuery();
 
   const [selectedMethod, setSelectedMethod] = useState<string>("");
+  const [selectedBank, setSelectedBank] = useState<string>("");
   const [paymentResult, setPaymentResult] = useState<PaymentResult | null>(null);
   const [pollingOrderId, setPollingOrderId] = useState<string | null>(null);
+
+  const VA_BANKS = [
+    { key: "MANDIRI", name: "Bank Mandiri", icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-mandiri.svg" },
+    { key: "BCA", name: "BCA", icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-bca.svg" },
+    { key: "CIMB", name: "CIMB Niaga", icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-cimb.svg" },
+    { key: "DANAMON", name: "Bank Danamon", icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-danamon.svg" },
+    { key: "PERMATA", name: "Bank Permata", icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-permata.svg" },
+    { key: "MAYBANK", name: "Maybank", icon: "https://batpay-public.oss-ap-southeast-5.aliyuncs.com/icon/banks/bank-maybank.svg" },
+  ];
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -79,12 +89,19 @@ export default function PaymentPage() {
       toast.error("Mohon pilih metode pembayaran.");
       return;
     }
+    if (selectedMethod === "virtual_account" && !selectedBank) {
+      toast.error("Mohon pilih bank untuk Virtual Account.");
+      return;
+    }
 
     try {
-      const res = await purchaseSubscription({
+      const payload: any = {
         plan_id: "fdc2245a-be68-4293-8e1b-7400fe3a0ae4",
         payment_type: selectedMethod,
-      }).unwrap();
+      };
+      if (selectedMethod === "virtual_account") payload.va_bank = selectedBank;
+
+      const res = await purchaseSubscription(payload).unwrap();
 
       if (res.success) {
         setPaymentResult(res.data);
@@ -322,6 +339,30 @@ export default function PaymentPage() {
                                 )}
                               </div>
                             </div>
+
+                            {/* Bank selection for VA */}
+                            {method.code === "virtual_account" && selectedMethod === "virtual_account" && (
+                              <div className="mt-4 pt-4 border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
+                                <p className="text-[12px] text-[#8E8E8E] mb-3">Pilih bank Virtual Account:</p>
+                                <div className="grid grid-cols-3 gap-2">
+                                  {VA_BANKS.map((bank) => (
+                                    <button
+                                      key={bank.key}
+                                      type="button"
+                                      onClick={() => setSelectedBank(bank.key)}
+                                      className={`flex flex-col items-center gap-2 p-3 rounded-[8px] border-[2px] transition-all ${
+                                        selectedBank === bank.key
+                                          ? "border-[#3197A5] bg-[#3197A5]/5"
+                                          : "border-[#E1E1E1] hover:bg-gray-50"
+                                      }`}
+                                    >
+                                      <img src={bank.icon} alt={bank.name} className="h-6 object-contain" />
+                                      <span className="text-[11px] text-[#1F1F1F] text-center leading-tight">{bank.name}</span>
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
