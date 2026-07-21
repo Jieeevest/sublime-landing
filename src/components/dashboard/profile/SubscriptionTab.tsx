@@ -3,6 +3,7 @@
 import { Download, Edit2, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import EditBillingModal from "./EditBillingModal";
 
@@ -78,6 +79,7 @@ const useInvoiceList = () => {
 };
 
 export default function SubscriptionTab() {
+  const router = useRouter();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   // API Hooks
@@ -288,7 +290,10 @@ export default function SubscriptionTab() {
                       </td>
                       <td className="py-4 px-6 text-right">
                         {status === "PENDING" ? (
-                          <button className="bg-[#3197A5] hover:bg-[#288a96] text-white text-[10px] font-bold px-3 py-1.5 rounded-full transition-colors">
+                          <button
+                            onClick={() => router.push("/dashboard/subscriptions/payment")}
+                            className="bg-[#3197A5] hover:bg-[#288a96] text-white text-[10px] font-bold px-3 py-1.5 rounded-full transition-colors"
+                          >
                             Bayar Sekarang
                           </button>
                         ) : (
