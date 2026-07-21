@@ -139,7 +139,7 @@ export default function PaymentPage() {
 
               <div className="text-left md:text-right">
                 <h3 className="text-[16px] font-medium text-[#1F1F1F]">
-                  Rp 138.000
+                  Rp 135.900
                 </h3>
                 <p className="text-[14px] text-[#8E8E8E]">Per 30 hari</p>
               </div>
@@ -442,7 +442,7 @@ export default function PaymentPage() {
               </div>
               <div className="text-right">
                 <p className="text-[16px] font-medium text-[#1F1F1F]">
-                  Rp 138.000
+                  Rp 135.900
                 </p>
                 <p className="text-[12px] text-[#8E8E8E]">Per 30 hari</p>
               </div>
@@ -456,7 +456,7 @@ export default function PaymentPage() {
               </span>
               <div className="text-right">
                 <p className="text-[16px] font-medium text-[#1F1F1F]">
-                  Rp 138.000
+                  Rp 135.900
                 </p>
                 <p className="text-[12px] text-[#8E8E8E]">(Termasuk PPN)</p>
               </div>

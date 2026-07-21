@@ -103,11 +103,11 @@ export default function InvoiceDetailPage() {
       {
         name: "Berlangganan",
         period: "27 Des 2025 - 26 Jan 2026",
-        price: 138000,
+        price: 135900,
       },
     ],
-    subtotal: 138000,
-    total: 138000,
+    subtotal: 135900,
+    total: 135900,
   };
 
   const apiTotal = apiInvoice?.total ? Number(apiInvoice.total) : undefined;
@@ -313,7 +313,7 @@ export default function InvoiceDetailPage() {
                 <div className="flex-1 text-center text-[#525252]">
                   27 Des 2025 - 26 Jan 2026
                 </div>
-                <div className="w-32 text-right">Rp 138.000</div>
+                <div className="w-32 text-right">Rp 135.900</div>
               </div>
             )}
           </div>

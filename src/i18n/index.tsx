@@ -289,7 +289,7 @@ const dict: Dict = {
       "Ajak teman atau kerabat menggunakan kode referal unik kamu.",
     referral_program_step_2_title: "Dapatkan Bonus",
     referral_program_step_2_desc:
-      "Setiap ada yang berlangganan (Rp138.000 + pajak), kamu otomatis dapat Rp27.600.",
+      "Setiap ada yang berlangganan (Rp135.900 + pajak), kamu otomatis dapat Rp27.600.",
     referral_program_step_3_title: "Bonus Berulang",
     referral_program_step_3_desc:
       "Kamu akan terus mendapatkan Rp27.600 setiap bulan selama mereka memperpanjang langganannya.",
@@ -333,7 +333,7 @@ const dict: Dict = {
     // Promo Cards
     promo_berlangganan: "Berlangganan",
     promo_nikmati: "Nikmati 30 hari hanya",
-    promo_price: "Rp.138,000,-",
+    promo_price: "Rp.135,900,-",
     promo_akses: "Untuk mengakses",
     promo_audio_strovia: "Audio Strovia",
     promo_desc:
@@ -350,7 +350,7 @@ const dict: Dict = {
     subs_header_subtitle: "Bayar dengan berbagai cara. Batalkan kapan saja.",
     subs_payment_others: "+4 lainnya",
     subs_card_popular: "Populer",
-    subs_card_price: "Rp 138.000",
+    subs_card_price: "Rp 135.900",
     subs_card_period: "per 30 hari",
     subs_feat_1: "Akses semua audio",
     subs_feat_2: "Chat AI",
@@ -751,7 +751,7 @@ const dict: Dict = {
       "Invite friends or relatives using your unique referral code.",
     referral_program_step_2_title: "Get Rewarded",
     referral_program_step_2_desc:
-      "Every time someone subscribes (Rp138.000 + tax), you automatically earn Rp27.600.",
+      "Every time someone subscribes (Rp135.900 + tax), you automatically earn Rp27.600.",
     referral_program_step_3_title: "Recurring Bonus",
     referral_program_step_3_desc:
       "You will keep earning Rp27.600 every month as long as they renew their subscription.",
@@ -795,7 +795,7 @@ const dict: Dict = {
     // Promo Cards
     promo_berlangganan: "Subscribe",
     promo_nikmati: "Enjoy 30 days for only",
-    promo_price: "Rp.138,000",
+    promo_price: "Rp.135,900",
     promo_akses: "To access",
     promo_audio_strovia: "Audio Strovia",
     promo_desc:
@@ -812,7 +812,7 @@ const dict: Dict = {
     subs_header_subtitle: "Pay in multiple ways. Cancel anytime.",
     subs_payment_others: "+4 others",
     subs_card_popular: "Popular",
-    subs_card_price: "Rp 138,000",
+    subs_card_price: "Rp 135,900",
     subs_card_period: "per 30 days",
     subs_feat_1: "Access all audios",
     subs_feat_2: "AI Chat",
