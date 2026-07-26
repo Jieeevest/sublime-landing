@@ -1,6 +1,7 @@
 "use client";
 
 import { use } from "react";
+import DOMPurify from "isomorphic-dompurify";
 import Link from "next/link";
 import NextImage from "next/image";
 import { useGetContentByIdQuery } from "@/redux/api/sublimeApi";
@@ -128,7 +129,7 @@ export default function ArticleView({ params }: Params) {
               content.body.trim().startsWith("<") ? (
                 <div
                   className="prose max-w-none"
-                  dangerouslySetInnerHTML={{ __html: content.body }}
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.body) }}
                 />
               ) : (
                 <div className="whitespace-pre-wrap text-gray-800 leading-relaxed">

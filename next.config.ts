@@ -2,12 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["localhost", "72.61.215.67", "strovia.app", "placehold.co"],
-    // remotePatterns: [
-    //   { protocol: "https", hostname: "**", pathname: "**" },
-    //   { protocol: "http", hostname: "**", pathname: "**" },
-    // ],
-    // formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      { protocol: "http", hostname: "localhost" },
+      { protocol: "http", hostname: "72.61.215.67" },
+      { protocol: "https", hostname: "strovia.app" },
+      { protocol: "https", hostname: "placehold.co" },
+    ],
   },
 };
 

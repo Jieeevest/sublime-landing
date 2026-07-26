@@ -75,49 +75,61 @@ interface InvoiceViewModel {
   total: number;
 }
 
+const issuer = {
+  name: "Strovia",
+  email: "support@strovia.app",
+  address: "969 Emerson Road Winnfield, LA",
+};
+
 export default function InvoiceDetailPage() {
   const params = useParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
-  const { data: invoiceData } = useGetInvoiceByIdQuery(id);
+  const {
+    data: invoiceData,
+    isLoading,
+    isError,
+  } = useGetInvoiceByIdQuery(id);
   const invoiceRef = useRef<HTMLDivElement | null>(null);
 
   const apiInvoice: ApiInvoice | undefined = invoiceData?.data as
     | ApiInvoice
     | undefined;
 
-  const mockInvoice: InvoiceViewModel = {
-    id: "INV-1991",
-    status: "PAID",
-    period: "27 Des 2025 - 26 Jan 2026",
-    issuer: {
-      name: "Strovia",
-      email: "support@strovia.app",
-      address: "969 Emerson Road Winnfield, LA",
-    },
-    billedTo: {
-      name: "Kiara Nelson",
-      email: "kiaranelson@gmail.com",
-      address: "16 Terrace, Jakarta Selatan, 20134, DKI Jakarta, Indonesia",
-    },
-    items: [
-      {
-        name: "Berlangganan",
-        period: "27 Des 2025 - 26 Jan 2026",
-        price: 135900,
-      },
-    ],
-    subtotal: 135900,
-    total: 135900,
-  };
+  if (isLoading) {
+    return (
+      <DashboardLayout activeItem="Profile">
+        <div className="w-full max-w-[1347px] mx-auto p-10 text-center text-[#525252]">
+          Memuat invoice...
+        </div>
+      </DashboardLayout>
+    );
+  }
 
-  const apiTotal = apiInvoice?.total ? Number(apiInvoice.total) : undefined;
-  const safeTotal =
-    typeof apiTotal === "number" && !Number.isNaN(apiTotal)
-      ? apiTotal
-      : mockInvoice.total;
+  if (isError || !apiInvoice) {
+    return (
+      <DashboardLayout activeItem="Profile">
+        <div className="w-full max-w-[1347px] mx-auto p-10 text-center">
+          <h1 className="text-xl font-bold text-[#1F1F1F] mb-2">
+            Invoice tidak ditemukan
+          </h1>
+          <p className="text-[#525252] mb-6">
+            Invoice yang Anda cari tidak tersedia atau Anda tidak punya akses.
+          </p>
+          <Link
+            href="/dashboard/profile"
+            className="inline-flex items-center gap-2 text-[#3197A5] font-medium"
+          >
+            <ArrowLeft size={18} /> Kembali
+          </Link>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
-  let period = mockInvoice.period;
-  if (apiInvoice?.paid_at && apiInvoice.plan?.duration_days) {
+  const total = Number(apiInvoice.total) || 0;
+
+  let period = "-";
+  if (apiInvoice.paid_at && apiInvoice.plan?.duration_days) {
     const startDate = new Date(apiInvoice.paid_at);
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + apiInvoice.plan.duration_days);
@@ -137,41 +149,33 @@ export default function InvoiceDetailPage() {
     period = `${startStr} - ${endStr}`;
   }
 
-  const items: InvoiceItem[] = apiInvoice?.items?.length
-    ? apiInvoice.items.map((item) => {
-        const priceNumber = item.price ? Number(item.price) : undefined;
-        const safePrice =
-          typeof priceNumber === "number" && !Number.isNaN(priceNumber)
-            ? priceNumber
-            : (mockInvoice.items[0]?.price ?? 0);
-
-        return {
-          name: item.name ?? "Berlangganan",
+  const items: InvoiceItem[] = apiInvoice.items?.length
+    ? apiInvoice.items.map((item) => ({
+        name: item.name ?? "Berlangganan",
+        period,
+        price: Number(item.price) || 0,
+      }))
+    : [
+        {
+          name: apiInvoice.plan?.name ?? "Berlangganan",
           period,
-          price: safePrice,
-        };
-      })
-    : mockInvoice.items;
-
-  const status = (apiInvoice?.status || mockInvoice.status).toUpperCase();
-
-  const billedTo = apiInvoice?.user
-    ? {
-        name: apiInvoice.user.name || mockInvoice.billedTo.name,
-        email: apiInvoice.user.email || mockInvoice.billedTo.email,
-        address: mockInvoice.billedTo.address,
-      }
-    : mockInvoice.billedTo;
+          price: total,
+        },
+      ];
 
   const data: InvoiceViewModel = {
-    id: apiInvoice?.invoice_number || mockInvoice.id,
-    status,
+    id: apiInvoice.invoice_number || apiInvoice.id || "-",
+    status: (apiInvoice.status || "-").toUpperCase(),
     period,
-    issuer: mockInvoice.issuer,
-    billedTo,
+    issuer,
+    billedTo: {
+      name: apiInvoice.user?.name || "-",
+      email: apiInvoice.user?.email || "-",
+      address: "-",
+    },
     items,
-    subtotal: safeTotal,
-    total: safeTotal,
+    subtotal: total,
+    total,
   };
 
   const handlePrint = () => {

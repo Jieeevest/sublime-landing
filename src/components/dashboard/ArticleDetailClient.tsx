@@ -1,6 +1,7 @@
 "use client";
 
 import { use, ReactNode } from "react";
+import DOMPurify from "isomorphic-dompurify";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { articles as dummyArticles } from "@/data/articles";
 import Link from "next/link";
@@ -197,7 +198,7 @@ export default function ArticleDetailClient({
               if (isHTML) {
                 return (
                   <div
-                    dangerouslySetInnerHTML={{ __html: body }}
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }}
                     className="text-secondary/80"
                   />
                 );
