@@ -18,20 +18,32 @@ export default function PersonalInfoTab() {
     gender: "",
   });
 
+  const genderToDisplay = (g?: string) => {
+    if (g === "male") return "Pria";
+    if (g === "female") return "Wanita";
+    if (g === "other") return "Lainnya";
+    return "Wanita";
+  };
+
+  const genderToApi = (g: string) => {
+    if (g === "Pria") return "male";
+    if (g === "Wanita") return "female";
+    return "other";
+  };
+
   useEffect(() => {
     if (user?.data) {
       const names = user.data.name ? user.data.name.split(" ") : ["", ""];
-      // Handle cases where name might be just one word or multiple
       const firstName = names[0] || "";
       const lastName = names.slice(1).join(" ") || "";
 
       setFormData({
-        firstName: firstName,
-        lastName: lastName,
+        firstName,
+        lastName,
         email: user.data.email || "",
-        phone: user.data.phone || "",
-        birthDate: user.data.birthDate || "",
-        gender: user.data.gender || "Wanita",
+        phone: user.data.phone_number || "",
+        birthDate: user.data.birth_date || "",
+        gender: genderToDisplay(user.data.gender),
       });
     }
   }, [user]);
@@ -52,9 +64,9 @@ export default function PersonalInfoTab() {
 
       await updateMe({
         name: fullName,
-        phone: formData.phone,
-        birthDate: formData.birthDate,
-        gender: formData.gender,
+        phone_number: formData.phone,
+        birth_date: formData.birthDate,
+        gender: genderToApi(formData.gender),
       }).unwrap();
 
       toast.success("Profil berhasil diperbarui!");
