@@ -4,13 +4,24 @@ import { X, ChevronDown, Check, Info } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
+const BANK_OPTIONS = [
+  { name: "BCA", code: "bca" },
+  { name: "Mandiri", code: "mandiri" },
+  { name: "BNI", code: "bni" },
+  { name: "BRI", code: "bri" },
+  { name: "CIMB Niaga", code: "cimb" },
+  { name: "Jago", code: "jago" },
+  { name: "SeaBank", code: "seabank" },
+];
+
 interface AddBankModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: {
-    bankName: string;
-    accountNumber: string;
-    accountHolder: string;
+    bank_name: string;
+    bank_code: string;
+    account_number: string;
+    account_holder_name: string;
   }) => Promise<void>;
   isLoading?: boolean;
 }
@@ -22,16 +33,17 @@ export default function AddBankModal({
   isLoading = false,
 }: AddBankModalProps) {
   const [formData, setFormData] = useState({
-    bankName: "BCA",
-    accountNumber: "",
-    accountHolder: "",
+    bank_name: "BCA",
+    bank_code: "bca",
+    account_number: "",
+    account_holder_name: "",
   });
 
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.accountNumber || !formData.accountHolder) {
+    if (!formData.account_number || !formData.account_holder_name) {
       toast.error("Mohon lengkapi data rekening");
       return;
     }
@@ -64,18 +76,15 @@ export default function AddBankModal({
             <div className="relative">
               <select
                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-[#1E1E1E] appearance-none focus:outline-none focus:ring-1 focus:ring-[#3197A5] focus:border-[#3197A5] transition-all"
-                value={formData.bankName}
-                onChange={(e) =>
-                  setFormData({ ...formData, bankName: e.target.value })
-                }
+                value={formData.bank_name}
+                onChange={(e) => {
+                  const selected = BANK_OPTIONS.find(b => b.name === e.target.value);
+                  setFormData({ ...formData, bank_name: e.target.value, bank_code: selected?.code || "" });
+                }}
               >
-                <option value="BCA">BCA</option>
-                <option value="Mandiri">Mandiri</option>
-                <option value="BNI">BNI</option>
-                <option value="BRI">BRI</option>
-                <option value="CIMB Niaga">CIMB Niaga</option>
-                <option value="Jago">Jago</option>
-                <option value="SeaBank">SeaBank</option>
+                {BANK_OPTIONS.map(b => (
+                  <option key={b.code} value={b.name}>{b.name}</option>
+                ))}
               </select>
               <ChevronDown
                 size={16}
@@ -92,10 +101,10 @@ export default function AddBankModal({
               type="text"
               placeholder="Contoh: 1234567890"
               className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-[#1E1E1E] placeholder:text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#3197A5] focus:border-[#3197A5] transition-all"
-              value={formData.accountNumber}
+              value={formData.account_number}
               onChange={(e) => {
-                const val = e.target.value.replace(/\D/g, ""); // Numeric only
-                setFormData({ ...formData, accountNumber: val });
+                const val = e.target.value.replace(/\D/g, "");
+                setFormData({ ...formData, account_number: val });
               }}
             />
           </div>
@@ -108,9 +117,9 @@ export default function AddBankModal({
               type="text"
               placeholder="Nama sesuai buku tabungan"
               className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-[#1E1E1E] placeholder:text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#3197A5] focus:border-[#3197A5] transition-all"
-              value={formData.accountHolder}
+              value={formData.account_holder_name}
               onChange={(e) =>
-                setFormData({ ...formData, accountHolder: e.target.value })
+                setFormData({ ...formData, account_holder_name: e.target.value })
               }
             />
           </div>

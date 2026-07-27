@@ -6,13 +6,20 @@ import Image from "next/image";
 import AddBankModal from "./AddBankModal";
 import toast from "react-hot-toast";
 
+interface SavedBank {
+  id: string;
+  bank_name: string;
+  account_number: string;
+  account_holder_name: string;
+}
+
 interface WithdrawalModalProps {
   isOpen: boolean;
   onClose: () => void;
   balance: number;
-  savedBank: any; // { bankName, accountNumber, accountHolder } or null
+  savedBank: SavedBank | null;
   onUpdateBank: (data: any) => Promise<void>;
-  onRequestWithdrawal: (amount: number) => Promise<void>;
+  onRequestWithdrawal: (amount: number, bankAccountId: string) => Promise<void>;
   isLoadingAction: boolean;
 }
 
@@ -67,7 +74,7 @@ export default function WithdrawalModal({
       setStep("CONFIRM");
     } else if (step === "CONFIRM") {
       const numAmount = parseInt(amount || "0", 10);
-      onRequestWithdrawal(numAmount).then(() => {
+      onRequestWithdrawal(numAmount, savedBank!.id).then(() => {
         setStep("SUCCESS");
       });
     }
@@ -147,12 +154,12 @@ export default function WithdrawalModal({
             {savedBank ? (
               <>
                 <div className="w-10 h-6 bg-blue-900 rounded flex items-center justify-center text-[8px] font-bold text-white tracking-tighter overflow-hidden uppercase">
-                  {savedBank.bankName}
+                  {savedBank.bank_name}
                 </div>
                 <div className="text-left">
                   <p className="text-xs font-bold text-[#1E1E1E]">
-                    Bank {savedBank.bankName} ••••{" "}
-                    {savedBank.accountNumber.slice(-4)}
+                    Bank {savedBank.bank_name} ••••{" "}
+                    {savedBank.account_number.slice(-4)}
                   </p>
                 </div>
               </>
@@ -221,11 +228,11 @@ export default function WithdrawalModal({
             </div>
             <div>
               <p className="text-xs font-bold text-[#1E1E1E]">
-                Bank {savedBank.bankName}
+                Bank {savedBank.bank_name}
               </p>
-              <p className="text-xs text-gray-500">{savedBank.accountNumber}</p>
+              <p className="text-xs text-gray-500">{savedBank.account_number}</p>
               <p className="text-[10px] text-gray-400 mt-1 uppercase">
-                {savedBank.accountHolder}
+                {savedBank.account_holder_name}
               </p>
             </div>
           </label>
@@ -277,7 +284,7 @@ export default function WithdrawalModal({
       <div className="p-4 border border-gray-100 rounded-2xl mb-6">
         <div className="flex justify-between items-center text-xs mb-3">
           <span className="text-gray-400">
-            Bank {savedBank?.bankName} •••• {savedBank?.accountNumber.slice(-4)}
+            Bank {savedBank?.bank_name} •••• {savedBank?.account_number.slice(-4)}
           </span>
         </div>
         <div className="h-px bg-gray-100 my-3"></div>
@@ -344,7 +351,7 @@ export default function WithdrawalModal({
 
       <div className="bg-[#F5FBFC] rounded-xl p-4 mb-8">
         <p className="text-xs text-gray-500 mb-1">
-          Bank {savedBank?.bankName} •••• {savedBank?.accountNumber.slice(-4)}
+          Bank {savedBank?.bank_name} •••• {savedBank?.account_number.slice(-4)}
         </p>
         <p className="text-xl font-bold text-[#3197A5]">
           Rp {parseInt(amount).toLocaleString("id-ID")},00

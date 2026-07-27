@@ -7,7 +7,8 @@ import {
   useRegisterAffiliateMutation,
   useRequestWithdrawalMutation,
   useGetMeQuery,
-  useUpdateAffiliatePaymentInfoMutation,
+  useGetBanksQuery,
+  useAddBankMutation,
 } from "@/redux/api/sublimeApi";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -55,12 +56,13 @@ export default function ReferralTab() {
   const { data: withdrawalsData, refetch: refetchWithdrawals } =
     useGetWithdrawalsQuery({}, { skip: !affiliateData?.data });
 
+  const { data: banksData, refetch: refetchBanks } = useGetBanksQuery(undefined);
+
   const [registerAffiliate, { isLoading: isRegistering }] =
     useRegisterAffiliateMutation();
   const [requestWithdrawal, { isLoading: isWithdrawing }] =
     useRequestWithdrawalMutation();
-  const [updatePaymentInfo, { isLoading: isUpdatingPayment }] =
-    useUpdateAffiliatePaymentInfoMutation();
+  const [addBank, { isLoading: isAddingBank }] = useAddBankMutation();
 
   const [copied, setCopied] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -103,27 +105,25 @@ export default function ReferralTab() {
     setIsWithdrawModalOpen(true);
   };
 
-  const handleProcessWithdrawal = async (amount: number) => {
+  const handleProcessWithdrawal = async (amount: number, bankAccountId: string) => {
     try {
-      await requestWithdrawal({ amount }).unwrap();
-      // Toast is handled in the modal success step if needed, or we rely on the modal UI
-      // But for sync logic:
+      await requestWithdrawal({ amount, bank_account_id: bankAccountId }).unwrap();
       refetchWithdrawals();
       refetchAffiliate();
     } catch (error) {
       console.error("Withdrawal error:", error);
       toast.error("Gagal mengirim permintaan penarikan.");
-      throw error; // Let modal handle error state if it wants
+      throw error;
     }
   };
 
   const handleUpdateBank = async (data: unknown) => {
     try {
-      await updatePaymentInfo(data).unwrap();
-      toast.success("Informasi rekening berhasil disimpan");
-      refetchAffiliate();
+      await addBank(data).unwrap();
+      toast.success("Rekening berhasil ditambahkan");
+      refetchBanks();
     } catch (error) {
-      console.error("Update bank error:", error);
+      console.error("Add bank error:", error);
       toast.error("Gagal menyimpan rekening.");
     }
   };
@@ -515,10 +515,10 @@ export default function ReferralTab() {
         isOpen={isWithdrawModalOpen}
         onClose={() => setIsWithdrawModalOpen(false)}
         balance={Number(affiliateData?.data?.total_earnings || 0)}
-        savedBank={affiliateData?.data?.paymentInfo}
+        savedBank={(banksData?.data as any[])?.[0] ?? null}
         onUpdateBank={handleUpdateBank}
         onRequestWithdrawal={handleProcessWithdrawal}
-        isLoadingAction={isUpdatingPayment || isWithdrawing}
+        isLoadingAction={isAddingBank || isWithdrawing}
       />
     </div>
   );
