@@ -356,6 +356,7 @@ export default function PaymentPage() {
               <div className="space-y-8">
                 {Object.entries(
                   paymentMethods
+                    .filter((method) => method.code !== "bank_transfer")
                     .reduce(
                       (acc: Record<string, PaymentMethod[]>, method) => {
                         const category = method.category;
