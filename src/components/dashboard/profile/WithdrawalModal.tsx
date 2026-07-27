@@ -65,7 +65,8 @@ export default function WithdrawalModal({
         toast.error("Saldo tidak mencukupi");
         return;
       }
-      setStep("SELECT_BANK");
+      // Skip bank selection if bank already saved
+      setStep(savedBank ? "CONFIRM" : "SELECT_BANK");
     } else if (step === "SELECT_BANK") {
       if (!savedBank) {
         setIsAddBankOpen(true);
@@ -258,7 +259,7 @@ export default function WithdrawalModal({
         {/* If no bank selected, this would be disabled or act as 'select' */}
         {savedBank && (
           <button
-            onClick={() => setStep("INPUT")} // Go back to input with selected bank
+            onClick={() => setStep("CONFIRM")}
             className="flex-1 px-4 py-2 bg-[#3197A5] text-white rounded-full text-sm font-medium hover:bg-[#288a96] transition-colors"
           >
             Pilih
