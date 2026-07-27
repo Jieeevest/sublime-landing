@@ -5,10 +5,23 @@ import Image from "next/image";
 
 import { useRouter } from "next/navigation";
 import { useI18n } from "@/i18n";
+import { useGetPlansQuery } from "@/redux/api/sublimeApi";
+
+function formatRupiah(amount: number) {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(amount);
+}
 
 export default function SubscriptionsPage() {
   const router = useRouter();
   const { t } = useI18n();
+  const { data: plansData } = useGetPlansQuery(undefined);
+  const plan = plansData?.data ?? null;
+  const planPrice = plan?.price ? Number(plan.price) : null;
+  const planDays = plan?.duration_days ?? 30;
   const navigateWithLoading = (path: string) => {
     window.dispatchEvent(new Event("app:navigation-start"));
     router.push(path);
@@ -81,7 +94,7 @@ export default function SubscriptionsPage() {
             <h2 className="text-[#3197A5] font-bold text-4xl leading-tight mb-4">
               {t("promo_nikmati")}{" "}
               <span className="text-[#023347] text-5xl ml-2">
-                {t("promo_price")}
+                {planPrice ? formatRupiah(planPrice) : t("promo_price")}
               </span>
             </h2>
             <h2 className="text-[#3197A5] font-bold text-4xl leading-tight mb-8">
@@ -175,7 +188,7 @@ export default function SubscriptionsPage() {
           <div className="mb-8">
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold text-[#1F1F1F]">
-                {t("subs_card_price")}
+                {planPrice ? formatRupiah(planPrice) : t("subs_card_price")}
               </span>
               <span className="text-gray-500 text-sm">
                 {t("subs_card_period")}
