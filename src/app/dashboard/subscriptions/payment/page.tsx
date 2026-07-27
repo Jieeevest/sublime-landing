@@ -68,7 +68,12 @@ export default function PaymentPage() {
     useGetPlansQuery(undefined);
   const [triggerCheckStatus] = useLazyCheckPaymentStatusQuery();
 
-  const plan = (plansData?.data as ApiPlan[] | undefined)?.[0];
+  const rawPlansData = plansData?.data;
+  const plan: ApiPlan | undefined = Array.isArray(rawPlansData)
+    ? rawPlansData[0]
+    : rawPlansData && typeof rawPlansData === "object" && "id" in rawPlansData
+    ? (rawPlansData as ApiPlan)
+    : undefined;
   const planPriceLabel = plan?.price
     ? `Rp ${Number(plan.price).toLocaleString("id-ID")}`
     : "-";
@@ -477,13 +482,18 @@ export default function PaymentPage() {
 
             <button
               onClick={handlePay}
-              disabled={isSubmitting || isLoadingPlan}
+              disabled={isSubmitting || isLoadingPlan || !plan?.id}
               className={`w-full bg-[#3197A5] hover:bg-[#288a96] text-white font-medium py-3 rounded-full transition-colors shadow-lg shadow-[#3197A5]/20 ${
-                isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                isSubmitting || isLoadingPlan || !plan?.id ? "opacity-70 cursor-not-allowed" : ""
               }`}
             >
-              {isSubmitting ? "Memproses..." : "Lanjutkan Pembayaran"}
+              {isSubmitting ? "Memproses..." : isLoadingPlan ? "Memuat..." : !plan?.id ? "Paket tidak tersedia" : "Lanjutkan Pembayaran"}
             </button>
+            {!isLoadingPlan && !plan?.id && (
+              <p className="text-[12px] text-red-500 text-center mt-2">
+                Paket langganan tidak ditemukan. Hubungi tim support.
+              </p>
+            )}
           </div>
         </div>
       </div>
