@@ -9,6 +9,7 @@ import {
   useGetMeQuery,
   useGetBanksQuery,
   useAddBankMutation,
+  useGetWithdrawalBalanceQuery,
 } from "@/redux/api/sublimeApi";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -57,6 +58,10 @@ export default function ReferralTab() {
     useGetWithdrawalsQuery({}, { skip: !affiliateData?.data });
 
   const { data: banksData, refetch: refetchBanks } = useGetBanksQuery(undefined);
+  const { data: balanceData, refetch: refetchBalance } = useGetWithdrawalBalanceQuery(
+    undefined,
+    { skip: !affiliateData?.data }
+  );
 
   const [registerAffiliate, { isLoading: isRegistering }] =
     useRegisterAffiliateMutation();
@@ -110,6 +115,7 @@ export default function ReferralTab() {
       await requestWithdrawal({ amount, bank_account_id: bankAccountId }).unwrap();
       refetchWithdrawals();
       refetchAffiliate();
+      refetchBalance();
     } catch (error) {
       console.error("Withdrawal error:", error);
       toast.error("Gagal mengirim permintaan penarikan.");
@@ -294,7 +300,7 @@ export default function ReferralTab() {
               <h3 className="text-2xl font-bold text-[#1F1F1F]">
                 Rp{" "}
                 {Number(
-                  affiliateData?.data?.total_earnings || 0,
+                  balanceData?.data?.balance?.available || 0,
                 ).toLocaleString("id-ID")}
               </h3>
               <p className="text-xs text-gray-400">Saldo Referral</p>
@@ -514,7 +520,7 @@ export default function ReferralTab() {
       <WithdrawalModal
         isOpen={isWithdrawModalOpen}
         onClose={() => setIsWithdrawModalOpen(false)}
-        balance={Number(affiliateData?.data?.total_earnings || 0)}
+        balance={Number(balanceData?.data?.balance?.available || 0)}
         savedBank={(banksData?.data as any[])?.[0] ?? null}
         onUpdateBank={handleUpdateBank}
         onRequestWithdrawal={handleProcessWithdrawal}
