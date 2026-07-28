@@ -297,7 +297,7 @@ export default function WithdrawalModal({
         </div>
         <div className="flex justify-between items-center text-xs mb-3">
           <span className="text-gray-400">Estimasi Pencairan</span>
-          <span className="font-bold text-[#1E1E1E]">1 - 3 hari kerja</span>
+          <span className="font-bold text-[#1E1E1E]">Real-time (dalam beberapa menit)</span>
         </div>
         <div className="flex justify-between items-center text-xs mb-3">
           <span className="text-gray-400">Biaya Admin</span>
@@ -347,7 +347,7 @@ export default function WithdrawalModal({
         Penarikan kamu sedang diproses ⏳
       </h3>
       <p className="text-xs text-gray-400 mb-8 max-w-xs mx-auto">
-        Dana akan masuk ke rekenig kamu dalam waktu maksimal 3 hari kerja.
+        Dana akan masuk ke rekening kamu dalam beberapa menit.
       </p>
 
       <div className="bg-[#F5FBFC] rounded-xl p-4 mb-8">
