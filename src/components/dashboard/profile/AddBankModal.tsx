@@ -9,9 +9,17 @@ const BANK_OPTIONS = [
   { name: "Mandiri", code: "mandiri" },
   { name: "BNI", code: "bni" },
   { name: "BRI", code: "bri" },
+  { name: "BSI", code: "bsi" },
   { name: "CIMB Niaga", code: "cimb" },
-  { name: "Jago", code: "jago" },
+  { name: "Bank Jago", code: "jago" },
   { name: "SeaBank", code: "seabank" },
+  { name: "Danamon", code: "danamon" },
+  { name: "Permata", code: "permata" },
+  { name: "BTN", code: "btn" },
+  { name: "OCBC", code: "ocbc" },
+  { name: "Maybank", code: "maybank" },
+  { name: "Bank Mega", code: "mega" },
+  { name: "Allo Bank", code: "allo" },
 ];
 
 interface AddBankModalProps {
