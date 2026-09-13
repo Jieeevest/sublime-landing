@@ -8,6 +8,7 @@ import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 
 import BackToTop from "@/components/BackToTop";
+import ComingSoonOverlay from "@/components/ComingSoonOverlay";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
       <CTASection />
       <Footer />
       <BackToTop />
+      <ComingSoonOverlay />
     </main>
   );
 }

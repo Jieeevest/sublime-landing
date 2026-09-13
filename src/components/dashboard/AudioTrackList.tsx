@@ -26,7 +26,10 @@ export default function AudioTrackList({
   const isSubscribed = subscriptionData?.is_subscribed ?? false;
   const [lyricsTrack, setLyricsTrack] = useState<AudioSession | null>(null);
   const isAudioActive = isPlayerVisible && !!currentTrack;
-  const isLyricsOpen = !!lyricsTrack;
+  // Only mutually-exclusive scripts (subliminal) block audio playback while open.
+  const isBlockingLyricsOpen =
+    !!lyricsTrack &&
+    /stroke|pemulihan|recovery/i.test(lyricsTrack.title ?? "");
 
   const hasLyrics = (session: AudioSession | undefined) => {
     const l = session?.lyrics;
@@ -40,6 +43,8 @@ export default function AudioTrackList({
     kind: "audio";
     displayTitle: string;
     session: AudioSession | undefined;
+    scriptLinkLabel: string;
+    blockScriptDuringPlayback: boolean;
   }> = [
     {
       kind: "audio",
@@ -47,11 +52,15 @@ export default function AudioTrackList({
       session: sessions.find((s) =>
         /stroke|pemulihan|recovery/i.test(s.title),
       ),
+      scriptLinkLabel: t("dash_audio_script_link"),
+      blockScriptDuringPlayback: true,
     },
     {
       kind: "audio",
       displayTitle: t("dash_audio_item_hypnosis"),
       session: sessions.find((s) => /ladang|awareness|field/i.test(s.title)),
+      scriptLinkLabel: "",
+      blockScriptDuringPlayback: false,
     },
   ];
 
@@ -153,6 +162,8 @@ export default function AudioTrackList({
             const isPlaying = session ? currentTrack?.id === session.id : false;
             const canPlay = Boolean(session) && isSubscribed;
             const showLyricsLink = hasLyrics(session);
+            const scriptBlocked =
+              item.blockScriptDuringPlayback && isAudioActive;
 
             return (
               <div key={`audio-${index}`} className="flex flex-col">
@@ -180,7 +191,7 @@ export default function AudioTrackList({
                   className="w-[44px] h-[44px] rounded-[8px] overflow-hidden flex-shrink-0 relative group-hover:scale-105 transition-transform"
                   onClick={() => {
                     if (!canPlay || !session) return;
-                    if (isLyricsOpen) {
+                    if (isBlockingLyricsOpen) {
                       toast(t("dash_audio_block_play_when_script"), {
                         icon: "ℹ️",
                       });
@@ -323,7 +334,7 @@ export default function AudioTrackList({
                   <button
                     type="button"
                     onClick={() => {
-                      if (isAudioActive) {
+                      if (scriptBlocked) {
                         toast(t("dash_audio_block_script_when_playing"), {
                           icon: "ℹ️",
                         });
@@ -332,13 +343,13 @@ export default function AudioTrackList({
                       setLyricsTrack(session);
                     }}
                     className={`text-[12px] font-medium underline underline-offset-2 transition-colors ${
-                      isAudioActive
+                      scriptBlocked
                         ? "cursor-not-allowed text-[#8E8E8E]"
                         : "text-[#0B6D86] hover:text-[#08748E]"
                     }`}
                     style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
                   >
-                    {t("dash_audio_script_link")}
+                    {item.scriptLinkLabel}
                   </button>
                 </div>
               )}

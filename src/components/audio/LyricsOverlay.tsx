@@ -20,6 +20,7 @@ export default function LyricsOverlay({ track, onClose }: LyricsOverlayProps) {
   const [parsedLyrics, setParsedLyrics] = useState<LrcLine[]>([]);
   const activeLineIndexRef = useRef<number>(-1);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isSubliminalTrack = /stroke|pemulihan|recovery/i.test(track.title ?? "");
 
   // Parse lyrics on mount or track change
   useEffect(() => {
@@ -162,6 +163,7 @@ export default function LyricsOverlay({ track, onClose }: LyricsOverlayProps) {
                   className="h-10 w-auto object-contain mb-2"
                   priority
                 />
+                {isSubliminalTrack && (
                 <div className="mb-2 flex items-start gap-2 rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 backdrop-blur-sm">
                   <svg
                     width="16"
@@ -184,6 +186,7 @@ export default function LyricsOverlay({ track, onClose }: LyricsOverlayProps) {
                     {t("dash_audio_script_info")}
                   </p>
                 </div>
+                )}
                 {parsedLyrics
                   .filter((line) => line.text.trim() !== "")
                   .map((line, index) => (
