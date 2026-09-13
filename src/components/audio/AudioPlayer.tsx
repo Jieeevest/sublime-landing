@@ -1,7 +1,6 @@
 import { useAudio } from "@/contexts/AudioContext";
 import Image from "next/image";
 import { useState } from "react";
-import LyricsOverlay from "./LyricsOverlay";
 
 export default function AudioPlayer() {
   const {
@@ -16,11 +15,8 @@ export default function AudioPlayer() {
     seek,
     setVolume,
     closePlayer,
-    isRepeat,
-    toggleRepeat,
   } = useAudio();
 
-  const [isLyricsOpen, setIsLyricsOpen] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
   // If the context says it's not visible and we aren't currently playing the exit animation
@@ -59,14 +55,6 @@ export default function AudioPlayer() {
 
   return (
     <>
-      {/* Lyrics Overlay */}
-      {isLyricsOpen && currentTrack && (
-        <LyricsOverlay
-          track={currentTrack}
-          onClose={() => setIsLyricsOpen(false)}
-        />
-      )}
-
       <div
         className={`fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-0 pointer-events-none ${
           isExiting ? "animate-slide-down" : "animate-slide-up"
@@ -160,26 +148,6 @@ export default function AudioPlayer() {
             <div className="flex w-full flex-col gap-2 md:max-w-[629px] md:flex-1 md:items-center">
               {/* Playback Controls */}
               <div className="mx-auto flex w-fit items-center justify-center gap-4 md:gap-6">
-                <button
-                  className={`transition-colors md:hidden ${
-                    isLyricsOpen
-                      ? "text-[#3197A5]"
-                      : "text-white/70 hover:text-white"
-                  }`}
-                  onClick={() => setIsLyricsOpen(!isLyricsOpen)}
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                  </svg>
-                </button>
-
                 {/* Shuffle (Mock) - Hidden remotely as requested */}
                 <button className="hidden text-white/70 hover:text-white transition-colors">
                   <svg
@@ -251,27 +219,6 @@ export default function AudioPlayer() {
                   </svg>
                 </button>
 
-                {/* Repeat */}
-                <button
-                  onClick={toggleRepeat}
-                  className={`transition-colors ${isRepeat ? "text-primary-300" : "text-white/70 hover:text-white"}`}
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M17 1l4 4-4 4" />
-                    <path d="M3 11V9a4 4 0 0 1 4-4h14" />
-                    <path d="M7 23l-4-4 4-4" />
-                    <path d="M21 13v2a4 4 0 0 1-4 4H3" />
-                  </svg>
-                </button>
               </div>
 
               {/* Progress Bar */}
@@ -317,26 +264,6 @@ export default function AudioPlayer() {
 
             {/* Right: Volume & Options */}
             <div className="hidden min-w-[300px] items-center justify-end gap-6 md:flex">
-              {/* Lyrics/Captions */}
-              <button
-                className={`transition-colors ${
-                  isLyricsOpen
-                    ? "text-[#3197A5]"
-                    : "text-white/70 hover:text-white"
-                }`}
-                onClick={() => setIsLyricsOpen(!isLyricsOpen)}
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
-              </button>
 
               {/* Volume Block */}
               <div className="flex items-center gap-[8px]">

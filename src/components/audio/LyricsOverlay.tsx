@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { AudioSession } from "@/data/audioSessions";
 import { useAudio } from "@/contexts/AudioContext";
+import { useI18n } from "@/i18n";
 
 interface LyricsOverlayProps {
   track: AudioSession;
@@ -14,6 +16,7 @@ interface LrcLine {
 
 export default function LyricsOverlay({ track, onClose }: LyricsOverlayProps) {
   const { progress } = useAudio();
+  const { t } = useI18n();
   const [parsedLyrics, setParsedLyrics] = useState<LrcLine[]>([]);
   const activeLineIndexRef = useRef<number>(-1);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -120,36 +123,82 @@ export default function LyricsOverlay({ track, onClose }: LyricsOverlayProps) {
         {/* Lyrics Container */}
         <div
           ref={containerRef}
-          className="w-full h-full overflow-y-auto no-scrollbar flex flex-col items-center pt-[150px] pb-[200px] gap-[40px]"
+          className={`w-full h-full overflow-y-auto no-scrollbar flex flex-col items-center pt-[150px] pb-[200px] ${
+            hasTimestamps ? "gap-[40px]" : ""
+          }`}
           style={{
             scrollBehavior: "smooth",
           }}
         >
           {parsedLyrics.length > 0 ? (
-            parsedLyrics.map((line, index) => {
-              // If we have timestamps, highlight active line.
-              // If no timestamps (plain text), highlight all or just keep distinct style?
-              // Standard behavior: if plain text, maybe just show all white or dim others?
-              // Let's assume plain text -> just show all as 'active' or valid text.
-              const isActive = hasTimestamps ? index === activeIndex : true;
+            hasTimestamps ? (
+              parsedLyrics.map((line, index) => {
+                const isActive = index === activeIndex;
 
-              return (
-                <p
-                  key={index}
-                  id={`lyric-line-${index}`}
-                  className="text-center font-bold text-[24px] md:text-[36px] leading-[1.2] transition-all duration-500 whitespace-pre-wrap max-w-[80%]"
-                  style={{
-                    fontFamily: "'PP Neue Montreal', sans-serif",
-                    color: isActive
-                      ? "rgba(255,255,255,1)"
-                      : "rgba(255,255,255,0.3)",
-                    transform: isActive ? "scale(1.05)" : "scale(1)",
-                  }}
-                >
-                  {line.text}
-                </p>
-              );
-            })
+                return (
+                  <p
+                    key={index}
+                    id={`lyric-line-${index}`}
+                    className="text-center font-bold text-[24px] md:text-[36px] leading-[1.2] transition-all duration-500 whitespace-pre-wrap max-w-[80%]"
+                    style={{
+                      fontFamily: "'PP Neue Montreal', sans-serif",
+                      color: isActive
+                        ? "rgba(255,255,255,1)"
+                        : "rgba(255,255,255,0.3)",
+                      transform: isActive ? "scale(1.05)" : "scale(1)",
+                    }}
+                  >
+                    {line.text}
+                  </p>
+                );
+              })
+            ) : (
+              <div className="flex flex-col gap-3 max-w-[720px] px-4 w-full">
+                <Image
+                  src="/strovia-logo-white.png"
+                  alt="Strovia"
+                  width={140}
+                  height={40}
+                  className="h-10 w-auto object-contain mb-2"
+                  priority
+                />
+                <div className="mb-2 flex items-start gap-2 rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 backdrop-blur-sm">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="mt-0.5 flex-shrink-0 text-white/80"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 16v-4M12 8h.01" />
+                  </svg>
+                  <p
+                    className="text-[12px] leading-[1.5] text-white/80 md:text-[13px]"
+                    style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+                  >
+                    {t("dash_audio_script_info")}
+                  </p>
+                </div>
+                {parsedLyrics
+                  .filter((line) => line.text.trim() !== "")
+                  .map((line, index) => (
+                    <p
+                      key={index}
+                      className="text-justify text-white text-[16px] md:text-[18px] leading-[1.6]"
+                      style={{
+                        fontFamily: "'PP Neue Montreal', sans-serif",
+                      }}
+                    >
+                      {line.text}
+                    </p>
+                  ))}
+              </div>
+            )
           ) : (
             <p className="text-white/50 text-[24px]">Lyrics not available.</p>
           )}

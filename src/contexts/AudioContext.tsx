@@ -22,8 +22,6 @@ interface AudioContextType {
   seek: (time: number) => void;
   setVolume: (volume: number) => void;
   closePlayer: () => void;
-  isRepeat: boolean;
-  toggleRepeat: () => void;
 }
 
 const AudioContext = createContext<AudioContextType | undefined>(undefined);
@@ -35,7 +33,6 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolumeState] = useState(80);
-  const [isRepeat, setIsRepeat] = useState(false);
   const currentTrackRef = useRef<AudioSession | null>(null);
 
   // Sync ref with state so event listeners can access current track
@@ -185,6 +182,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
       // We just assign it to src. The SW intercepts API URLs and adds the token header.
       audioRef.current.src = finalUrl;
+      audioRef.current.loop = true;
 
       // Play
       // We use a small timeout or wait for the src to be set?
@@ -227,15 +225,6 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     setVolumeState(newVolume);
   };
 
-  const toggleRepeat = () => {
-    setIsRepeat((prev) => {
-      const next = !prev;
-      if (audioRef.current) {
-        audioRef.current.loop = next;
-      }
-      return next;
-    });
-  };
 
   const closePlayer = () => {
     if (audioRef.current) {
@@ -263,8 +252,6 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         seek,
         setVolume,
         closePlayer,
-        isRepeat,
-        toggleRepeat,
       }}
     >
       {children}

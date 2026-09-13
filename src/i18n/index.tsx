@@ -254,11 +254,23 @@ const dict: Dict = {
     dash_audio_sub_btn: "Berlangganan Sekarang",
     dash_audio_empty_title: "Belum ada audio saat ini",
     dash_audio_empty_desc: "Nantikan audio pilihan menarik untuk Anda segera.",
-    dash_audio_guide_title: "Panduan Audio",
+    dash_audio_guide_title: "Audio Strovia & Panduan Penggunaan",
     dash_audio_guide_label:
       "Panduan yang anda perlu ketahui sebelum mendengarkan Audio Strovia",
     dash_audio_guide_view: "Lihat Panduan",
-    dash_audio_guide_download: "Unduh Panduan",
+    dash_audio_guide_download: "Unduh PDF",
+    dash_audio_item_subliminal: "Audio subliminal pemulihan stroke 528Hz",
+    dash_audio_item_hypnosis: "Tuntunan self hypnosis \"Ladang Kesadaran\"",
+    dash_audio_item_knowledge: "Pengetahuan pendamping",
+    dash_audio_item_usage_guide: "Panduan penggunaan 2 audio Strovia",
+    dash_audio_pdf_label: "PDF",
+    dash_audio_script_link: "Teks Skrip Sugesti Audio Subliminal",
+    dash_audio_block_script_when_playing:
+      "Hentikan audio terlebih dahulu untuk membuka skrip.",
+    dash_audio_block_play_when_script:
+      "Tutup skrip terlebih dahulu untuk memutar audio.",
+    dash_audio_script_info:
+      "Skrip ini hanya untuk dibaca. Audio subliminal sengaja disamarkan agar afirmasi langsung diterima oleh pikiran bawah sadar tanpa disaring pikiran sadar.",
     dash_audio_guide_modal_title: "Panduan Sebelum Mendengarkan Audio Strovia",
     dash_audio_guide_checkbox: "Saya sudah membaca panduan ini",
     dash_audio_guide_scroll_hint:
@@ -717,11 +729,23 @@ const dict: Dict = {
     dash_audio_sub_btn: "Subscribe Now",
     dash_audio_empty_title: "No audio available currently",
     dash_audio_empty_desc: "Stay tuned for exciting curated audio coming soon.",
-    dash_audio_guide_title: "Listening Guide",
+    dash_audio_guide_title: "Strovia Audio & Usage Guide",
     dash_audio_guide_label:
       "Guide you need to know before listening to Strovia Audio",
     dash_audio_guide_view: "View Guide",
-    dash_audio_guide_download: "Download Guide",
+    dash_audio_guide_download: "Download PDF",
+    dash_audio_item_subliminal: "Stroke Recovery Subliminal Audio 528Hz",
+    dash_audio_item_hypnosis: "Self-hypnosis Guide \"Field of Awareness\"",
+    dash_audio_item_knowledge: "Companion Knowledge",
+    dash_audio_item_usage_guide: "Usage Guide for the 2 Strovia Audios",
+    dash_audio_pdf_label: "PDF",
+    dash_audio_script_link: "Subliminal Audio Suggestion Script",
+    dash_audio_block_script_when_playing:
+      "Stop the audio first to open the script.",
+    dash_audio_block_play_when_script:
+      "Close the script first to play the audio.",
+    dash_audio_script_info:
+      "This script is for reading only. The subliminal audio is intentionally masked so affirmations bypass the conscious mind and reach the subconscious directly.",
     dash_audio_guide_modal_title: "Guide Before Listening to Strovia Audio",
     dash_audio_guide_checkbox: "I have read this guide",
     dash_audio_guide_scroll_hint:

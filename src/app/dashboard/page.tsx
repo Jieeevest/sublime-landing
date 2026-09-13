@@ -6,6 +6,7 @@ import DashboardHero from "@/components/dashboard/DashboardHero";
 import DashboardPromoCards from "@/components/dashboard/DashboardPromoCards";
 import DashboardArticles from "@/components/dashboard/DashboardArticles";
 import { AudioSession } from "@/data/audioSessions";
+import { getLyricsOverride } from "@/data/lyricsOverrides";
 import { useState, useEffect } from "react";
 import {
   useGetAudiosQuery,
@@ -87,7 +88,7 @@ export default function DashboardPage() {
           "https://strovia.app",
         )
       : `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/audios/stream/${item.id}`,
-    lyrics: item.lyrics,
+    lyrics: getLyricsOverride(item.title) ?? item.lyrics,
   }));
 
   return (
