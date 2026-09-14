@@ -22,7 +22,7 @@ export default function ComingSoonOverlay() {
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center px-6 text-center"
       style={{
         background:
-          "linear-gradient(180deg, #3197A5 0%, #2C7F8A 44.79%, #0E2427 100%)",
+          "linear-gradient(180deg, rgba(49,151,165,0.3) 0%, rgba(44,127,138,0.3) 44.79%, rgba(14,36,39,0.3) 100%)",
         fontFamily: "'PP Neue Montreal', sans-serif",
       }}
       onClickCapture={(e) => e.stopPropagation()}
