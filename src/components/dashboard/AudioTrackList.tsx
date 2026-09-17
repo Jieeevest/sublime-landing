@@ -243,6 +243,29 @@ export default function AudioTrackList({
                   >
                     {item.displayTitle}
                   </h3>
+                  {showLyricsLink && session && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (scriptBlocked) {
+                          toast(t("dash_audio_block_script_when_playing"), {
+                            icon: "ℹ️",
+                          });
+                          return;
+                        }
+                        setLyricsTrack(session);
+                      }}
+                      className={`self-start truncate text-left text-[12px] font-medium underline underline-offset-2 transition-colors ${
+                        scriptBlocked
+                          ? "cursor-not-allowed text-[#8E8E8E]"
+                          : "text-[#0B6D86] hover:text-[#08748E]"
+                      }`}
+                      style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+                    >
+                      {item.scriptLinkLabel}
+                    </button>
+                  )}
                 </div>
 
                 {/* Frequency */}
@@ -329,30 +352,6 @@ export default function AudioTrackList({
                   </div>
                 )}
               </div>
-              {showLyricsLink && session && (
-                <div className="pl-3 sm:pl-[86px]">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (scriptBlocked) {
-                        toast(t("dash_audio_block_script_when_playing"), {
-                          icon: "ℹ️",
-                        });
-                        return;
-                      }
-                      setLyricsTrack(session);
-                    }}
-                    className={`text-[12px] font-medium underline underline-offset-2 transition-colors ${
-                      scriptBlocked
-                        ? "cursor-not-allowed text-[#8E8E8E]"
-                        : "text-[#0B6D86] hover:text-[#08748E]"
-                    }`}
-                    style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
-                  >
-                    {item.scriptLinkLabel}
-                  </button>
-                </div>
-              )}
               </div>
             );
           }
@@ -449,29 +448,102 @@ export default function AudioTrackList({
               </div>
 
               {/* Download Button */}
-              <a
-                href={item.pdfUrl}
-                download={item.pdfFileName}
-                className="ml-2 inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1.5 text-[12px] font-medium text-white transition-colors hover:bg-primary-600 sm:ml-0 sm:px-4 sm:py-2 sm:text-[13px]"
-                style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
-              >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+              {isSubscribed ? (
+                <a
+                  href={item.pdfUrl}
+                  download={item.pdfFileName}
+                  className="ml-2 inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1.5 text-[12px] font-medium text-white transition-colors hover:bg-primary-600 sm:ml-0 sm:px-4 sm:py-2 sm:text-[13px]"
+                  style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
                 >
-                  <path
-                    d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  {t("dash_audio_guide_download")}
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigateWithLoading("/dashboard/subscriptions");
+                  }}
+                  className="ml-2 inline-flex items-center gap-2 rounded-full bg-gray-200 px-3 py-1.5 text-[12px] font-medium text-[#8E8E8E] transition-colors hover:bg-gray-300 sm:ml-0 sm:px-4 sm:py-2 sm:text-[13px]"
+                  style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
                     stroke="currentColor"
-                    strokeWidth="1.8"
+                    strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                  />
-                </svg>
-                {t("dash_audio_guide_download")}
-              </a>
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  {t("dash_audio_guide_download")}
+                </button>
+              )}
+
+              {/* Subscription Overlay */}
+              {!isSubscribed && (
+                <div className="absolute inset-0 z-50 hidden flex-row items-center justify-center gap-6 bg-[#0F0F0F]/30 opacity-0 backdrop-blur-[2px] transition-all duration-300 group-hover:opacity-100 md:flex">
+                  <div className="flex items-center gap-3">
+                    <div className="p-1.5 bg-white/20 rounded-full backdrop-blur-md">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect
+                          x="3"
+                          y="11"
+                          width="18"
+                          height="11"
+                          rx="2"
+                          ry="2"
+                        />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                      </svg>
+                    </div>
+                    <p
+                      className="text-white text-sm font-medium tracking-wide"
+                      style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+                    >
+                      {t("dash_audio_sub_msg")}
+                    </p>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigateWithLoading("/dashboard/subscriptions");
+                    }}
+                    className="px-5 py-2 bg-white text-[#1F1F1F] rounded-full text-xs font-semibold hover:bg-gray-100 transition-transform hover:scale-105 shadow-lg"
+                    style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
+                  >
+                    {t("dash_audio_sub_btn")}
+                  </button>
+                </div>
+              )}
             </div>
           );
         })}

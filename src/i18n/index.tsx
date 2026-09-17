@@ -245,7 +245,7 @@ const dict: Dict = {
     dash_hero_badge: "Pilihan Bahasa Audio",
     dash_hero_title: "Program Audio Yang Memicu Pemulihan Mandiri Pasca Stroke",
     dash_hero_desc:
-      "Strovia menghadirkan audio afirmasi subliminal yang berbasis frekuensi 528Hz yang memicu pemulihan mandiri.",
+      "Strovia menghadirkan audio afirmasi subliminal yang berbasis frekuensi 528Hz.",
     dash_hero_stats: "Digunakan oleh 1,809 Pengguna | Update Februari 2026",
     // End Dashboard Hero
     // Dashboard Audio List
@@ -292,6 +292,7 @@ const dict: Dict = {
       "Silakan kembali lagi nanti untuk membaca artikel terbaru kami.",
     ud_menu_ai_chat: "AI Chat",
     ud_menu_referral_program: "Referal",
+    ud_menu_contact: "Hubungi Kami",
     referral_program_title: "Program Referal Strovia",
     referral_program_subtitle:
       "Bagikan kebaikan, dapatkan penghasilan tambahan!",
@@ -339,13 +340,13 @@ const dict: Dict = {
     ai_send_tooltip: "Kirim pesan",
     ai_locked_title: "Fitur Premium Terkunci",
     ai_locked_desc:
-      "Silakan berlangganan untuk membuka akses ke AI Chat (Dokter Via) dan mulai diskusikan proses pemulihan Anda.",
+      "Silakan berlangganan untuk membuka akses ke AI Chat (Miss Via) dan mulai diskusikan proses pemulihan Anda.",
     ai_locked_btn: "Berlangganan Sekarang",
 
     // Promo Cards
     promo_berlangganan: "Berlangganan",
     promo_nikmati: "Nikmati 30 hari hanya",
-    promo_price: "Rp 138.000,-",
+    promo_price: "Rp 135.900,-",
     promo_akses: "Untuk mengakses",
     promo_audio_strovia: "Audio Strovia",
     promo_desc:
@@ -353,7 +354,7 @@ const dict: Dict = {
     promo_btn: "Mulai Berlangganan",
     promo_chat_title:
       "Butuh bimbingan dan dukungan informasi sepanjang proses pemulihan diri anda?",
-    promo_chat_desc: "Diskusi dengan Dokter Via kapan saja.",
+    promo_chat_desc: "Diskusi dengan Miss Via kapan saja.",
     promo_chat_btn: "Chat Sekarang",
 
     // Subscription Page
@@ -362,7 +363,7 @@ const dict: Dict = {
     subs_header_subtitle: "Bayar dengan berbagai cara. Batalkan kapan saja.",
     subs_payment_others: "+4 lainnya",
     subs_card_popular: "Populer",
-    subs_card_price: "Rp 138.000",
+    subs_card_price: "Rp 135.900",
     subs_card_period: "per 30 hari",
     subs_feat_1: "Akses semua audio",
     subs_feat_2: "Chat AI",
@@ -376,6 +377,7 @@ const dict: Dict = {
     nav_manfaat: "Manfaat",
     nav_artikel: "Artikel",
     nav_faq: "FAQ",
+    nav_hubungi: "Hubungi Kami",
     nav_login: "Masuk / Daftar",
     nav_logout: "Keluar",
     // Hero
@@ -385,13 +387,13 @@ const dict: Dict = {
     hero_cta_secondary: "Unduh Aplikasi",
     hero_audio_label: "Audio Pilihan untuk Anda",
     hero_audio_see_all: "Lihat Semua",
-    hero_audio_title: "Audio Strovia Versi Bahasa Indonesia",
+    hero_audio_title: "Audio subliminal pemulihan stroke 528Hz",
     hero_audio_desc:
-      "Pikiranku mulai pulih. Tubuhku ingat cara memulihkan diri.",
+      "Aku menyatu dengan kecerdasan dalam pikiran bawah sadarku.",
     hero_affirmation_title: "Audio Subliminal Strovia",
-    hero_affirm_1: "Pikiranku mulai pulih.",
-    hero_affirm_2: "Tubuhku ingat cara memulihkan diri.",
-    hero_affirm_3: "Aku semakin kuat setiap hari.",
+    hero_affirm_1: "Aku menyatu dengan kecerdasan dalam pikiran bawah sadarku.",
+    hero_affirm_2: "Energi kesembuhan mengalir lancar di dalam tubuhku.",
+    hero_affirm_3: "Aku adalah kesehatan yang tak terhentikan.",
     // WhatIsSublime
     about_badge: "Tentang Kami",
     about_heading: "Apa itu Strovia?",
@@ -400,16 +402,16 @@ const dict: Dict = {
     about_card1_title: "Audio Strovia 528 Hz",
     about_card1_desc:
       "Produk audio Strovia diatur pada frekuensi khusus 528Hz, frekuensi yang mempengaruhi gelombang otak agar tubuh dapat mengalami relaksasi mendalam.",
-    about_card1_audio_title: "Audio Strovia Versi Bahasa Indonesia",
+    about_card1_audio_title: "Audio subliminal pemulihan stroke 528Hz",
     about_card1_audio_desc:
-      "Pikiranku mulai pulih. Tubuhku ingat cara memulihkan diri.",
+      "Aku menyatu dengan kecerdasan dalam pikiran bawah sadarku.",
     about_card2_title: "Afirmasi Subliminal",
     about_card2_desc:
       'Afirmasi positif yang "disembunyikan" dalam gelombang audio sehingga dapat menembus pikiran sadar kemudian langsung diterima oleh pikiran bawah sadar agar afirmasi tersebut dapat bekerja dengan efektif.',
     about_card3_title: "Pendamping AI Personal",
     about_card3_desc:
       "Layanan informasi berbasis AI yang siap memberikan segala informasi yang Anda butuhkan.",
-    about_ai_greeting: "Hi, Kiara",
+    about_ai_greeting: "Hi, Miss Via",
     about_ai_question: "Ada yang bisa aku bantu hari ini?",
     about_ai_ready:
       "Siap mendampingi, kapanpun kamu butuh informasi dan panduan.",
@@ -423,7 +425,7 @@ const dict: Dict = {
     how_card1_body1:
       "Produk audio Strovia dirancang pada frekuensi 528Hz, dalam penelitian ilmiah (science) dan penelitian medis frekuensi ini telah dibuktikan dapat mempengaruhi gelombang otak untuk mengalami relaksasi yang mendalam yang otomatis dapat menenangkan sistem saraf, menurunkan stres, menciptakan ketenangan dan keseimbangan dalam tubuh.",
     how_card1_body2:
-      "Studi yang dipublikasikan di jurnal ilmiah dan dirujuk oleh National Institutes of Health (NIH) menunjukkan bahwa stimulasi audio dapat memengaruhi aktivitas otak dan membantu regulasi stres — faktor penting dalam pemulihan neurologis.",
+      "menunjukkan bahwa stimulasi audio dapat memengaruhi aktivitas otak dan membantu regulasi stres — faktor penting dalam pemulihan neurologis.",
     how_card1_nih: "National Institutes of Health (NIH)",
     how_card2_title: "Afirmasi Subliminal",
     how_card2_body1:
@@ -484,6 +486,20 @@ const dict: Dict = {
       "Selamat memulai perjalanan pemulihan mandiri Anda bersama Strovia",
     cta_primary: "Mulai Perjalanan Anda",
     cta_secondary: "Unduh Aplikasi",
+    // ContactUs
+    contact_badge: "Hubungi Kami",
+    contact_heading: "Ada Pertanyaan? Kirim Pesan Kepada Kami",
+    contact_subheading:
+      "Tim kami siap membantu menjawab pertanyaan Anda seputar Strovia, langganan, dan pemulihan mandiri.",
+    contact_field_name: "Nama Lengkap",
+    contact_field_email: "Email",
+    contact_field_subject: "Subjek",
+    contact_field_message: "Pesan",
+    contact_or_email: "Atau kirim langsung ke",
+    contact_submit: "Kirim Pesan",
+    contact_default_subject: "Pertanyaan tentang Strovia",
+    contact_body_greeting: "Halo tim Strovia,",
+    contact_body_from: "Dari",
   },
   en: {
     cmsTitle: "Admin CMS",
@@ -766,6 +782,7 @@ const dict: Dict = {
     ud_articles_empty_desc: "Please check back later for our latest articles.",
     ud_menu_ai_chat: "AI Chat",
     ud_menu_referral_program: "Referral",
+    ud_menu_contact: "Contact Us",
     referral_program_title: "Strovia Referral Program",
     referral_program_subtitle:
       "Share the goodness, earn extra income!",
@@ -819,7 +836,7 @@ const dict: Dict = {
     // Promo Cards
     promo_berlangganan: "Subscribe",
     promo_nikmati: "Enjoy 30 days for only",
-    promo_price: "Rp 138,000",
+    promo_price: "Rp 135,900",
     promo_akses: "To access",
     promo_audio_strovia: "Audio Strovia",
     promo_desc:
@@ -836,7 +853,7 @@ const dict: Dict = {
     subs_header_subtitle: "Pay in multiple ways. Cancel anytime.",
     subs_payment_others: "+4 others",
     subs_card_popular: "Popular",
-    subs_card_price: "Rp 138,000",
+    subs_card_price: "Rp 135,900",
     subs_card_period: "per 30 days",
     subs_feat_1: "Access all audios",
     subs_feat_2: "AI Chat",
@@ -850,6 +867,7 @@ const dict: Dict = {
     nav_manfaat: "Benefits",
     nav_artikel: "Articles",
     nav_faq: "FAQ",
+    nav_hubungi: "Contact Us",
     nav_login: "Sign In / Register",
     nav_logout: "Sign Out",
     // Hero
@@ -859,13 +877,13 @@ const dict: Dict = {
     hero_cta_secondary: "Download App",
     hero_audio_label: "Recommended Audio for You",
     hero_audio_see_all: "See All",
-    hero_audio_title: "Strovia Audio — English Version",
+    hero_audio_title: "528Hz Stroke Recovery Subliminal Audio",
     hero_audio_desc:
-      "My mind is beginning to heal. My body remembers how to recover.",
+      "I am one with the intelligence within my subconscious mind.",
     hero_affirmation_title: "Strovia Subliminal Audio",
-    hero_affirm_1: "My mind is beginning to heal.",
-    hero_affirm_2: "My body remembers how to recover.",
-    hero_affirm_3: "I grow stronger every day.",
+    hero_affirm_1: "I am one with the intelligence within my subconscious mind.",
+    hero_affirm_2: "Healing energy flows freely throughout my body.",
+    hero_affirm_3: "I am unstoppable health.",
     // WhatIsSublime
     about_badge: "About Us",
     about_heading: "What is Strovia?",
@@ -874,16 +892,16 @@ const dict: Dict = {
     about_card1_title: "Strovia Audio 528 Hz",
     about_card1_desc:
       "Strovia audio is set at the special 528 Hz frequency, which influences brainwaves to bring the body into a state of deep relaxation.",
-    about_card1_audio_title: "Strovia Audio — English Version",
+    about_card1_audio_title: "528Hz Stroke Recovery Subliminal Audio",
     about_card1_audio_desc:
-      "My mind is beginning to heal. My body remembers how to recover.",
+      "I am one with the intelligence within my subconscious mind.",
     about_card2_title: "Subliminal Affirmations",
     about_card2_desc:
       'Positive affirmations "hidden" within the audio waves so they can bypass conscious thought and be received directly by the subconscious mind, allowing them to work effectively.',
     about_card3_title: "Personal AI Companion",
     about_card3_desc:
       "An AI-powered information service ready to provide any information you need.",
-    about_ai_greeting: "Hi, Kiara",
+    about_ai_greeting: "Hi, Miss Via",
     about_ai_question: "How can I help you today?",
     about_ai_ready:
       "Here to assist you whenever you need information and guidance.",
@@ -896,7 +914,7 @@ const dict: Dict = {
     how_card1_body1:
       "Strovia audio is designed at the 528 Hz frequency. Scientific and medical research has proven that this frequency can influence brainwaves to achieve deep relaxation, automatically calming the nervous system, reducing stress, and creating peace and balance in the body.",
     how_card1_body2:
-      "Studies published in scientific journals and referenced by the National Institutes of Health (NIH) show that audio stimulation can influence brain activity and help regulate stress — a critical factor in neurological recovery.",
+      "show that audio stimulation can influence brain activity and help regulate stress — a critical factor in neurological recovery.",
     how_card1_nih: "National Institutes of Health (NIH)",
     how_card2_title: "Subliminal Affirmations",
     how_card2_body1:
@@ -955,6 +973,20 @@ const dict: Dict = {
     cta_heading: "Begin your self-recovery journey with Strovia today",
     cta_primary: "Start Your Journey",
     cta_secondary: "Download App",
+    // ContactUs
+    contact_badge: "Contact Us",
+    contact_heading: "Have Questions? Send Us a Message",
+    contact_subheading:
+      "Our team is ready to help with your questions about Strovia, subscriptions, and self-recovery.",
+    contact_field_name: "Full Name",
+    contact_field_email: "Email",
+    contact_field_subject: "Subject",
+    contact_field_message: "Message",
+    contact_or_email: "Or email us directly at",
+    contact_submit: "Send Message",
+    contact_default_subject: "Question about Strovia",
+    contact_body_greeting: "Hello Strovia team,",
+    contact_body_from: "From",
   },
 };
 

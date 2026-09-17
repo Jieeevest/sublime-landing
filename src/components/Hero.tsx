@@ -241,8 +241,7 @@ export default function Hero() {
               className="flex flex-col justify-center items-center relative"
               style={{
                 width: "295px",
-                height: "94px",
-                gap: "8px",
+                gap: "12px",
                 zIndex: 2,
               }}
             >

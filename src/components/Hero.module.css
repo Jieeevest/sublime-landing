@@ -173,7 +173,7 @@
 
 .affirmationCard {
   width: 343px;
-  height: 142px;
+  min-height: 220px;
   padding: 24px;
   gap: 24px;
   background: rgba(49, 151, 165, 0.04);
@@ -340,7 +340,7 @@
 
   .affirmationCard {
     width: 400px;
-    height: 160px;
+    min-height: 260px;
     padding: 32px;
     gap: 32px;
   }

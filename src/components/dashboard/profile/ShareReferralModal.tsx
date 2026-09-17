@@ -123,28 +123,6 @@ export default function ShareReferralModal({
         ),
     },
     {
-      name: "X",
-      icon: (
-        <svg
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-12 h-12"
-        >
-          <circle cx="20" cy="20" r="20" fill="black" />
-          <path
-            d="M12.5 12.5L18.4444 20.4444L12.5 27.5H13.8444L18.9778 21.3778L23.1556 27.5H27.5L21.3333 18.6667L26.8444 12.5H25.5L20.8 17.7333L16.8444 12.5H12.5ZM14.4778 13.5H16.5778L25.5222 26.5H23.4222L14.4778 13.5Z"
-            fill="white"
-          />
-        </svg>
-      ),
-      action: () =>
-        window.open(
-          `https://twitter.com/intent/tweet?url=${encodeURIComponent(referralLink)}`,
-          "_blank",
-        ),
-    },
-    {
       name: "Telegram",
       icon: (
         <svg

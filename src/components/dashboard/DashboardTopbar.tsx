@@ -241,7 +241,7 @@ export default function DashboardTopbar() {
           </button>
         )}
 
-        <div className="relative">
+        <div className="relative hidden">
           <button
             onClick={toggleLanguage}
             className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-white/10 sm:gap-2 sm:px-3 sm:py-2 sm:hover:bg-gray-100"

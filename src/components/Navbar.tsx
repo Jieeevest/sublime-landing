@@ -284,6 +284,28 @@ export default function Navbar() {
             {t("nav_faq")}
           </span>
         </Link>
+
+        <Link
+          href="#hubungi-kami"
+          className="flex flex-col justify-center items-center rounded"
+          style={{
+            padding: "8px",
+            width: "auto",
+            height: "44px",
+          }}
+        >
+          <span
+            className="font-normal text-center text-[#1F1F1F]/70 hover:text-[#3197A5] transition-colors duration-200 whitespace-nowrap"
+            style={{
+              height: "24px",
+              fontFamily: "'PP Neue Montreal', sans-serif",
+              fontSize: "14px",
+              lineHeight: "24px",
+            }}
+          >
+            {t("nav_hubungi")}
+          </span>
+        </Link>
       </div>
 
       {/* Right Menu - Language & Login */}
@@ -298,7 +320,7 @@ export default function Navbar() {
       >
         {/* Language Dropdown */}
         <div
-          className="relative flex flex-col items-start"
+          className="relative hidden flex-col items-start"
           style={{
             gap: "4px",
             width: "auto",

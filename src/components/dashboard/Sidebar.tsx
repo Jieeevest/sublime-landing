@@ -12,7 +12,7 @@ type MenuItem = {
   id: string;
   labelKey: string;
   href: string;
-  icon: "home" | "article" | "chat" | "referral";
+  icon: "home" | "article" | "chat" | "referral" | "contact";
 };
 
 const menuItems: MenuItem[] = [
@@ -33,7 +33,13 @@ const menuItems: MenuItem[] = [
     id: "program-referal",
     labelKey: "ud_menu_referral_program",
     icon: "referral",
-    href: "/dashboard/program-referal",
+    href: "/dashboard/profile?tab=Referral",
+  },
+  {
+    id: "hubungi-kami",
+    labelKey: "ud_menu_contact",
+    icon: "contact",
+    href: "/dashboard/hubungi-kami",
   },
 ];
 
@@ -51,7 +57,9 @@ function isItemActive(activeItem: string, item: MenuItem) {
     (item.id === "artikel" && value.includes("article")) ||
     (item.id === "ai-chat" && value.includes("chat")) ||
     (item.id === "program-referal" &&
-      (value.includes("referal") || value.includes("referral")))
+      (value.includes("referal") || value.includes("referral"))) ||
+    (item.id === "hubungi-kami" &&
+      (value.includes("hubungi") || value.includes("contact")))
   );
 }
 
@@ -63,7 +71,9 @@ function MenuIcon({ icon, isActive }: { icon: MenuItem["icon"]; isActive: boolea
         ? "/icons/icon-article.svg"
         : icon === "chat"
           ? "/icons/icon-chat.svg"
-          : "/icons/icon-berlangganan.svg";
+          : icon === "contact"
+            ? "/icons/icon-contact.svg"
+            : "/icons/icon-berlangganan.svg";
 
   return (
     <Image

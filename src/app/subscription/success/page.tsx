@@ -69,7 +69,7 @@ function SubscriptionSuccessContent() {
         <div className="w-full bg-[#F3F8F9] rounded-xl p-4 mb-8 text-left space-y-3">
           {[
             "Akses semua audio therapy",
-            "Chat AI Dokter Via",
+            "Chat AI Miss Via",
             "Artikel kesehatan eksklusif",
             "Tanpa autodebet",
           ].map((feature) => (

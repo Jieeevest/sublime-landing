@@ -644,7 +644,7 @@ export default function AIChatPage() {
                       </div>
 
                       <h1 className="text-[32px] md:text-[40px] font-bold font-sans leading-tight bg-gradient-to-r from-[#3197A5] to-[#55BDC0] bg-clip-text text-transparent">
-                        {t("ai_hero_hi")}, Kiara <br />
+                        {t("ai_hero_hi")}, Miss Via <br />
                         <span className="text-[#1F1F1F]">
                           {t("ai_hero_question")}
                         </span>

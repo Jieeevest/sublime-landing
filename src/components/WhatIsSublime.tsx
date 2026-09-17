@@ -164,8 +164,6 @@ export default function WhatIsSublime() {
                         color: "#FFFFFF",
                       }}
                     >
-                      {/* Stroke Recovery Calm Indonesian Version */}
-                      Audio Strovia Versi Bahasa Indonesia
                       {t("about_card1_audio_title")}
                     </p>
                     <p
@@ -177,7 +175,7 @@ export default function WhatIsSublime() {
                         color: "#E1E1E1",
                       }}
                     >
-                      Pikiranku mulai pulih. Tubuhku ingat cara memulihkan diri.
+                      {t("about_card1_audio_desc")}
                     </p>
                   </div>
 
@@ -377,8 +375,8 @@ export default function WhatIsSublime() {
                 zIndex: 1,
               }}
             >
-              {/* Background - Circle Pattern */}
               <div
+                className="flex items-center justify-center"
                 style={{
                   position: "absolute",
                   width: "90.22px",
@@ -387,19 +385,14 @@ export default function WhatIsSublime() {
                   borderRadius: "16px",
                   boxShadow:
                     "0px 3.37266px 26.9813px -3.37266px rgba(99, 140, 243, 0.32)",
-                  overflow: "hidden",
                 }}
               >
                 <NextImage
-                  src="/circle-pattern.png"
-                  alt="AI Avatar Background"
-                  width={90}
-                  height={90}
-                  className="object-cover"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
+                  src="/robot.png"
+                  alt="AI Robot"
+                  width={60}
+                  height={60}
+                  className="object-contain"
                 />
               </div>
             </div>

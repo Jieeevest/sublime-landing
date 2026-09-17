@@ -4,6 +4,7 @@ import HowItSupports from "@/components/HowItSupports";
 import KeyAdvantages from "@/components/KeyAdvantages";
 import InsightsGuidance from "@/components/InsightsGuidance";
 import FAQ from "@/components/FAQ";
+import ContactUs from "@/components/ContactUs";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 
@@ -19,6 +20,7 @@ export default function Home() {
       <KeyAdvantages />
       <InsightsGuidance />
       <FAQ />
+      <ContactUs />
       <CTASection />
       <Footer />
       <BackToTop />
