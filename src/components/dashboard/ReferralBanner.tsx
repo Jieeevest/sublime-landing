@@ -18,13 +18,13 @@ export default function ReferralBanner() {
       aria-label="Program Referral Strovia"
       className="group relative block w-full overflow-hidden rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3197A5]"
     >
-      <div className="relative aspect-[1200/380] w-full sm:aspect-[1200/340]">
+      <div className="relative w-full aspect-[1999/787]">
         <Image
           src="/referral-banner.png"
           alt="Ajak Teman, Dapatkan Komisi 20%"
           fill
           sizes="(max-width: 768px) 100vw, 1200px"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+          className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
           priority={false}
         />
       </div>
