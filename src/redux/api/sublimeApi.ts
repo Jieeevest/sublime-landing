@@ -802,6 +802,55 @@ export const sublimeApi = apiSlice.injectEndpoints({
       }),
       providesTags: ["Notifications"],
     }),
+
+    // =========================================================================
+    // Support Tickets (Hubungi Kami)
+    // =========================================================================
+    submitSupportTicket: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/support/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Support"],
+    }),
+    getMySupportTickets: builder.query({
+      query: (params) => ({
+        url: "/api/v1/support/my",
+        params,
+      }),
+      providesTags: ["Support"],
+    }),
+    getAdminSupportTickets: builder.query({
+      query: (params) => ({
+        url: "/api/v1/support/admin",
+        params,
+      }),
+      providesTags: ["Support"],
+    }),
+    getAdminSupportTicketById: builder.query({
+      query: (id) => `/api/v1/support/admin/${id}`,
+      providesTags: (result, error, id) => [{ type: "Support", id }],
+    }),
+    updateAdminSupportTicket: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/api/v1/support/admin/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Support"],
+    }),
+    deleteAdminSupportTicket: builder.mutation({
+      query: (id) => ({
+        url: `/api/v1/support/admin/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Support"],
+    }),
+    getAdminSupportStats: builder.query({
+      query: () => "/api/v1/support/admin/stats",
+      providesTags: ["Support"],
+    }),
   }),
 });
 
@@ -959,6 +1008,15 @@ export const {
 
   // Notifications
   useGetNotificationsQuery,
+
+  // Support Tickets
+  useSubmitSupportTicketMutation,
+  useGetMySupportTicketsQuery,
+  useGetAdminSupportTicketsQuery,
+  useGetAdminSupportTicketByIdQuery,
+  useUpdateAdminSupportTicketMutation,
+  useDeleteAdminSupportTicketMutation,
+  useGetAdminSupportStatsQuery,
 } = sublimeApi;
 
 export const useGetChatHistoryQuery =

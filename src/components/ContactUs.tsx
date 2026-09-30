@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import toast from "react-hot-toast";
 import styles from "./ContactUs.module.css";
 import { useI18n } from "@/i18n";
+import { useSubmitSupportTicketMutation } from "@/redux/api/sublimeApi";
 
 const SUPPORT_EMAIL = "strovia.app@gmail.com";
 
@@ -12,23 +14,43 @@ export default function ContactUs() {
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [submitTicket, { isLoading }] = useSubmitSupportTicketMutation();
 
   const canSubmit =
-    name.trim() !== "" && email.trim() !== "" && message.trim() !== "";
+    name.trim() !== "" &&
+    email.trim() !== "" &&
+    subject.trim().length >= 3 &&
+    message.trim().length >= 10 &&
+    !isLoading;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
 
-    const body = `${t("contact_body_greeting")}\n\n${message}\n\n${t(
-      "contact_body_from",
-    )}: ${name}\nEmail: ${email}`;
-
-    const mailto = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(
-      subject || t("contact_default_subject"),
-    )}&body=${encodeURIComponent(body)}`;
-
-    window.location.href = mailto;
+    try {
+      await submitTicket({
+        subjek: subject.trim(),
+        deskripsi: message.trim(),
+        guest_name: name.trim(),
+        guest_email: email.trim(),
+      }).unwrap();
+      toast.success(
+        t("contact_submit_success") ||
+          "Terima kasih! Tiket kamu sudah kami terima.",
+      );
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+    } catch (err: unknown) {
+      const msg =
+        (err as { data?: { message?: string; pesan?: string } })?.data?.pesan ||
+        (err as { data?: { message?: string; pesan?: string } })?.data
+          ?.message ||
+        t("contact_submit_error") ||
+        "Gagal mengirim tiket. Silakan coba lagi.";
+      toast.error(msg);
+    }
   };
 
   return (
@@ -185,7 +207,7 @@ export default function ContactUs() {
             disabled={!canSubmit}
             className={styles.submitButton}
           >
-            {t("contact_submit")}
+            {isLoading ? t("auth_processing") || "Mengirim..." : t("contact_submit")}
           </button>
         </div>
       </form>

@@ -9,6 +9,7 @@ import { useI18n } from "@/i18n";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import LyricsOverlay from "@/components/audio/LyricsOverlay";
+import PengetahuanPendampingModal from "@/components/dashboard/PengetahuanPendampingModal";
 
 interface AudioTrackListProps {
   sessions: AudioSession[];
@@ -25,6 +26,7 @@ export default function AudioTrackList({
   const { data: subscriptionData } = useGetMySubscriptionQuery(undefined);
   const isSubscribed = subscriptionData?.is_subscribed ?? false;
   const [lyricsTrack, setLyricsTrack] = useState<AudioSession | null>(null);
+  const [isKnowledgeModalOpen, setIsKnowledgeModalOpen] = useState(false);
   const isAudioActive = isPlayerVisible && !!currentTrack;
   // Only mutually-exclusive scripts (subliminal) block audio playback while open.
   const isBlockingLyricsOpen =
@@ -66,12 +68,14 @@ export default function AudioTrackList({
 
   const pdfSlots: Array<{
     kind: "pdf";
+    slug?: string;
     displayTitle: string;
     pdfUrl: string;
     pdfFileName: string;
   }> = [
     {
       kind: "pdf",
+      slug: "pengetahuan-pendamping",
       displayTitle: t("dash_audio_item_knowledge"),
       pdfUrl: "/pdf/pengetahuan-pendamping.pdf",
       pdfFileName: "pengetahuan-pendamping.pdf",
@@ -357,10 +361,16 @@ export default function AudioTrackList({
           }
 
           // PDF item
+          const isKnowledgeRow = item.slug === "pengetahuan-pendamping";
           return (
             <div
               key={`pdf-${index}`}
-              className="group relative flex items-center gap-3 overflow-hidden rounded-lg px-3 py-3 transition-colors hover:bg-white/50 sm:gap-6 sm:px-6"
+              onClick={() => {
+                if (isKnowledgeRow) setIsKnowledgeModalOpen(true);
+              }}
+              className={`group relative flex items-center gap-3 overflow-hidden rounded-lg px-3 py-3 transition-colors hover:bg-white/50 sm:gap-6 sm:px-6 ${
+                isKnowledgeRow ? "cursor-pointer" : ""
+              }`}
             >
               {/* Track Number */}
               <div
@@ -452,6 +462,7 @@ export default function AudioTrackList({
                 <a
                   href={item.pdfUrl}
                   download={item.pdfFileName}
+                  onClick={(e) => e.stopPropagation()}
                   className="ml-2 inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1.5 text-[12px] font-medium text-white transition-colors hover:bg-primary-600 sm:ml-0 sm:px-4 sm:py-2 sm:text-[13px]"
                   style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
                 >
@@ -554,6 +565,19 @@ export default function AudioTrackList({
           onClose={() => setLyricsTrack(null)}
         />
       )}
+      <PengetahuanPendampingModal
+        isOpen={isKnowledgeModalOpen}
+        onClose={() => setIsKnowledgeModalOpen(false)}
+        canDownload={isSubscribed}
+        onDownload={() => {
+          const link = document.createElement("a");
+          link.href = "/pdf/pengetahuan-pendamping.pdf";
+          link.download = "pengetahuan-pendamping.pdf";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }}
+      />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import AudioTrackList from "@/components/dashboard/AudioTrackList";
 import DashboardHero from "@/components/dashboard/DashboardHero";
 import DashboardPromoCards from "@/components/dashboard/DashboardPromoCards";
 import DashboardArticles from "@/components/dashboard/DashboardArticles";
+import ReferralBanner from "@/components/dashboard/ReferralBanner";
 import { AudioSession } from "@/data/audioSessions";
 import { getLyricsOverride } from "@/data/lyricsOverrides";
 import { useState, useEffect } from "react";
@@ -126,8 +127,10 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* 
-          Using conditional rendering without a wrapping div when empty 
+        <ReferralBanner />
+
+        {/*
+          Using conditional rendering without a wrapping div when empty
           to prevent tailwind's space-y-10 from adding a margin to a hidden node.
         */}
         {!isSubscribed ? (

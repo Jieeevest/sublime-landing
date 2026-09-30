@@ -106,14 +106,22 @@ export default function CmsAffiliatesPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 font-mono text-gray-600">
-                      {aff.referralCode}
+                      {aff.referral_code ?? aff.referralCode ?? "-"}
                     </td>
-                    <td className="px-6 py-4">{aff.totalReferrals || 0}</td>
+                    <td className="px-6 py-4">
+                      {aff.total_referrals ?? aff.totalReferrals ?? 0}
+                    </td>
                     <td className="px-6 py-4 text-green-600 font-medium">
-                      Rp {aff.totalCommission?.toLocaleString("id-ID") || 0}
+                      Rp{" "}
+                      {Number(
+                        aff.total_earnings ?? aff.totalCommission ?? 0,
+                      ).toLocaleString("id-ID")}
                     </td>
                     <td className="px-6 py-4 font-bold text-gray-800">
-                      Rp {aff.balance?.toLocaleString("id-ID") || 0}
+                      Rp{" "}
+                      {Number(
+                        aff.pending_earnings ?? aff.balance ?? 0,
+                      ).toLocaleString("id-ID")}
                     </td>
                     <td className="px-6 py-4">
                       <button

@@ -26,6 +26,8 @@ export default function CmsSubscriptionsPage() {
     user?: { name?: string; email?: string };
     plan?: { name?: string };
     status?: string;
+    started_at?: string;
+    expires_at?: string;
     startDate?: string;
     nextBillingDate?: string;
   };
@@ -148,14 +150,16 @@ export default function CmsSubscriptionsPage() {
                         </span>
                       </td>
                       <td className="px-6 py-4 text-gray-600">
-                        {sub.startDate
-                          ? new Date(sub.startDate).toLocaleDateString()
-                          : "-"}
+                        {(() => {
+                          const raw = sub.started_at || sub.startDate;
+                          return raw ? new Date(raw).toLocaleDateString("id-ID") : "-";
+                        })()}
                       </td>
                       <td className="px-6 py-4 text-gray-600">
-                        {sub.nextBillingDate
-                          ? new Date(sub.nextBillingDate).toLocaleDateString()
-                          : "-"}
+                        {(() => {
+                          const raw = sub.expires_at || sub.nextBillingDate;
+                          return raw ? new Date(raw).toLocaleDateString("id-ID") : "-";
+                        })()}
                       </td>
                     </tr>
                   ))
