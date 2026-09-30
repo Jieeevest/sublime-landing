@@ -163,6 +163,11 @@ export default function HubungiKamiPage() {
                 >
                   {t("contact_field_subject")}
                 </label>
+                {subject.length > 0 && subject.trim().length < 3 && (
+                  <p className="mt-1.5 px-1 text-[11px] text-[#FF7A00]">
+                    Minimal 3 karakter
+                  </p>
+                )}
               </div>
 
               {/* Message */}
@@ -183,6 +188,22 @@ export default function HubungiKamiPage() {
                 >
                   {t("contact_field_message")}
                 </label>
+                <div className="mt-1.5 flex items-center justify-between px-1 text-[11px]">
+                  <span
+                    className={
+                      message.trim().length < 10
+                        ? "text-[#FF7A00]"
+                        : "text-[#8E8E8E]"
+                    }
+                  >
+                    {message.trim().length < 10
+                      ? `Minimal 10 karakter (kurang ${10 - message.trim().length})`
+                      : "Siap dikirim"}
+                  </span>
+                  <span className="text-[#8E8E8E]">
+                    {message.length} karakter
+                  </span>
+                </div>
               </div>
             </div>
 

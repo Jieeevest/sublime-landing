@@ -171,6 +171,7 @@ export default function ContactUs() {
               onChange={(e) => setMessage(e.target.value)}
               placeholder=" "
               required
+              minLength={10}
               rows={6}
               className="peer w-full px-[14px] pt-[18px] pb-[14px] text-sm text-[#1F1F1F] border border-[#E1E1E1] rounded-lg outline-none focus:border-[#3197A5] transition-colors bg-white resize-none"
             />
@@ -181,6 +182,20 @@ export default function ContactUs() {
             >
               {t("contact_field_message")}
             </label>
+            <div className="mt-1.5 flex items-center justify-between px-1 text-[11px]" style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}>
+              <span
+                className={
+                  message.trim().length < 10
+                    ? "text-[#FF7A00]"
+                    : "text-[#8E8E8E]"
+                }
+              >
+                {message.trim().length < 10
+                  ? `Minimal 10 karakter (kurang ${10 - message.trim().length})`
+                  : "Siap dikirim"}
+              </span>
+              <span className="text-[#8E8E8E]">{message.length} karakter</span>
+            </div>
           </div>
         </div>
 

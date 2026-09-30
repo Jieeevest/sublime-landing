@@ -176,7 +176,7 @@ export default function Navbar() {
       >
         {/* Menu Items */}
         <Link
-          href="#tentang-kami"
+          href="/#tentang-kami"
           className="flex flex-col justify-center items-center rounded"
           style={{
             padding: "8px",
@@ -198,7 +198,7 @@ export default function Navbar() {
         </Link>
 
         <Link
-          href="#cara-kerja"
+          href="/#cara-kerja"
           className="flex flex-col justify-center items-center rounded"
           style={{
             padding: "8px",
@@ -220,7 +220,7 @@ export default function Navbar() {
         </Link>
 
         <Link
-          href="#manfaat"
+          href="/#manfaat"
           className="flex flex-col justify-center items-center rounded"
           style={{
             padding: "8px",
@@ -242,7 +242,7 @@ export default function Navbar() {
         </Link>
 
         <Link
-          href="#artikel"
+          href="/#artikel"
           className="flex flex-col justify-center items-center rounded"
           style={{
             padding: "8px",
@@ -264,7 +264,7 @@ export default function Navbar() {
         </Link>
 
         <Link
-          href="#faq"
+          href="/#faq"
           className="flex flex-col justify-center items-center rounded"
           style={{
             padding: "8px",
@@ -286,7 +286,29 @@ export default function Navbar() {
         </Link>
 
         <Link
-          href="#hubungi-kami"
+          href="/referral"
+          className="flex flex-col justify-center items-center rounded"
+          style={{
+            padding: "8px",
+            width: "auto",
+            height: "44px",
+          }}
+        >
+          <span
+            className="font-normal text-center text-[#1F1F1F]/70 hover:text-[#3197A5] transition-colors duration-200 whitespace-nowrap"
+            style={{
+              height: "24px",
+              fontFamily: "'PP Neue Montreal', sans-serif",
+              fontSize: "14px",
+              lineHeight: "24px",
+            }}
+          >
+            {t("nav_referral")}
+          </span>
+        </Link>
+
+        <Link
+          href="/#hubungi-kami"
           className="flex flex-col justify-center items-center rounded"
           style={{
             padding: "8px",

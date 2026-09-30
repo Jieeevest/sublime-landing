@@ -379,6 +379,7 @@ const dict: Dict = {
     nav_artikel: "Artikel",
     nav_faq: "FAQ",
     nav_hubungi: "Hubungi Kami",
+    nav_referral: "Referral",
     nav_login: "Masuk / Daftar",
     nav_logout: "Keluar",
     // Hero
@@ -872,6 +873,7 @@ const dict: Dict = {
     nav_artikel: "Articles",
     nav_faq: "FAQ",
     nav_hubungi: "Contact Us",
+    nav_referral: "Referral",
     nav_login: "Sign In / Register",
     nav_logout: "Sign Out",
     // Hero
