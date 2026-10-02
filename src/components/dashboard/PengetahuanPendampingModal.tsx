@@ -147,7 +147,7 @@ function PengetahuanContent() {
         YANG PERLU ANDA <span className="text-[#3197A5]">PAHAMI</span>
       </h1>
 
-      <div className="mt-6 space-y-4 text-[14px] leading-[1.7] text-[#1F1F1F] sm:text-[15px]">
+      <div className="mt-6 space-y-4 text-justify text-[14px] leading-[1.7] text-[#1F1F1F] sm:text-[15px]">
         <p>
           Ada beberapa hal yang perlu Anda pahami saat memulai penyembuhan-mandiri (
           <em>self-healing</em>) dari stroke yang Anda alami. Audio Strovia tidak dapat
@@ -226,7 +226,7 @@ function PanduanContent() {
         PANDUAN PENGGUNAAN <span className="text-[#3197A5]">AUDIO STROVIA</span>
       </h1>
 
-      <div className="mt-6 space-y-4 text-[14px] leading-[1.7] text-[#1F1F1F] sm:text-[15px]">
+      <div className="mt-6 space-y-4 text-justify text-[14px] leading-[1.7] text-[#1F1F1F] sm:text-[15px]">
         <p>Ada 2 audio di Strovia, yaitu:</p>
 
         <h2 className="pt-2 text-[16px] font-bold text-[#1F1F1F] sm:text-[18px]">
