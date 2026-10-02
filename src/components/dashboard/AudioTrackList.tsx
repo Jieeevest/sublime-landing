@@ -26,7 +26,9 @@ export default function AudioTrackList({
   const { data: subscriptionData } = useGetMySubscriptionQuery(undefined);
   const isSubscribed = subscriptionData?.is_subscribed ?? false;
   const [lyricsTrack, setLyricsTrack] = useState<AudioSession | null>(null);
-  const [isKnowledgeModalOpen, setIsKnowledgeModalOpen] = useState(false);
+  const [previewPdf, setPreviewPdf] = useState<
+    "pengetahuan-pendamping" | "panduan-penggunaan" | null
+  >(null);
   const isAudioActive = isPlayerVisible && !!currentTrack;
   // Only mutually-exclusive scripts (subliminal) block audio playback while open.
   const isBlockingLyricsOpen =
@@ -68,7 +70,7 @@ export default function AudioTrackList({
 
   const pdfSlots: Array<{
     kind: "pdf";
-    slug?: string;
+    slug: "pengetahuan-pendamping" | "panduan-penggunaan";
     displayTitle: string;
     pdfUrl: string;
     pdfFileName: string;
@@ -77,11 +79,12 @@ export default function AudioTrackList({
       kind: "pdf",
       slug: "pengetahuan-pendamping",
       displayTitle: t("dash_audio_item_knowledge"),
-      pdfUrl: "/pdf/pengetahuan-pendamping.pdf",
-      pdfFileName: "pengetahuan-pendamping.pdf",
+      pdfUrl: "/pdf/yang-perlu-anda-pahami-strovia.pdf",
+      pdfFileName: "yang-perlu-anda-pahami-strovia.pdf",
     },
     {
       kind: "pdf",
+      slug: "panduan-penggunaan",
       displayTitle: t("dash_audio_item_usage_guide"),
       pdfUrl: "/pdf/panduan-penggunaan-audio-strovia.pdf",
       pdfFileName: "panduan-penggunaan-audio-strovia.pdf",
@@ -361,16 +364,11 @@ export default function AudioTrackList({
           }
 
           // PDF item
-          const isKnowledgeRow = item.slug === "pengetahuan-pendamping";
           return (
             <div
               key={`pdf-${index}`}
-              onClick={() => {
-                if (isKnowledgeRow) setIsKnowledgeModalOpen(true);
-              }}
-              className={`group relative flex items-center gap-3 overflow-hidden rounded-lg px-3 py-3 transition-colors hover:bg-white/50 sm:gap-6 sm:px-6 ${
-                isKnowledgeRow ? "cursor-pointer" : ""
-              }`}
+              onClick={() => setPreviewPdf(item.slug)}
+              className="group relative flex cursor-pointer items-center gap-3 overflow-hidden rounded-lg px-3 py-3 transition-colors hover:bg-white/50 sm:gap-6 sm:px-6"
             >
               {/* Track Number */}
               <div
@@ -566,13 +564,16 @@ export default function AudioTrackList({
         />
       )}
       <PengetahuanPendampingModal
-        isOpen={isKnowledgeModalOpen}
-        onClose={() => setIsKnowledgeModalOpen(false)}
+        isOpen={previewPdf !== null}
+        variant={previewPdf ?? "pengetahuan-pendamping"}
+        onClose={() => setPreviewPdf(null)}
         canDownload={isSubscribed}
         onDownload={() => {
+          const slot = pdfSlots.find((s) => s.slug === previewPdf);
+          if (!slot) return;
           const link = document.createElement("a");
-          link.href = "/pdf/pengetahuan-pendamping.pdf";
-          link.download = "pengetahuan-pendamping.pdf";
+          link.href = slot.pdfUrl;
+          link.download = slot.pdfFileName;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
