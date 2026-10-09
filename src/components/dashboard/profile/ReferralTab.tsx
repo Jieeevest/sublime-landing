@@ -373,7 +373,7 @@ export default function ReferralTab() {
               </button>
             </div>
           ) : (
-            <div className="overflow-x-auto flex-1 -mx-5 sm:mx-0 px-5 sm:px-0">
+            <div className="w-full flex-1 overflow-x-auto">
               <table className="w-full min-w-[520px] text-sm text-left">
                 <thead className="text-gray-400 text-xs bg-gray-50 rounded-lg">
                   <tr>

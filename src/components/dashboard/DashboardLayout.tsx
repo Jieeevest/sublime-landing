@@ -22,12 +22,12 @@ export default function DashboardLayout({
       <Sidebar activeItem={activeItem} />
 
       <div
-        className={`flex flex-1 flex-col md:ml-[93px] md:pb-0 ${
+        className={`flex min-w-0 flex-1 flex-col md:ml-[93px] md:pb-0 ${
           isAudioOverlayActive ? "pb-[208px]" : "pb-[88px]"
         }`}
       >
         <DashboardTopbar />
-        <main className="flex-1">{children}</main>
+        <main className="min-w-0 flex-1">{children}</main>
         <AudioPlayer />
       </div>
     </div>

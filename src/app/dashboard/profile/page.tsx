@@ -41,7 +41,7 @@ function ProfileContent() {
 
   return (
     <DashboardLayout activeItem="Profile">
-      <div className="w-full max-w-[1347px] mx-auto p-4 space-y-6 sm:p-10 sm:space-y-10">
+      <div className="w-full min-w-0 max-w-[1347px] mx-auto overflow-x-hidden p-4 space-y-6 sm:p-10 sm:space-y-10">
         {/* Header Title */}
         <div className="flex items-center gap-2">
           <h2 className="text-2xl font-medium text-[#1F1F1F] font-sans">

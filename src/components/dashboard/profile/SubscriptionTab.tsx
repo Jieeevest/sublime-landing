@@ -217,7 +217,7 @@ export default function SubscriptionTab() {
       <div className="bg-white rounded-2xl p-5 sm:p-8 shadow-sm border border-gray-100 min-h-[490px] flex flex-col">
         <h3 className="text-lg sm:text-xl font-bold text-[#1F1F1F] mb-5 sm:mb-6">Invoice</h3>
 
-        <div className="overflow-x-auto flex-1 -mx-5 sm:mx-0 px-5 sm:px-0">
+        <div className="w-full flex-1 overflow-x-auto">
           <table className="w-full min-w-[760px] text-sm text-left">
             <thead className="bg-gray-50 text-gray-400 text-xs">
               <tr>
