@@ -93,7 +93,7 @@ export default function Sidebar({ activeItem = "Home" }: SidebarProps) {
     <>
       <aside className="fixed left-0 top-0 z-40 hidden h-full w-[93px] flex-col items-center border-r border-dashed border-white bg-primary py-0 md:flex">
         <Link
-          href="/dashboard"
+          href="/"
           className="flex h-[72px] w-full items-center justify-center py-4"
         >
           <div className="flex h-12 w-12 items-center justify-center">

@@ -6,6 +6,7 @@ import DashboardHero from "@/components/dashboard/DashboardHero";
 import DashboardPromoCards from "@/components/dashboard/DashboardPromoCards";
 import DashboardArticles from "@/components/dashboard/DashboardArticles";
 import ReferralBanner from "@/components/dashboard/ReferralBanner";
+import ComingSoonAppBanner from "@/components/dashboard/ComingSoonAppBanner";
 import { AudioSession } from "@/data/audioSessions";
 import { getLyricsOverride } from "@/data/lyricsOverrides";
 import { useState, useEffect } from "react";
@@ -126,6 +127,8 @@ export default function DashboardPage() {
             <AudioTrackList sessions={sessions.length > 0 ? sessions : []} />
           )}
         </div>
+
+        <ComingSoonAppBanner />
 
         <ReferralBanner />
 

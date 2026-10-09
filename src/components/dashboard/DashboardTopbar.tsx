@@ -214,7 +214,7 @@ export default function DashboardTopbar() {
       </div>
 
       <div className="order-1 ml-auto flex w-auto items-center justify-end gap-2 rounded-2xl bg-primary px-3 py-2 sm:order-2 sm:gap-3 sm:rounded-none sm:bg-transparent sm:px-0 sm:py-0">
-        <Link href="/dashboard" className="flex items-center sm:hidden">
+        <Link href="/" className="flex items-center sm:hidden">
           <Image
             src="/strovia-logo-white.png"
             alt="Strovia Logo"

@@ -38,31 +38,83 @@ export default function ReferralLandingClient() {
   return (
     <div style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#E6F7FB] via-white to-[#F0FBFD] pt-[120px] pb-16 sm:pt-[140px] sm:pb-24">
-        <div className="pointer-events-none absolute -top-32 -right-24 h-[420px] w-[420px] rounded-full bg-[#BFEAF3]/40 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-32 -left-32 h-[420px] w-[420px] rounded-full bg-[#3197A5]/10 blur-3xl" />
+      <section
+        className="relative isolate overflow-hidden pt-[120px] pb-16 sm:pt-[140px] sm:pb-24"
+        style={{
+          background:
+            "linear-gradient(90deg, #55bdc0 0%, rgba(85, 189, 192, 0) 100%), #f5f9fa",
+        }}
+      >
+        {/* Wave Decoration */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-full w-full max-w-[1533px] -translate-x-1/2 -translate-y-1/2 opacity-15">
+          <Image
+            src="/wave.png"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover"
+            aria-hidden
+            priority
+          />
+        </div>
+
+        {/* Blur circle effects */}
+        <div
+          className="pointer-events-none absolute -z-10"
+          style={{
+            width: 401,
+            height: 304,
+            left: "20%",
+            bottom: 284,
+            background: "#3197a5",
+            filter: "blur(195px)",
+            transform: "rotate(-90deg)",
+            opacity: 0.2,
+          }}
+        />
+        <div
+          className="pointer-events-none absolute -z-10"
+          style={{
+            width: 387,
+            height: 670,
+            left: "30%",
+            top: 761,
+            background: "#3197a5",
+            filter: "blur(195px)",
+            transform: "rotate(-90deg)",
+            opacity: 0.2,
+          }}
+        />
 
         <div className="relative mx-auto grid max-w-[1200px] items-center gap-10 px-6 md:grid-cols-2 md:gap-12 md:px-10">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#BFEAF3] bg-white/70 px-3 py-1.5 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/20 px-3 py-1.5 backdrop-blur-sm">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                 <path
                   d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z"
-                  fill="#3197A5"
+                  fill="#ffffff"
                 />
               </svg>
-              <span className="text-[12px] font-medium tracking-wide text-[#0B6D86]">
+              <span className="text-[12px] font-medium tracking-wide text-white">
                 Program Referral Strovia
               </span>
             </div>
 
-            <h1 className="mt-5 text-[36px] font-bold leading-tight text-[#1F1F1F] sm:text-[44px] md:text-[52px]">
+            <h1
+              className="mt-5 bg-clip-text text-[36px] font-bold leading-tight text-transparent sm:text-[44px] md:text-[52px]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(94.58deg, #c2f8ff 22.86%, #ffffff 62.57%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
               Ajak Teman,
               <br />
-              <span className="text-[#3197A5]">Dapatkan Komisi 20%</span>
+              Dapatkan Komisi 20%
             </h1>
 
-            <p className="mt-5 max-w-[520px] text-[15px] leading-relaxed text-[#4D4D4D] sm:text-[16px]">
+            <p className="mt-5 max-w-[520px] text-[15px] leading-relaxed text-white/90 sm:text-[16px]">
               Undang teman menggunakan kode referralmu dan dapatkan komisi 20% dari
               setiap pengguna yang mendaftar dan berlangganan Strovia melalui kode
               kamu. Selama mereka aktif berlangganan, kamu terus mendapatkan royalti.
@@ -92,7 +144,7 @@ export default function ReferralLandingClient() {
               <button
                 type="button"
                 onClick={scrollToHowItWorks}
-                className="inline-flex items-center gap-2 rounded-full border border-[#BFEAF3] bg-white/70 px-6 py-3 text-[14px] font-medium text-[#0B6D86] transition-colors hover:bg-white"
+                className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white px-6 py-3 text-[14px] font-medium text-[#0B6D86] transition-colors hover:bg-white/90"
               >
                 Lihat Cara Kerja
                 <svg
@@ -111,26 +163,26 @@ export default function ReferralLandingClient() {
             {/* Highlight metrics */}
             <div className="mt-10 grid grid-cols-3 gap-4 sm:max-w-[440px]">
               <div>
-                <p className="text-[22px] font-bold text-[#1F1F1F] sm:text-[26px]">
+                <p className="text-[22px] font-bold text-white sm:text-[26px]">
                   20%
                 </p>
-                <p className="text-[11px] text-[#8E8E8E] sm:text-[12px]">
+                <p className="text-[11px] text-white/80 sm:text-[12px]">
                   Komisi per langganan
                 </p>
               </div>
               <div>
-                <p className="text-[22px] font-bold text-[#1F1F1F] sm:text-[26px]">
+                <p className="text-[22px] font-bold text-white sm:text-[26px]">
                   Tanpa Batas
                 </p>
-                <p className="text-[11px] text-[#8E8E8E] sm:text-[12px]">
+                <p className="text-[11px] text-white/80 sm:text-[12px]">
                   Jumlah undangan
                 </p>
               </div>
               <div>
-                <p className="text-[22px] font-bold text-[#1F1F1F] sm:text-[26px]">
+                <p className="text-[22px] font-bold text-white sm:text-[26px]">
                   Real-time
                 </p>
-                <p className="text-[11px] text-[#8E8E8E] sm:text-[12px]">
+                <p className="text-[11px] text-white/80 sm:text-[12px]">
                   Pencairan dana
                 </p>
               </div>
@@ -138,7 +190,7 @@ export default function ReferralLandingClient() {
           </div>
 
           <div className="relative">
-            <div className="relative overflow-hidden rounded-2xl border border-[#BFEAF3]/60 bg-white shadow-lg">
+            <div className="relative overflow-hidden rounded-2xl border border-white/40 bg-white/90 shadow-lg backdrop-blur-sm">
               <Image
                 src="/referral-banner.png"
                 alt="Program Referral Strovia"
@@ -304,7 +356,7 @@ export default function ReferralLandingClient() {
             <div className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
 
             <h2 className="relative text-[28px] font-bold leading-tight text-white sm:text-[36px]">
-              Siap menghasilkan bersama Strovia?
+              Siap tumbuh bersama Strovia?
             </h2>
             <p className="relative mx-auto mt-4 max-w-[520px] text-[14px] leading-relaxed text-white/85 sm:text-[15px]">
               Daftar program referral hari ini, bagikan kode kamu, dan mulai

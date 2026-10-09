@@ -143,7 +143,7 @@ export default function Navbar() {
       >
       {/* Logo */}
       <Link
-        href="#beranda"
+        href="/"
         className="flex flex-row items-center"
         style={{
           gap: "8px",
