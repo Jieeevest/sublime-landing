@@ -41,7 +41,7 @@ function ProfileContent() {
 
   return (
     <DashboardLayout activeItem="Profile">
-      <div className="w-full max-w-[1347px] mx-auto p-10 space-y-10">
+      <div className="w-full max-w-[1347px] mx-auto p-4 space-y-6 sm:p-10 sm:space-y-10">
         {/* Header Title */}
         <div className="flex items-center gap-2">
           <h2 className="text-2xl font-medium text-[#1F1F1F] font-sans">
@@ -59,10 +59,10 @@ function ProfileContent() {
           </div>
 
           {/* Profile Info Overlay (Avatar & Name) */}
-          <div className="relative px-6 pb-6 mt-[-64px] flex items-end justify-between">
-            <div className="flex items-end gap-6">
+          <div className="relative px-4 pb-6 mt-[-64px] flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between sm:px-6">
+            <div className="flex flex-col items-start gap-4 w-full min-w-0 sm:flex-row sm:items-end sm:gap-6">
               {/* Avatar */}
-              <div className="relative w-32 h-32 rounded-full border-4 border-white bg-white p-1">
+              <div className="relative w-24 h-24 rounded-full border-4 border-white bg-white p-1 flex-shrink-0 sm:w-32 sm:h-32">
                 <div className="w-full h-full rounded-full overflow-hidden relative bg-gray-100">
                   <Image
                     src={user?.data?.avatar || "/user-1.png"}
@@ -74,14 +74,14 @@ function ProfileContent() {
               </div>
 
               {/* Name & Status */}
-              <div className="mb-4">
-                <h3 className="text-2xl font-bold text-white font-sans">
+              <div className="min-w-0 sm:mb-4">
+                <h3 className="text-xl font-bold text-[#1F1F1F] font-sans truncate sm:text-2xl sm:text-white">
                   {user?.data?.name || "User Name"}
                 </h3>
-                <p className="text-gray-300 text-sm font-sans mb-2">
+                <p className="text-[#6B6B6B] text-sm font-sans mb-2 truncate sm:text-gray-300">
                   {user?.data?.email || "email@example.com"}
                 </p>
-                <span className="bg-white/20 backdrop-blur-md text-white text-xs px-2 py-1 rounded font-medium">
+                <span className="bg-[#3197A5]/10 text-[#0B6D86] text-xs px-2 py-1 rounded font-medium sm:bg-white/20 sm:backdrop-blur-md sm:text-white">
                   {user?.data?.subscription?.isActive
                     ? "Berlangganan"
                     : "Gratis"}
@@ -90,19 +90,19 @@ function ProfileContent() {
             </div>
 
             {/* Action Tabs (Optional/Right side) */}
-            <div className="flex gap-4 mb-4">
+            <div className="hidden sm:flex gap-4 mb-4">
               {/* Could add 'Edit Profile' button or similar here if needed */}
             </div>
           </div>
 
           {/* Tabs Navigation */}
-          <div className="flex items-center justify-end px-6 h-12 border-t border-gray-100">
+          <div className="flex items-center justify-start overflow-x-auto px-4 h-12 border-t border-gray-100 scrollbar-hide sm:justify-end sm:px-6">
             {["Informasi Pribadi", "Referral", "Berlangganan", "Keamanan"].map(
               (tab) => (
                 <button
                   key={tab}
                   onClick={() => handleTabChange(tab)}
-                  className={`h-full px-6 text-sm font-medium font-sans relative transition-colors ${
+                  className={`h-full flex-shrink-0 whitespace-nowrap px-4 text-sm font-medium font-sans relative transition-colors sm:px-6 ${
                     currentTab === tab
                       ? "text-[#3197A5]"
                       : "text-[#8E8E8E] hover:text-gray-700"

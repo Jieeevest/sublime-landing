@@ -372,10 +372,10 @@ export default function AIChatPage() {
 
   return (
     <DashboardLayout activeItem={t("ud_menu_ai_chat")}>
-      <div className="flex h-[calc(100vh-100px)] w-full max-w-[1347px] mx-auto border-t border-[#E1E1E1] box-border">
+      <div className="flex h-[calc(100vh-168px)] md:h-[calc(100vh-100px)] w-full max-w-[1347px] mx-auto border-t border-[#E1E1E1] box-border">
         {/* Chat Navigation Sidebar */}
         <div
-          className={`${isCollapsed ? "w-20" : "w-[320px]"} h-full flex flex-col items-center border-r border-[#E1E1E1] pb-4 transition-[width] duration-200`}
+          className={`${isCollapsed ? "md:w-20" : "md:w-[320px]"} hidden md:flex h-full flex-col items-center border-r border-[#E1E1E1] pb-4 transition-[width] duration-200`}
         >
           {/* Header */}
           <div className="w-full flex justify-between items-center px-4 py-4">
@@ -614,13 +614,32 @@ export default function AIChatPage() {
 
             {/* Conversation Area (with hero for empty state) */}
             <div className="z-10 w-full max-w-[947px] flex flex-col gap-2 h-full">
-              <div className="flex items-center justify-between mt-1">
-                <h2 className="text-xl font-semibold text-[#1F1F1F]">
+              <div className="flex items-center justify-between mt-1 gap-3">
+                <h2 className="text-xl font-semibold text-[#1F1F1F] truncate">
                   {isNewChat && !selectedId
                     ? t("ai_new_chat")
                     : detail.title || t("ud_menu_ai_chat")}
                 </h2>
-                <div />
+                <button
+                  type="button"
+                  onClick={handleNewChat}
+                  disabled={!isSubFetching && !isSubscribed}
+                  aria-label={t("ai_new_chat")}
+                  className={`md:hidden flex-shrink-0 h-9 w-9 flex items-center justify-center rounded-full text-white transition-colors ${!isSubFetching && !isSubscribed ? "bg-gray-300 cursor-not-allowed" : "bg-[#3197A5] hover:bg-[#288a96]"}`}
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
               </div>
               <div className="flex-1 min-h-0 w-full overflow-y-auto space-y-3 flex flex-col p-2">
                 {detailLoading ? (
