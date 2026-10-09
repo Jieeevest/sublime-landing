@@ -172,18 +172,18 @@ export default function ReferralTab() {
       {/* Top Section: Program Info & Balance (Height 307px) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:h-[307px]">
         {/* Left Card: Program Info and Steps */}
-        <div className="lg:col-span-2 bg-white rounded-2xl p-8 shadow-sm border border-gray-100 flex flex-col justify-between h-full">
+        <div className="lg:col-span-2 bg-white rounded-2xl p-5 sm:p-8 shadow-sm border border-gray-100 flex flex-col justify-between gap-6 h-full">
           <div>
-            <h3 className="text-xl font-bold text-[#1F1F1F] mb-2">
+            <h3 className="text-lg sm:text-xl font-bold text-[#1F1F1F] mb-2">
               Program Referral Strovia
             </h3>
-            <p className="text-gray-500 text-sm mb-8">
+            <p className="text-gray-500 text-sm">
               Undang teman untuk mendapatkan komisi sebesar 20% setiap pengguna
               yang mendaftar dan berlangganan melalui kode referralmu.
             </p>
           </div>
 
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 relative">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-4 relative">
             {/* Step 1 */}
             <div className="flex flex-col items-center text-center max-w-[160px] z-10">
               <div className="w-16 h-16 bg-[#E0F2F4] rounded-full flex items-center justify-center mb-4 text-[#3197A5]">
@@ -294,10 +294,10 @@ export default function ReferralTab() {
         </div>
 
         {/* Right Card: Balance & Code */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col h-full">
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <h3 className="text-2xl font-bold text-[#1F1F1F]">
+        <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 flex flex-col h-full">
+          <div className="flex justify-between items-start gap-3 mb-5 sm:mb-6">
+            <div className="min-w-0">
+              <h3 className="text-xl sm:text-2xl font-bold text-[#1F1F1F] break-words">
                 Rp{" "}
                 {Number(
                   balanceData?.data?.balance?.available || 0,
@@ -307,7 +307,7 @@ export default function ReferralTab() {
             </div>
             <button
               onClick={handleWithdrawalRequest}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-medium rounded-full transition-colors"
+              className="px-3 sm:px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-medium rounded-full transition-colors flex-shrink-0 whitespace-nowrap"
               title="Tarik Dana"
             >
               Tarik Dana
@@ -344,8 +344,8 @@ export default function ReferralTab() {
       {/* Bottom Section: Lists (Height 650px) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:h-[650px]">
         {/* Referral List (Takes up 2 cols) */}
-        <div className="lg:col-span-2 bg-white rounded-2xl p-8 shadow-sm border border-gray-100 h-full overflow-hidden flex flex-col">
-          <h4 className="text-lg font-bold text-[#1F1F1F] mb-6">
+        <div className="lg:col-span-2 bg-white rounded-2xl p-5 sm:p-8 shadow-sm border border-gray-100 h-full overflow-hidden flex flex-col">
+          <h4 className="text-base sm:text-lg font-bold text-[#1F1F1F] mb-5 sm:mb-6">
             Daftar Teman
           </h4>
 
@@ -373,8 +373,8 @@ export default function ReferralTab() {
               </button>
             </div>
           ) : (
-            <div className="overflow-x-auto flex-1">
-              <table className="w-full text-sm text-left">
+            <div className="overflow-x-auto flex-1 -mx-5 sm:mx-0 px-5 sm:px-0">
+              <table className="w-full min-w-[520px] text-sm text-left">
                 <thead className="text-gray-400 text-xs bg-gray-50 rounded-lg">
                   <tr>
                     <th className="py-3 px-4 rounded-l-lg font-medium">Nama</th>
@@ -438,14 +438,14 @@ export default function ReferralTab() {
         </div>
 
         {/* Withdrawal History (Takes up 1 col) */}
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 h-full overflow-hidden flex flex-col">
-          <div className="flex items-center justify-between mb-6">
-            <h4 className="text-lg font-bold text-[#1F1F1F]">
+        <div className="bg-white rounded-2xl p-5 sm:p-8 shadow-sm border border-gray-100 h-full overflow-hidden flex flex-col">
+          <div className="flex items-center justify-between gap-3 mb-5 sm:mb-6">
+            <h4 className="text-base sm:text-lg font-bold text-[#1F1F1F]">
               Riwayat Pencairan
             </h4>
             <button
               onClick={handleWithdrawalRequest}
-              className="text-sm text-[#3197A5] font-medium hover:underline"
+              className="text-xs sm:text-sm text-[#3197A5] font-medium hover:underline whitespace-nowrap flex-shrink-0"
             >
               Request Penarikan
             </button>

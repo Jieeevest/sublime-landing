@@ -80,7 +80,7 @@ export default function SecurityTab() {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 font-sans">
+    <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 font-sans">
       <div className="space-y-6 max-w-full">
         {/* Old Password */}
         <div className="space-y-2">

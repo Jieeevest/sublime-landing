@@ -241,7 +241,7 @@ export default function AudioTrackList({
                 {/* Title */}
                 <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
                   <h3
-                    className="truncate font-medium text-[#1F1F1F]"
+                    className="line-clamp-2 font-medium text-[#1F1F1F] sm:truncate"
                     style={{
                       fontFamily: "'PP Neue Montreal', sans-serif",
                       fontSize: "14px",
@@ -290,7 +290,7 @@ export default function AudioTrackList({
 
                 {/* Duration */}
                 <div
-                  className="ml-2 w-auto text-right text-sm font-normal text-[#1F1F1F] sm:ml-0 sm:w-[33px] sm:text-base"
+                  className="ml-2 w-auto flex-shrink-0 text-right text-sm font-normal text-[#1F1F1F] sm:ml-0 sm:w-[33px] sm:text-base"
                   style={{
                     fontFamily: "'PP Neue Montreal', sans-serif",
                   }}
@@ -367,8 +367,18 @@ export default function AudioTrackList({
           return (
             <div
               key={`pdf-${index}`}
-              onClick={() => setPreviewPdf(item.slug)}
-              className="group relative flex cursor-pointer items-center gap-3 overflow-hidden rounded-lg px-3 py-3 transition-colors hover:bg-white/50 sm:gap-6 sm:px-6"
+              onClick={() => {
+                if (!isSubscribed) {
+                  navigateWithLoading("/dashboard/subscriptions");
+                  return;
+                }
+                setPreviewPdf(item.slug);
+              }}
+              className={`group relative flex items-center gap-3 overflow-hidden rounded-lg px-3 py-3 transition-colors sm:gap-6 sm:px-6 ${
+                isSubscribed
+                  ? "cursor-pointer hover:bg-white/50"
+                  : "cursor-pointer hover:bg-gray-50/50"
+              }`}
             >
               {/* Track Number */}
               <div
@@ -431,7 +441,7 @@ export default function AudioTrackList({
               {/* Title */}
               <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
                 <h3
-                  className="truncate font-medium text-[#1F1F1F]"
+                  className="line-clamp-2 font-medium text-[#1F1F1F] sm:truncate"
                   style={{
                     fontFamily: "'PP Neue Montreal', sans-serif",
                     fontSize: "14px",
@@ -461,7 +471,7 @@ export default function AudioTrackList({
                   href={item.pdfUrl}
                   download={item.pdfFileName}
                   onClick={(e) => e.stopPropagation()}
-                  className="ml-2 inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1.5 text-[12px] font-medium text-white transition-colors hover:bg-primary-600 sm:ml-0 sm:px-4 sm:py-2 sm:text-[13px]"
+                  className="ml-2 inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-primary px-3 py-1.5 text-[12px] font-medium text-white transition-colors hover:bg-primary-600 sm:ml-0 sm:px-4 sm:py-2 sm:text-[13px]"
                   style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
                 >
                   <svg
@@ -488,7 +498,7 @@ export default function AudioTrackList({
                     e.stopPropagation();
                     navigateWithLoading("/dashboard/subscriptions");
                   }}
-                  className="ml-2 inline-flex items-center gap-2 rounded-full bg-gray-200 px-3 py-1.5 text-[12px] font-medium text-[#8E8E8E] transition-colors hover:bg-gray-300 sm:ml-0 sm:px-4 sm:py-2 sm:text-[13px]"
+                  className="ml-2 inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-gray-200 px-3 py-1.5 text-[12px] font-medium text-[#8E8E8E] transition-colors hover:bg-gray-300 sm:ml-0 sm:px-4 sm:py-2 sm:text-[13px]"
                   style={{ fontFamily: "'PP Neue Montreal', sans-serif" }}
                 >
                   <svg

@@ -124,90 +124,88 @@ export default function SubscriptionTab() {
       {/* Top Section: Subscription & Billing Info */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Card: Subscription Info */}
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 h-[279px] flex flex-col justify-between">
-          <h3 className="text-xl font-bold text-[#1F1F1F]">
+        <div className="bg-white rounded-2xl p-5 sm:p-8 shadow-sm border border-gray-100 lg:h-[279px] flex flex-col justify-between gap-5">
+          <h3 className="text-lg sm:text-xl font-bold text-[#1F1F1F]">
             Informasi Langganan
           </h3>
 
-          <div className="border border-gray-100 rounded-xl p-6 flex items-center justify-between">
-            <div className="grid grid-cols-4 w-full gap-4 text-left">
-              <div className="space-y-1">
+          <div className="border border-gray-100 rounded-xl p-4 sm:p-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-x-4 gap-y-4 text-left">
+              <div className="space-y-1 min-w-0">
                 <p className="text-xs font-bold text-[#1F1F1F]">
                   Paket Langganan
                 </p>
-                <p className="text-xs text-gray-400 font-medium">
+                <p className="text-xs text-gray-400 font-medium break-words">
                   {subscriptionInfo.plan}
                 </p>
               </div>
-              <div className="space-y-1 border-l border-gray-100 pl-4">
+              <div className="space-y-1 min-w-0 md:border-l md:border-gray-100 md:pl-4">
                 <p className="text-xs font-bold text-[#1F1F1F]">Jumlah</p>
-                <p className="text-xs text-gray-400 font-medium">
+                <p className="text-xs text-gray-400 font-medium break-words">
                   {subscriptionInfo.amount}
                 </p>
               </div>
-              <div className="space-y-1 border-l border-gray-100 pl-4">
+              <div className="space-y-1 min-w-0 md:border-l md:border-gray-100 md:pl-4">
                 <p className="text-xs font-bold text-[#1F1F1F]">Status</p>
-                <span className="bg-[#E0F2F4] text-[#3197A5] px-2 py-0.5 rounded text-[10px] font-bold">
+                <span className="bg-[#E0F2F4] text-[#3197A5] px-2 py-0.5 rounded text-[10px] font-bold inline-block">
                   {subscriptionInfo.status}
                 </span>
               </div>
-              <div className="space-y-1 border-l border-gray-100 pl-4">
+              <div className="space-y-1 min-w-0 md:border-l md:border-gray-100 md:pl-4">
                 <p className="text-xs font-bold text-[#1F1F1F]">
                   Tagihan Berikut
                 </p>
-                <p className="text-xs text-gray-400 font-medium">
+                <p className="text-xs text-gray-400 font-medium break-words">
                   {subscriptionInfo.nextBilling}
                 </p>
               </div>
             </div>
           </div>
-          {/* Spacer to match height distribution if needed, or flex justify-between handles it */}
-          <div></div>
         </div>
 
         {/* Right Card: Billing Info */}
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 h-[279px] relative">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold text-[#1F1F1F]">
+        <div className="bg-white rounded-2xl p-5 sm:p-8 shadow-sm border border-gray-100 lg:h-[279px] relative">
+          <div className="flex justify-between items-center mb-5 sm:mb-6">
+            <h3 className="text-lg sm:text-xl font-bold text-[#1F1F1F]">
               Informasi Penagihan
             </h3>
             <button
               onClick={() => setIsEditModalOpen(true)}
-              className="w-8 h-8 rounded-full bg-[#3197A5] flex items-center justify-center text-white hover:bg-[#288a96] transition-colors"
+              className="w-8 h-8 rounded-full bg-[#3197A5] flex items-center justify-center text-white hover:bg-[#288a96] transition-colors flex-shrink-0"
             >
               <Edit2 size={16} />
             </button>
           </div>
 
-          <div className="border border-gray-100 rounded-xl p-4 mb-6 flex items-center gap-4">
+          <div className="border border-gray-100 rounded-xl p-4 mb-5 sm:mb-6 flex items-center gap-4">
             {/* Visa Logo Placeholder */}
             <div className="font-bold text-[#20325F] italic text-xl">VISA</div>
-            <div className="flex flex-col">
+            <div className="flex flex-col min-w-0">
               <p className="text-xs font-bold text-[#1F1F1F]">
                 {billingInfo.cardType}
               </p>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-400 truncate">
                 •••• •••• •••• {billingInfo.last4}
               </p>
             </div>
           </div>
 
           <div className="space-y-2">
-            <div className="grid grid-cols-[120px_1fr] items-start">
+            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[120px_1fr] items-start gap-2">
               <span className="text-xs text-gray-400">Nama Penagihan</span>
-              <span className="text-xs font-medium text-[#1F1F1F]">
+              <span className="text-xs font-medium text-[#1F1F1F] min-w-0 break-words">
                 {billingInfo.name}
               </span>
             </div>
-            <div className="grid grid-cols-[120px_1fr] items-start">
+            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[120px_1fr] items-start gap-2">
               <span className="text-xs text-gray-400">Email Penagihan</span>
-              <span className="text-xs font-medium text-[#1F1F1F]">
+              <span className="text-xs font-medium text-[#1F1F1F] min-w-0 break-all">
                 {billingInfo.email}
               </span>
             </div>
-            <div className="grid grid-cols-[120px_1fr] items-start">
+            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[120px_1fr] items-start gap-2">
               <span className="text-xs text-gray-400">Alamat Penagihan</span>
-              <span className="text-xs font-medium text-[#1F1F1F] truncate">
+              <span className="text-xs font-medium text-[#1F1F1F] min-w-0 break-words">
                 {billingInfo.address}
               </span>
             </div>
@@ -216,11 +214,11 @@ export default function SubscriptionTab() {
       </div>
 
       {/* Bottom Section: Invoice */}
-      <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 min-h-[490px] flex flex-col">
-        <h3 className="text-xl font-bold text-[#1F1F1F] mb-6">Invoice</h3>
+      <div className="bg-white rounded-2xl p-5 sm:p-8 shadow-sm border border-gray-100 min-h-[490px] flex flex-col">
+        <h3 className="text-lg sm:text-xl font-bold text-[#1F1F1F] mb-5 sm:mb-6">Invoice</h3>
 
-        <div className="overflow-x-auto flex-1">
-          <table className="w-full text-sm text-left">
+        <div className="overflow-x-auto flex-1 -mx-5 sm:mx-0 px-5 sm:px-0">
+          <table className="w-full min-w-[760px] text-sm text-left">
             <thead className="bg-gray-50 text-gray-400 text-xs">
               <tr>
                 <th className="py-4 px-6 rounded-l-lg font-medium">

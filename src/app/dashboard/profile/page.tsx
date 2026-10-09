@@ -52,7 +52,7 @@ function ProfileContent() {
         {/* Profile Banner */}
         <div className="w-full rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100">
           {/* Cover Image */}
-          <div className="h-[240px] w-full relative bg-[#004B50]">
+          <div className="h-[140px] sm:h-[200px] md:h-[240px] w-full relative bg-[#004B50]">
             <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.8)] via-transparent to-transparent opacity-80"></div>
             {/* You might want to use a real image here if available */}
             <div className="absolute inset-0 bg-[url('/grainy-gradient-background-noise-texture-backdrop-webpage-header-banner-design 1.png')] bg-cover bg-center opacity-50 mix-blend-overlay"></div>

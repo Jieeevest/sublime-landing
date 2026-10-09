@@ -80,8 +80,8 @@ export default function PersonalInfoTab() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Left Column: Photo Upload */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center h-fit">
-        <div className="relative w-36 h-36 rounded-full border border-dashed border-gray-300 flex items-center justify-center mb-6 cursor-pointer hover:bg-gray-50 transition-colors group">
+      <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 flex flex-col items-center h-fit">
+        <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full border border-dashed border-gray-300 flex items-center justify-center mb-6 cursor-pointer hover:bg-gray-50 transition-colors group">
           <div className="absolute inset-2 rounded-full overflow-hidden">
             <Image
               src={user?.data?.avatar || "/user-1.png"}
@@ -121,8 +121,8 @@ export default function PersonalInfoTab() {
       </div>
 
       {/* Right Column: Personal Info Form */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 lg:col-span-2">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 lg:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
           <div className="space-y-2">
             <div className="border border-gray-200 rounded-lg px-4 py-3 focus-within:border-[#3197A5] transition-colors">
               <label className="block text-xs text-gray-400 mb-1">
