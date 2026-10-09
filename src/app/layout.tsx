@@ -129,7 +129,7 @@ export default async function RootLayout({
                   operatingSystem: "Any",
                   offers: {
                     "@type": "Offer",
-                    price: "0",
+                    price: "135900",
                     priceCurrency: "IDR",
                   },
                   description:

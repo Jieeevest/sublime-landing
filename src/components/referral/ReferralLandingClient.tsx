@@ -320,10 +320,10 @@ export default function ReferralLandingClient() {
               </p>
               <p className="mt-2 text-[24px] font-bold text-[#1F1F1F]">
                 10 teman aktif ={" "}
-                <span className="text-[#3197A5]">Rp 198.000 / bulan*</span>
+                <span className="text-[#3197A5]">Rp 271.800 / bulan*</span>
               </p>
               <p className="mt-2 text-[13px] leading-relaxed text-[#6B6B6B]">
-                *asumsi paket langganan Rp 99.000/bulan dengan 10 teman aktif
+                *asumsi paket langganan Rp 135.900/bulan dengan 10 teman aktif
                 berlangganan. Semakin banyak teman aktif, semakin besar
                 penghasilanmu.
               </p>
