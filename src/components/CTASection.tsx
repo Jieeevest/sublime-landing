@@ -7,14 +7,12 @@ export default function CTASection() {
   const { t } = useI18n();
   return (
     <section
-      className="relative flex flex-col justify-center items-center overflow-hidden"
+      className="relative flex flex-col justify-center items-center overflow-hidden w-full px-4 py-16 sm:py-20 md:py-24 lg:py-0"
       style={{
-        padding: "0px",
         margin: "0px",
         gap: "32px",
-        width: "100vw",
         maxWidth: "100vw",
-        height: "696px",
+        minHeight: "clamp(420px, 70vw, 696px)",
         background: "#023347",
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
         isolation: "isolate",
@@ -43,12 +41,12 @@ export default function CTASection() {
 
       {/* Glassmorphism Card */}
       <div
-        className="flex flex-col justify-center items-center rounded-2xl relative"
+        className="flex flex-col justify-center items-center rounded-2xl relative w-full"
         style={{
-          padding: "0px",
+          padding: "clamp(32px, 6vw, 48px) clamp(16px, 4vw, 40px)",
           gap: "24px",
-          width: "940px",
-          height: "354px",
+          maxWidth: "940px",
+          minHeight: "clamp(260px, 50vw, 354px)",
           background: "rgba(31, 31, 31, 0.4)",
           backdropFilter: "blur(37px)",
           borderRadius: "16px",
@@ -57,11 +55,11 @@ export default function CTASection() {
       >
         {/* Text Group */}
         <div
-          className="flex flex-col items-center"
+          className="flex flex-col items-center w-full"
           style={{
             padding: "0px",
             gap: "16px",
-            width: "860px",
+            maxWidth: "860px",
           }}
         >
           {/* Heading */}
@@ -69,8 +67,8 @@ export default function CTASection() {
             className="font-bold text-center"
             style={{
               fontFamily: "'PP Neue Montreal', sans-serif",
-              fontSize: "48px",
-              lineHeight: "73px",
+              fontSize: "clamp(24px, 5.5vw, 48px)",
+              lineHeight: 1.25,
               background:
                 "linear-gradient(90deg, #55BDC0 0%, rgba(85, 189, 192, 0) 100%), #F5F9FA",
               WebkitBackgroundClip: "text",
@@ -102,7 +100,7 @@ export default function CTASection() {
 
         {/* Buttons */}
         <div
-          className="flex flex-row items-center"
+          className="flex flex-row items-center flex-wrap justify-center"
           style={{
             padding: "0px",
             gap: "16px",
